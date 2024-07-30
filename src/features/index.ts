@@ -1,8 +1,6 @@
-const sample = test => {
+const sample = (test: string) => {
   const newText = `${test}!`;
-  console.log(newText);
+  return newText;
 };
 
-sample('Hello World');
-
-// eslint와 tsc에러가 모두 나는 문장.
+console.log(sample('Hello World'));
