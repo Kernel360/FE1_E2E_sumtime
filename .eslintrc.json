@@ -1,3 +1,48 @@
+// {
+//   "parser": "@typescript-eslint/parser",
+//   "plugins": ["@typescript-eslint", "prettier"],
+//   "parserOptions": {
+//     "project": "./tsconfig.json"
+//   },
+//   "extends": [
+//     "next/core-web-vitals",
+//     "airbnb",
+//     "airbnb/hooks",
+//     "plugin:@typescript-eslint/recommended"
+//   ]
+// }
+
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "@typescript-eslint", "jsx-a11y", "import"],
+  "rules": {
+    // 필요한 규칙을 여기에 추가
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }
