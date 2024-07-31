@@ -5,6 +5,7 @@
   },
   "extends": [
     "airbnb",
+    "prettier",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",

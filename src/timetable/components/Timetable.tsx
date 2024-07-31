@@ -1,7 +1,7 @@
 'use client';
 
 import { eachMinuteOfInterval, endOfDay, startOfDay } from 'date-fns';
-import styled from '.Timetable.module.scss';
+import styled from './Timetable.module.scss';
 
 interface TimetableProps {
   startTime: Date;
@@ -23,7 +23,7 @@ interface Task {
 }
 
 const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) => {
-  taskListInput.filter(task => {
+  taskListInput.filter((task: Task) => {
     const taskStartHour = task.startTime.getHours();
     const taskEndHour = task.endTime.getHours();
     const taskEndMinute = task.endTime.getMinutes();
@@ -68,8 +68,8 @@ function Timetable({
         <h1>Timetable</h1>
       </div>
       <div>
-        {timeSlots.map((time: Date, index: number) => (
-          <div key={`${time.toString()}${index}`}>
+        {timeSlots.map((time: Date) => (
+          <div key={`${time.getSeconds()}`}>
             {time.getHours()}
             {time.getMinutes()}
           </div>
