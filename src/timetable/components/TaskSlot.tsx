@@ -1,6 +1,6 @@
 import { add } from 'date-fns';
-import styled from './Slot.module.scss';
 import { calculateTaskOffsetAndHeightPercent } from '@/timetable/utils';
+import styled from './Slot.module.scss';
 import type { Task } from './Timetable.type';
 
 interface TaskSlotProps {
