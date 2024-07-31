@@ -1,4 +1,9 @@
-export default function Home() {
+'use client';
 
-  return <div>sumday</div>;
+export default function Home() {
+  return (
+    <>
+      <div>sumday</div>
+    </>
+  );
 }
