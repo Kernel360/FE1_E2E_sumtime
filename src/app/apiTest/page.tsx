@@ -5,8 +5,7 @@ import { useState } from 'react';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userId, setUserId] = useState('');
-  const handleSubmit = async (event: React.FormEvent) => {
+  const addUser = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const response = await fetch('/api/user/add', {
@@ -24,17 +23,35 @@ export default function Login() {
       alert(`Failed to add user: ${errorData.error}`);
     }
   };
-  const handleGetUserIdByEmail = async (event: React.FormEvent) => {
+  const emailValidation = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const response = await fetch(`/api/user/getIdByEmail?email=${encodeURIComponent(email)}`, {
+    const response = await fetch(`/api/user/emailValidation?email=${encodeURIComponent(email)}`, {
       method: 'GET',
     });
 
     if (response.ok) {
       const data = await response.json();
-      setUserId(data.userId);
-      alert(`User ID: ${data.userId}`);
+      alert(`Validation: ${data.isValid}`);
+    } else {
+      const errorData = await response.json();
+      alert(`Error: ${errorData.error}`);
+    }
+  };
+  const loginValidation = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const response = await fetch('/api/user/loginValidation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      alert(`Validation: ${data.isValid}`);
     } else {
       const errorData = await response.json();
       alert(`Error: ${errorData.error}`);
@@ -43,39 +60,24 @@ export default function Login() {
 
   return (
     <div>
-      <hr />
       <div>
         <h1>Add User</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
+        <form onSubmit={addUser}>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
           <button type="submit">Add User</button>
         </form>
-        <h1>Get User ID by Email</h1>
-        <form onSubmit={handleGetUserIdByEmail}>
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
+        <h1>Email Validation</h1>
+        <form onSubmit={emailValidation}>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
           <button type="submit">Get User ID</button>
         </form>
-
-        {userId && <p>User ID: {userId}</p>}
+        <h1>Login Validation</h1>
+        <form onSubmit={loginValidation}>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+          <button type="submit">Login</button>
+        </form>
       </div>
     </div>
   );

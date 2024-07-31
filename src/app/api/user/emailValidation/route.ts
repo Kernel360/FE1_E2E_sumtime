@@ -24,14 +24,11 @@ export async function GET(req: NextRequest) {
     console.log('Query result:', user);
 
     if (user) {
-      return NextResponse.json({ userId: user.userId });
+      return NextResponse.json({ isValid: false });
     }
-    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    return NextResponse.json({ isValid: true });
   } catch (error) {
     console.error('Error fetching user:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch user', details: (error as Error).message },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Failed to fetch user', details: (error as Error).message }, { status: 500 });
   }
 }
