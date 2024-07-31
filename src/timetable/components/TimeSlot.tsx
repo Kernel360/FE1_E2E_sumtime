@@ -1,5 +1,5 @@
-import styled from './Slot.module.scss';
 import { getHourAndMinutesFormat } from '@/timetable/utils';
+import styled from './Slot.module.scss';
 
 interface TimeSlotProps {
   headerDate: Date;
