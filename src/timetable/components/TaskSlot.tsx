@@ -19,7 +19,7 @@ function TaskSlot({ headerDate, slotTime, taskItem }: TaskSlotProps) {
   const slotStartTime = headerDate;
   const slotEndTime = add(headerDate, { minutes: slotTime });
 
-  const { offset, heightPercent } = calculateTaskOffsetAndHeightPercent(
+  const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
     slotStartTime,
     slotEndTime,
     startTime,
@@ -32,7 +32,7 @@ function TaskSlot({ headerDate, slotTime, taskItem }: TaskSlotProps) {
       <div
         className={styled.taskSlotBackground}
         style={{
-          top: `${offset}%`,
+          top: `${offsetPercent}%`,
           left: '0',
           height: `${heightPercent}%`,
           backgroundColor: `${slotColor}`,

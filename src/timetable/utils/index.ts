@@ -22,12 +22,12 @@ const calculateTaskOffsetAndHeightPercent = (
   const taskStartMinutes = sumHoursAndMinutes(taskStartTime);
   const taskEndMinutes = sumHoursAndMinutes(taskEndTime);
 
-  let offset = 0;
+  let offsetPercent = 0;
   let endPercent = 100;
 
   if (slotStartMinutes < taskStartMinutes) {
     // 슬롯의 시작시간보다 task의 시작 시간이 늦었다면(즉 slot 도중에 시작했다면)
-    offset = ((taskStartMinutes - slotStartMinutes) / slotTime) * 100;
+    offsetPercent = ((taskStartMinutes - slotStartMinutes) / slotTime) * 100;
   }
 
   if (taskEndMinutes < slotEndMinutes) {
@@ -35,9 +35,9 @@ const calculateTaskOffsetAndHeightPercent = (
     endPercent = ((taskEndMinutes - slotStartMinutes) / slotTime) * 100;
   }
 
-  const heightPercent = endPercent - offset;
+  const heightPercent = endPercent - offsetPercent;
 
-  return { offset, heightPercent };
+  return { offsetPercent, heightPercent };
 };
 
 export { getHourAndMinutesFormat, sumHoursAndMinutes, calculateTaskOffsetAndHeightPercent };
