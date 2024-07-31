@@ -1,9 +1,5 @@
 'use client';
 
 export default function Home() {
-  return (
-    <>
-      <div>sumday</div>
-    </>
-  );
+  return <div>sumday</div>;
 }
