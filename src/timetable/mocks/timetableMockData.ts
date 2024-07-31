@@ -38,40 +38,4 @@ const taskList = [
     endTime: getDateFromTime(20, 0, 0),
   },
 ];
-
-// const taskList = [
-//   {
-//     id: 1,
-//     title: 'title1',
-//     subTitle: 'subTitle1',
-//     slotColor: 'red',
-//     startTime: new Date('2024-07-31T06:30:00'),
-//     endTime: new Date('2024-07-31T06:50:00'),
-//   },
-//   {
-//     id: 2,
-//     title: 'title2',
-//     subTitle: 'subTitle2',
-//     slotColor: 'blue',
-//     startTime: new Date('2024-07-31T07:00:00'),
-//     endTime: new Date('2024-07-31T07:30:00'),
-//   },
-//   {
-//     id: 3,
-//     title: 'title3',
-//     subTitle: 'subTitle3',
-//     slotColor: 'perple',
-//     startTime: new Date('2024-07-31T07:40:00'),
-//     endTime: new Date('2024-07-31T09:30:00'),
-//   },
-//   {
-//     id: 4,
-//     title: 'title4',
-//     subTitle: 'subTitle4',
-//     slotColor: 'yellow',
-//     startTime: new Date('2024-07-31T11:00:00'),
-//     endTime: new Date('2024-07-31T12:00:00'),
-//   },
-// ];
-
 export { startTime, endTime, taskList, slotTime };
