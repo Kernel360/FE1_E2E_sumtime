@@ -1,7 +1,8 @@
 'use client';
 
-import { eachMinuteOfInterval, endOfDay, startOfDay } from 'date-fns';
+import { eachMinuteOfInterval } from 'date-fns';
 import styled from './Timetable.module.scss';
+import Slot from './Slot';
 
 interface TimetableProps {
   startTime: Date;
@@ -22,7 +23,7 @@ interface Task {
   endTime: Date;
 }
 
-const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) => {
+const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
   taskListInput.filter((task: Task) => {
     const taskStartHour = task.startTime.getHours();
     const taskEndHour = task.endTime.getHours();
@@ -31,10 +32,9 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
     return (
       taskStartHour <= checkHour &&
       taskEndHour >= checkHour &&
-      !(taskEndHour === checkHour && taskEndMinute === slotTimeInput)
+      !(taskEndHour === checkHour && taskEndMinute === slotTimeInput % 60)
     );
   });
-};
 
 function Timetable({
   startTime,
@@ -45,35 +45,30 @@ function Timetable({
   displayCurrentTime,
   taskList,
 }: TimetableProps) {
-  const now = new Date();
   console.log(startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList);
   // lint에러 막기 위한 console
 
-  const startTimeDateObject = startOfDay(now); // 오늘의 시작 시간 (00:00)
-  const endTimeDateObject = endOfDay(now); // 오늘의 끝 시간 (23:59)
-
   const timeSlots = eachMinuteOfInterval(
     {
-      start: startTimeDateObject,
-      end: endTimeDateObject,
+      start: startTime,
+      end: endTime,
     },
     { step: slotTime },
   );
 
-  const filteredTasks = taskListFilter(taskList, 17, slotTime); // 이게 slot으로 넘길 녀석
-  console.log('filteredTasks', filteredTasks);
   return (
     <div>
       <div className={styled.container}>
         <h1>Timetable</h1>
       </div>
       <div>
-        {timeSlots.map((time: Date) => (
-          <div key={`${time.getSeconds()}`}>
-            {time.getHours()}
-            {time.getMinutes()}
-          </div>
-        ))}
+        {timeSlots.map((time: Date, index) => {
+          const key = `${time.toDateString()}${index}`;
+
+          const taskItem = taskListFilter(taskList, time.getHours(), slotTime)[0];
+
+          return <Slot key={key} headerDate={time} slotTime={slotTime} taskItem={taskItem} />;
+        })}
       </div>
     </div>
   );
