@@ -1,3 +1,6 @@
+'use client';
+
+import { eachMinuteOfInterval, endOfDay, startOfDay } from 'date-fns';
 import styled from './Timetable.module.scss';
 
 interface TimetableProps {
@@ -19,6 +22,20 @@ interface Task {
   endTime: Date;
 }
 
+const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) => {
+  taskListInput.filter((task: Task) => {
+    const taskStartHour = task.startTime.getHours();
+    const taskEndHour = task.endTime.getHours();
+    const taskEndMinute = task.endTime.getMinutes();
+
+    return (
+      taskStartHour <= checkHour &&
+      taskEndHour >= checkHour &&
+      !(taskEndHour === checkHour && taskEndMinute === slotTimeInput)
+    );
+  });
+};
+
 function Timetable({
   startTime,
   endTime,
@@ -28,46 +45,38 @@ function Timetable({
   displayCurrentTime,
   taskList,
 }: TimetableProps) {
-  console.log('taskList', taskList);
-  console.log('timetableType', timetableType);
-  console.log('displayCurrentTime', displayCurrentTime);
-  console.log('height', height);
-  console.log('slotTime', slotTime);
-  console.log('endTime', endTime);
-  console.log('startTime', startTime);
+  const now = new Date();
+  console.log(startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList);
+  // lint에러 막기 위한 console
 
+  const startTimeDateObject = startOfDay(now); // 오늘의 시작 시간 (00:00)
+  const endTimeDateObject = endOfDay(now); // 오늘의 끝 시간 (23:59)
+
+  const timeSlots = eachMinuteOfInterval(
+    {
+      start: startTimeDateObject,
+      end: endTimeDateObject,
+    },
+    { step: slotTime },
+  );
+
+  const filteredTasks = taskListFilter(taskList, 17, slotTime); // 이게 slot으로 넘길 녀석
+  console.log('filteredTasks', filteredTasks);
   return (
     <div>
       <div className={styled.container}>
         <h1>Timetable</h1>
       </div>
       <div>
-        <div>slot이 될 녀석</div>
-        {/* props => headerDate, soltTime, 필더링 된 taskitem?가 넘어올 예정. */}
-        <div>slot이 될 녀석</div>
-        <div>slot이 될 녀석</div>
-      </div>
-      {/* <div>
-        {taskList.map(task => (
-          <div key={task.id}>
-            <p>{task.title}</p>
-            <p>{task.subTitle}</p>
-            <p>{task.slotColor}</p>
+        {timeSlots.map((time: Date) => (
+          <div key={`${time.getSeconds()}`}>
+            {time.getHours()}
+            {time.getMinutes()}
           </div>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 }
 
 export default Timetable;
-
-// <Timetable
-//   startTime={data}
-//   endTime={data}
-//   slotTime={30}
-//   height="800px"
-//   timetableType="COLUMN"
-//   displayCurrentTime
-//   taskList={taskList}
-// />;
