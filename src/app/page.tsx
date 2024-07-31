@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <GlobalStyles />
-      <div>sumday</div>
+      <h1>sumday</h1>
     </>
   );
 }
