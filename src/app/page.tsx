@@ -1,5 +1,3 @@
-// import Image from 'next/image';
-// import styles from './page.module.css';
 import { taskList } from '@/timetable/mocks/timetableMockData';
 import Timetable from '@/timetable/components/Timetable';
 
@@ -11,7 +9,7 @@ export default function Home() {
     <Timetable
       startTime={data}
       endTime={data}
-      slotTime={30}
+      slotTime={60}
       height="800px"
       timetableType="COLUMN"
       displayCurrentTime
