@@ -1,5 +1,5 @@
 import { add } from 'date-fns';
-import { calculateTaskOffsetAndHeightPercent } from '@/timetable/utils';
+import { calculateTaskOffsetAndHeightPercent } from '@/app/timetable/utils';
 import styled from './Slot.module.scss';
 import type { Task } from './Timetable.type';
 

@@ -1,4 +1,4 @@
-import { getHourAndMinutesFormat } from '@/timetable/utils';
+import { getHourAndMinutesFormat } from '@/app/timetable/utils';
 import styled from './Slot.module.scss';
 
 interface TimeSlotProps {
