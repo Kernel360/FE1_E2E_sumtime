@@ -1,3 +1,5 @@
+import { Task } from '../components/Timetable.type';
+
 const getHourAndMinutesFormat = (data: Date) => {
   const hours = data.getHours();
   const minutes = data.getMinutes();
@@ -6,7 +8,6 @@ const getHourAndMinutesFormat = (data: Date) => {
 
   return currentTime; // HH:MM
 };
-
 // 시간을 분단위로 바꿔버리고 더해주는 함수
 const sumHoursAndMinutes = (date: Date) => date.getHours() * 60 + date.getMinutes();
 
@@ -40,6 +41,47 @@ const calculateTaskOffsetAndHeightPercent = (
   return { offsetPercent, heightPercent };
 };
 
-export { getHourAndMinutesFormat, sumHoursAndMinutes, calculateTaskOffsetAndHeightPercent };
+const isTimeOverlap = (startTime1: Date, endTime1: Date, startTime2: Date, endTime2: Date): boolean => {
+  const startTime1Minutes = sumHoursAndMinutes(startTime1);
+  const endTime1Minutes = sumHoursAndMinutes(endTime1);
+  const startTime2Minutes = sumHoursAndMinutes(startTime2);
+  const endTime2Minutes = sumHoursAndMinutes(endTime2);
+
+  return startTime1Minutes < endTime2Minutes && startTime2Minutes < endTime1Minutes;
+};
+
+const getDateFromTime = (hours: number, minutes: number, second: number) => {
+  const yearMonthDay = '2024-08-01';
+
+  const hourFormat = hours < 10 ? `0${hours}` : hours;
+  const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
+  const secondeFormat = second < 10 ? `0${second}` : second;
+
+  return new Date(`${yearMonthDay}T${hourFormat}:${minutesFormat}:${secondeFormat}`);
+};
+
+const checkTimeOverlapFromTaskList = (taskList: Task[]) => {
+  let isOverlap = false;
+
+  for (let i = 0; i < taskList.length; i += 1) {
+    for (let j = i + 1; j < taskList.length; j += 1) {
+      if (isTimeOverlap(taskList[i].startTime, taskList[i].endTime, taskList[j].startTime, taskList[j].endTime)) {
+        isOverlap = true;
+        return isOverlap;
+      }
+    }
+  }
+
+  return false;
+};
+
+export {
+  getHourAndMinutesFormat,
+  sumHoursAndMinutes,
+  calculateTaskOffsetAndHeightPercent,
+  isTimeOverlap,
+  getDateFromTime,
+  checkTimeOverlapFromTaskList,
+};
 export { hasKey, insertKey } from './map';
 export { distributeHeight, isFormatString, parseHeight, parseHeightFormat, parseHeightValue } from './height';
