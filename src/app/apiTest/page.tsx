@@ -96,8 +96,12 @@ export default function Login() {
         method = 'POST';
         body = JSON.stringify({ userId, title, content, startTime, endTime, color });
         break;
-      case 'readByUserId':
-        endpoint = `/api/todo/getTodosByUserId?userId=${userId}`;
+      case 'getAllByUserId':
+        endpoint = `/api/todo/getAllByUserId?userId=${userId}`;
+        method = 'GET';
+        break;
+      case 'getOneByTodoId':
+        endpoint = `/api/todo/getOneByTodoId?todoId=${todoId}`;
         method = 'GET';
         break;
       case 'update':
@@ -126,7 +130,7 @@ export default function Login() {
       const data = await response.json();
       alert(`${name.charAt(0).toUpperCase() + name.slice(1)} action was successful`);
       alert(JSON.stringify(data, null, 2));
-      if (name === 'read') {
+      if (name === 'getAllByUserId') {
         setUserId(data.todos[0].userId);
         setTodoId(data.todos[0].todoId);
         setTitle(data.todos[0].title);
@@ -134,6 +138,15 @@ export default function Login() {
         setStartTime(data.todos[0].startTime);
         setEndTime(data.todos[0].endTime);
         setColor(data.todos[0].color);
+      }
+      if (name === 'getOneByTodoId') {
+        setUserId(data.todo.userId);
+        setTodoId(data.todo.todoId);
+        setTitle(data.todo.title);
+        setContent(data.todo.content);
+        setStartTime(data.todo.startTime);
+        setEndTime(data.todo.endTime);
+        setColor(data.todo.color);
       }
     } else {
       const errorData = await response.json();
@@ -171,7 +184,7 @@ export default function Login() {
       <form onSubmit={todoSubmitHandler} style={{ display: 'flex', flexDirection: 'column', width: '335px' }}>
         <div style={{ display: 'flex' }}>
           <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="UserId" />
-          <input type="text" value={todoId} onChange={(e) => setTodoId(e.target.value)} placeholder="todoId(delete only)" />
+          <input type="text" value={todoId} onChange={(e) => setTodoId(e.target.value)} placeholder="todoId" />
         </div>
         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
         <input type="text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content(optional)" />
@@ -182,8 +195,11 @@ export default function Login() {
           <button type="submit" name="create">
             Create Todo
           </button>
-          <button type="submit" name="readByUserId">
-            Read Todo
+          <button type="submit" name="getAllByUserId">
+            Read Todo By UserId
+          </button>
+          <button type="submit" name="getOneByTodoId">
+            Read Todo By TodoId
           </button>
           <button type="submit" name="update">
             Update Todo

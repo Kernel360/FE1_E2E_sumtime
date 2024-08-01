@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'UserID query parameter is required' }, { status: 400 });
   }
 
-  console.log('Received id:', userId);
+  console.log('Received id:');
 
   try {
     const todos = await db
