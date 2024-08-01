@@ -7,6 +7,7 @@ export const todosTable = sqliteTable('todos', {
   content: text('content'),
   startTime: text('start_time'),
   endTime: text('end_time'),
+  color: text('color'),
   userId: integer('user_id')
     .notNull()
     .references(() => usersTable.userId, { onDelete: 'cascade' }),
