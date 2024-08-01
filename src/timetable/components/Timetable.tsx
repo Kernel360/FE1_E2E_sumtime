@@ -4,6 +4,7 @@ import { eachMinuteOfInterval } from 'date-fns';
 import { parseHeight, distributeHeight, hasKey, insertKey } from '../utils';
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
+import CurrentTimeLine from './CurrentTimeLine';
 
 interface TimetableProps {
   startTime: Date;
@@ -38,10 +39,6 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
   });
 
 function Timetable({ startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList }: TimetableProps) {
-  // const now = new Date();
-  console.log(timetableType, displayCurrentTime);
-  // lint에러 막기 위한 console
-
   const timeSlots = eachMinuteOfInterval(
     {
       start: startTime,
