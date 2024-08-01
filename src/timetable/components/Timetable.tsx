@@ -1,8 +1,10 @@
 'use client';
 
 import { eachMinuteOfInterval } from 'date-fns';
+import { parseHeight, distributeHeight, hasKey, insertKey } from '../utils';
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
+import CurrentTimeLine from './CurrentTimeLine';
 
 interface TimetableProps {
   startTime: Date;
@@ -36,18 +38,8 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
     );
   });
 
-function Timetable({
-  startTime,
-  endTime,
-  slotTime,
-  height,
-  timetableType,
-  displayCurrentTime,
-  taskList,
-}: TimetableProps) {
-  // const now = new Date();
-  console.log(height, timetableType, displayCurrentTime);
-  // lint에러 막기 위한 console
+function Timetable({ startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList }: TimetableProps) {
+  console.log(timetableType);
 
   const timeSlots = eachMinuteOfInterval(
     {
@@ -57,20 +49,34 @@ function Timetable({
     { step: slotTime },
   );
 
+  const { value, format } = parseHeight(height);
+  const slotHeight = distributeHeight(value, timeSlots.length, format);
+  const uniqueTaskIdMap = new Map();
+
   return (
     <div>
-      <div className={styled.container}>
-        <h1>Timetable</h1>
-      </div>
-      <div>
-        {timeSlots.map((time: Date) => (
-          <Slot
-            key={`${time.getSeconds()}`}
-            headerDate={time}
-            slotTime={slotTime}
-            taskItem={taskListFilter(taskList, time.getHours(), slotTime)[0]}
-          />
-        ))}
+      <div className={styled.container} style={{ height }}>
+        {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
+        {timeSlots.map((time: Date, index) => {
+          const key = `${time.toDateString()}${index}`;
+          const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
+          const shouldDisplayTaskContentList: boolean[] = taskItemList.map((taskItem) => {
+            const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
+            insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
+            return shouldDisplayTaskContent;
+          });
+
+          return (
+            <Slot
+              key={key}
+              headerDate={time}
+              slotTime={slotTime}
+              taskItemList={taskItemList}
+              height={slotHeight}
+              shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+            />
+          );
+        })}
       </div>
     </div>
   );

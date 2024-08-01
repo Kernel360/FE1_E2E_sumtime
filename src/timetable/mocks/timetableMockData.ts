@@ -1,5 +1,5 @@
 const getDateFromTime = (hours: number, minutes: number, second: number) => {
-  const yearMonthDay = '2024-07-30';
+  const yearMonthDay = '2024-08-01';
 
   const hourFormat = hours < 10 ? `0${hours}` : hours;
   const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
@@ -11,6 +11,7 @@ const getDateFromTime = (hours: number, minutes: number, second: number) => {
 const startTime = getDateFromTime(0, 0, 1);
 const endTime = getDateFromTime(23, 59, 59);
 const slotTime = 60;
+const height = '1000px';
 
 const taskList = [
   {
@@ -37,5 +38,22 @@ const taskList = [
     startTime: getDateFromTime(18, 0, 0),
     endTime: getDateFromTime(20, 0, 0),
   },
+  {
+    id: 5,
+    title: '02:30',
+    subTitle: '02:50',
+    slotColor: 'green',
+    startTime: getDateFromTime(2, 30, 0),
+    endTime: getDateFromTime(2, 50, 0),
+  },
+  {
+    id: 4,
+    title: '01:00',
+    subTitle: '02:20',
+    slotColor: 'brown',
+    startTime: getDateFromTime(1, 0, 0),
+    endTime: getDateFromTime(2, 20, 0),
+  },
 ];
-export { startTime, endTime, taskList, slotTime };
+
+export { startTime, endTime, taskList, slotTime, height };
