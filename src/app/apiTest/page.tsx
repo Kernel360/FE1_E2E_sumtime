@@ -96,8 +96,8 @@ export default function Login() {
         method = 'POST';
         body = JSON.stringify({ userId, title, content, startTime, endTime, color });
         break;
-      case 'read':
-        endpoint = `/api/todo/read?userId=${userId}`;
+      case 'readByUserId':
+        endpoint = `/api/todo/getTodosByUserId?userId=${userId}`;
         method = 'GET';
         break;
       case 'update':
@@ -108,7 +108,7 @@ export default function Login() {
       case 'delete':
         endpoint = '/api/todo/delete';
         method = 'DELETE';
-        body = JSON.stringify({ userId, title, content, startTime, endTime, color });
+        body = JSON.stringify({ todoId });
         break;
       default:
         alert('Unknown action');
@@ -170,7 +170,7 @@ export default function Login() {
       <h1 style={{ color: 'orange' }}>Todo Control</h1>
       <form onSubmit={todoSubmitHandler} style={{ display: 'flex', flexDirection: 'column', width: '335px' }}>
         <div style={{ display: 'flex' }}>
-          <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="UserId" required />
+          <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="UserId" />
           <input type="text" value={todoId} onChange={(e) => setTodoId(e.target.value)} placeholder="todoId(delete only)" />
         </div>
         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
@@ -182,7 +182,7 @@ export default function Login() {
           <button type="submit" name="create">
             Create Todo
           </button>
-          <button type="submit" name="read">
+          <button type="submit" name="readByUserId">
             Read Todo
           </button>
           <button type="submit" name="update">
