@@ -14,6 +14,7 @@ interface TextProps {
   $fontWeight?: string;
   $color?: string;
   $decorationLine?: string;
+  $textAlign?: string;
   theme?: {
     fontSize: {
       sm: string;
@@ -42,9 +43,10 @@ const Text = styled.span<TextProps>`
   width: ${(props) => (props?.$width !== undefined ? props.$width : 'fit-content')};
   height: ${(props) => (props?.$height !== undefined ? props.$height : 'auto')};
   line-height: ${(props) => (props?.$lineHeight ? props.$lineHeight : '100%')};
-  font-size: ${(props) => (props?.$fontSize ? props.$fontSize : props.theme?.fontSize.md)};
-  font-weight: ${(props) => (props?.$fontWeight ? props.$fontWeight : props.theme?.fontWeight.bold)};
-  color: ${(props) => (props?.$color ? props.$color : props.theme?.color.fontColor)};
+  font-size: ${(props) => (props?.$fontSize ? props.$fontSize : props.theme?.fontSize?.md)};
+  font-weight: ${(props) => (props?.$fontWeight ? props.$fontWeight : props.theme?.fontWeight?.bold)};
+  text-align: ${(props) => (props?.$textAlign ? props.$textAlign : 'left')};
+  color: ${(props) => (props?.$color ? props.$color : props.theme?.color?.fontColor)};
   text-decoration-line: ${(props) => (props?.$decorationLine ? props.$decorationLine : 'none')};
 `;
 

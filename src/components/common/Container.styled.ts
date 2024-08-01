@@ -36,9 +36,9 @@ const Container = styled.div<ContainerProps>`
   height: ${(props) => (props?.$height ? props.$height : 'auto')};
   border: ${(props) => (props?.$border ? props.$border : 'none')};
   border-radius: ${(props) => (props?.$radius ? props.$radius : 0)};
-  background-color: ${(props) => (props?.$backgroundColor ? props.$backgroundColor : props?.theme?.color.backgroundColor)};
-  font-size: ${(props) => (props?.$fontSize ? props.$fontSize : props?.theme?.fontSize.m)};
-  font-weight: ${(props) => (props?.$fontWeight ? props.$fontWeight : props?.theme?.fontWeight.medium)};
+  background-color: ${(props) => (props?.$backgroundColor ? props.$backgroundColor : props?.theme?.color?.backgroundColor)};
+  font-size: ${(props) => (props?.$fontSize ? props.$fontSize : props?.theme?.fontSize?.m)};
+  font-weight: ${(props) => (props?.$fontWeight ? props.$fontWeight : props?.theme?.fontWeight?.medium)};
 `;
 
 export { Container };
