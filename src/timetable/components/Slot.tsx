@@ -6,15 +6,21 @@ import styled from './Slot.module.scss';
 interface SlotProps {
   headerDate: Date;
   slotTime: number;
-  taskItem: Task | undefined;
+  taskItemList: Task[];
   height: string;
+  shouldDisplayTaskContentList: boolean[];
 }
 
-function Slot({ headerDate, slotTime, taskItem, height }: SlotProps) {
+function Slot({ headerDate, slotTime, taskItemList, height, shouldDisplayTaskContentList = [] }: SlotProps) {
   return (
     <div className={styled.slot} style={{ height }}>
       <TimeSlot headerDate={headerDate} />
-      <TaskSlot headerDate={headerDate} slotTime={slotTime} taskItem={taskItem} />
+      <TaskSlot
+        headerDate={headerDate}
+        slotTime={slotTime}
+        taskItemList={taskItemList}
+        shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+      />
     </div>
   );
 }
