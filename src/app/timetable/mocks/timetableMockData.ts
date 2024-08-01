@@ -1,12 +1,4 @@
-const getDateFromTime = (hours: number, minutes: number, second: number) => {
-  const yearMonthDay = '2024-08-01';
-
-  const hourFormat = hours < 10 ? `0${hours}` : hours;
-  const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
-  const secondeFormat = second < 10 ? `0${second}` : second;
-
-  return new Date(`${yearMonthDay}T${hourFormat}:${minutesFormat}:${secondeFormat}`);
-};
+import { getDateFromTime } from '../utils';
 
 const startTime = getDateFromTime(0, 0, 1);
 const endTime = getDateFromTime(23, 59, 59);
@@ -99,4 +91,4 @@ const duplicatedTimeTaskList = [
   },
 ];
 
-export { startTime, endTime, taskList, slotTime, height };
+export { startTime, endTime, taskList, duplicatedTimeTaskList, slotTime, height };
