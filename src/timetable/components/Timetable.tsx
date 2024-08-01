@@ -49,7 +49,6 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
     },
     { step: slotTime },
   );
-  // const slotHeight = height / timeSlots.length();
 
   const { value, format } = parseHeight(height);
   const slotHeight = distributeHeight(value, timeSlots.length, format);
@@ -60,18 +59,21 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
       <div className={styled.container} style={{ height }}>
         {timeSlots.map((time: Date, index) => {
           const key = `${time.toDateString()}${index}`;
-          const taskItem = taskListFilter(taskList, time.getHours(), slotTime)[0];
-          const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
-          insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
+          const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
+          const shouldDisplayTaskContentList: boolean[] = taskItemList.map((taskItem) => {
+            const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
+            insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
+            return shouldDisplayTaskContent;
+          });
 
           return (
             <Slot
               key={key}
               headerDate={time}
               slotTime={slotTime}
-              taskItem={taskItem}
+              taskItemList={taskItemList}
               height={slotHeight}
-              shouldDisplayTaskContent={shouldDisplayTaskContent}
+              shouldDisplayTaskContentList={shouldDisplayTaskContentList}
             />
           );
         })}
