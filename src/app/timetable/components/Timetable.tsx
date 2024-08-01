@@ -1,7 +1,7 @@
 'use client';
 
 import { eachMinuteOfInterval } from 'date-fns';
-import { parseHeight, distributeHeight, hasKey, insertKey } from '../utils';
+import { parseHeight, distributeHeight, hasKey, insertKey, checkTimeOverlapFromTaskList } from '../utils';
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
 import CurrentTimeLine from './CurrentTimeLine';
@@ -40,6 +40,10 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
 
 function Timetable({ startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList }: TimetableProps) {
   console.log(timetableType);
+
+  if (checkTimeOverlapFromTaskList(taskList)) {
+    throw new Error('task time is overlap. please check your taskList');
+  }
 
   const timeSlots = eachMinuteOfInterval(
     {
