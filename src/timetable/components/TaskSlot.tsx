@@ -42,13 +42,14 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
                 height: `${heightPercent}%`,
                 backgroundColor: `${slotColor}`,
               }}
-            />
-            {shouldDisplayTaskContent && (
-              <div className={styled.taskSlotContent}>
-                <p className={styled.title}>{title}</p>
-                <p className={styled.description}>{subTitle}</p>
-              </div>
-            )}
+            >
+              {shouldDisplayTaskContent && (
+                <div className={styled.taskSlotContent} style={{ top: `${offsetPercent}%` }}>
+                  <p className={styled.title}>{title}</p>
+                  <p className={styled.description}>{subTitle}</p>
+                </div>
+              )}
+            </div>
           </div>
         );
       })}
