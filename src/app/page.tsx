@@ -15,7 +15,7 @@ export default function Home() {
           <p>당신의 하루를 더하세요</p>
         </div>
         <Flex>
-          <Link href="/login">
+          <Link href="/auth/signin">
             <Button variant="text">로그인하기</Button>
           </Link>
           <Link href="/signup">
