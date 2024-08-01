@@ -1,5 +1,5 @@
-import TimeSlot from '@/timetable/components/TimeSlot';
-import TaskSlot from '@/timetable/components/TaskSlot';
+import TimeSlot from './TimeSlot';
+import TaskSlot from './TaskSlot';
 import type { Task } from './Timetable.type';
 import styled from './Slot.module.scss';
 

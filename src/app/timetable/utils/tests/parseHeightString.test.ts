@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
-import { parseHeightFormat, parseHeightValue } from '.';
-import { formatList } from '../constants';
+import { parseHeightFormat, parseHeightValue } from '..';
+import { formatList } from '../../constants';
 
 describe('Timetable의 height 값 나누기', () => {
   describe('height 값에서 format 가져오기', () => {
