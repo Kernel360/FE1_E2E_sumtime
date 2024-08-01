@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import { parseHeight, distributeHeight, hasKey, insertKey, checkTimeOverlapFromTaskList } from '../utils';
 import styled from './Timetable.module.scss';
@@ -41,7 +42,12 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
 function Timetable({ startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList }: TimetableProps) {
   console.log(timetableType);
 
-  if (checkTimeOverlapFromTaskList(taskList)) {
+  const hasOverlapFromTaskList = useCallback(
+    (currentTaskList: Task[]) => checkTimeOverlapFromTaskList(currentTaskList),
+    [taskList],
+  );
+
+  if (hasOverlapFromTaskList(taskList)) {
     throw new Error('task time is overlap. please check your taskList');
   }
 
