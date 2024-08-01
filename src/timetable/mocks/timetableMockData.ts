@@ -11,6 +11,7 @@ const getDateFromTime = (hours: number, minutes: number, second: number) => {
 const startTime = getDateFromTime(0, 0, 1);
 const endTime = getDateFromTime(23, 59, 59);
 const slotTime = 60;
+const height = '100vh';
 
 const taskList = [
   {
@@ -39,4 +40,4 @@ const taskList = [
   },
 ];
 
-export { startTime, endTime, taskList, slotTime };
+export { startTime, endTime, taskList, slotTime, height };

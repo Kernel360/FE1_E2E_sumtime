@@ -7,11 +7,12 @@ interface SlotProps {
   headerDate: Date;
   slotTime: number;
   taskItem: Task | undefined;
+  height: string;
 }
 
-function Slot({ headerDate, slotTime, taskItem }: SlotProps) {
+function Slot({ headerDate, slotTime, taskItem, height }: SlotProps) {
   return (
-    <div className={styled.slot}>
+    <div className={styled.slot} style={{ height }}>
       <TimeSlot headerDate={headerDate} />
       <TaskSlot headerDate={headerDate} slotTime={slotTime} taskItem={taskItem} />
     </div>

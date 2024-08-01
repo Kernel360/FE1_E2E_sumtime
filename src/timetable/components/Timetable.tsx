@@ -1,6 +1,7 @@
 'use client';
 
 import { eachMinuteOfInterval } from 'date-fns';
+import { parseHeight, distributeHeight } from '../utils';
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
 
@@ -38,7 +39,7 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
 
 function Timetable({ startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList }: TimetableProps) {
   // const now = new Date();
-  console.log(height, timetableType, displayCurrentTime);
+  console.log(timetableType, displayCurrentTime);
   // lint에러 막기 위한 console
 
   const timeSlots = eachMinuteOfInterval(
@@ -48,21 +49,27 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
     },
     { step: slotTime },
   );
+  // const slotHeight = height / timeSlots.length();
+
+  const { value, format } = parseHeight(height);
+  const slotHeight = distributeHeight(value, timeSlots.length, format);
 
   return (
     <div>
-      <div className={styled.container}>
-        <h1>Timetable</h1>
-      </div>
-      <div>
-        {timeSlots.map((time: Date) => (
-          <Slot
-            key={`${time.getSeconds()}`}
-            headerDate={time}
-            slotTime={slotTime}
-            taskItem={taskListFilter(taskList, time.getHours(), slotTime)[0]}
-          />
-        ))}
+      <div className={styled.container} style={{ height }}>
+        {timeSlots.map((time: Date, index) => {
+          const key = `${time.toDateString()}${index}`;
+
+          return (
+            <Slot
+              key={key}
+              headerDate={time}
+              slotTime={slotTime}
+              taskItem={taskListFilter(taskList, time.getHours(), slotTime)[0]}
+              height={slotHeight}
+            />
+          );
+        })}
       </div>
     </div>
   );
