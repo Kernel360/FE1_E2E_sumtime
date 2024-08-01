@@ -14,30 +14,11 @@ export async function POST(req: NextRequest) {
       userId,
     });
 
-    return NextResponse.json({ message: 'User added successfully' });
+    return NextResponse.json({ message: 'Todo added successfully' });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ error: 'Failed to add user', details: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to add Todo', details: error.message }, { status: 500 });
     }
-    return NextResponse.json({ error: 'Failed to add user', details: 'Unknown error occurred' }, { status: 500 });
-  }
-}
-
-export async function GET() {
-  try {
-    const users = await db
-      .select({
-        userId: schema.usersTable.userId,
-        email: schema.usersTable.email,
-        password: schema.usersTable.password,
-      })
-      .from(schema.usersTable)
-      .all();
-    return NextResponse.json(users);
-  } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: 'Failed to add user', details: error.message }, { status: 500 });
-    }
-    return NextResponse.json({ error: 'Failed to add user', details: 'Unknown error occurred' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to add Todo', details: 'Unknown error occurred' }, { status: 500 });
   }
 }
