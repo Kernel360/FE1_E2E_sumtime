@@ -7,4 +7,9 @@ interface Task {
   endTime: Date;
 }
 
-export type { Task };
+interface Style {
+  color: string;
+  backgroundColor: string;
+}
+
+export type { Task, Style };

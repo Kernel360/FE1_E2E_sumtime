@@ -6,6 +6,7 @@ import { parseHeight, distributeHeight, hasKey, insertKey, checkTimeOverlapFromT
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
 import CurrentTimeLine from './CurrentTimeLine';
+import { Style } from './Timetable.type';
 
 interface TimetableProps {
   startTime: Date;
@@ -13,8 +14,9 @@ interface TimetableProps {
   slotTime: number;
   height: string;
   timetableType: 'CURCLE' | 'ROW' | 'COLUMN';
-  displayCurrentTime: boolean;
+  displayCurrentTime?: boolean;
   taskList: Task[];
+  style?: Style;
 }
 
 interface Task {
@@ -39,7 +41,16 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
     );
   });
 
-function Timetable({ startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList }: TimetableProps) {
+function Timetable({
+  startTime,
+  endTime,
+  slotTime,
+  height,
+  timetableType,
+  displayCurrentTime = false,
+  taskList,
+  style = { color: 'black', backgroundColor: 'white' },
+}: TimetableProps) {
   console.log(timetableType);
 
   const hasOverlapFromTaskList = useCallback(
@@ -51,6 +62,7 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
     throw new Error('task time is overlap. please check your taskList');
   }
 
+  const { color, backgroundColor } = style!;
   const timeSlots = eachMinuteOfInterval(
     {
       start: startTime,
@@ -58,14 +70,13 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
     },
     { step: slotTime },
   );
-
   const { value, format } = parseHeight(height);
   const slotHeight = distributeHeight(value, timeSlots.length, format);
   const uniqueTaskIdMap = new Map();
 
   return (
     <div>
-      <div className={styled.container} style={{ height }}>
+      <div className={styled.container} style={{ height, color, backgroundColor }}>
         {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
         {timeSlots.map((time: Date, index) => {
           const key = `${time.toDateString()}${index}`;
@@ -93,3 +104,11 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
 }
 
 export default Timetable;
+
+Timetable.defaultProps = {
+  displayCurrentTime: false,
+  style: {
+    color: 'black',
+    backgroundColor: 'white',
+  },
+};
