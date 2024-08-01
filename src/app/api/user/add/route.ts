@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '../../../../db';
 
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json();
+  const { email, password, nickname } = await req.json();
 
   try {
     await db.insert(schema.usersTable).values({
       email,
       password,
+      nickname,
     });
 
     return NextResponse.json({ message: 'User added successfully' });

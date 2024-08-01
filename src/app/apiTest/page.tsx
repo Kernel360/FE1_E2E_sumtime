@@ -5,6 +5,7 @@ import { useState } from 'react';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
   const [userId, setUserId] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -20,7 +21,7 @@ export default function Login() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, nickname }),
     });
 
     if (response.ok) {
@@ -103,6 +104,7 @@ export default function Login() {
       <form onSubmit={createUser}>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+        <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Nickname" required />
         <button type="submit">Add User</button>
       </form>
       <h1>Get UserId</h1>
