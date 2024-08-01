@@ -103,7 +103,7 @@ export default function Login() {
       case 'update':
         endpoint = '/api/todo/update';
         method = 'PUT';
-        body = JSON.stringify({ userId, title, content, startTime, endTime, color });
+        body = JSON.stringify({ todoId, title, content, startTime, endTime, color });
         break;
       case 'delete':
         endpoint = '/api/todo/delete';
@@ -126,7 +126,7 @@ export default function Login() {
       const data = await response.json();
       alert(`${name.charAt(0).toUpperCase() + name.slice(1)} action was successful`);
       alert(JSON.stringify(data, null, 2));
-      if (name === 'read' || name === 'update') {
+      if (name === 'read') {
         setUserId(data.todos[0].userId);
         setTodoId(data.todos[0].todoId);
         setTitle(data.todos[0].title);
