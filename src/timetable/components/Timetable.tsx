@@ -3,6 +3,7 @@
 import { eachMinuteOfInterval } from 'date-fns';
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
+import CurrentTimeLine from './CurrentTimeLine';
 
 interface TimetableProps {
   startTime: Date;
@@ -23,6 +24,23 @@ interface Task {
   endTime: Date;
 }
 
+const calculateSlotHeight = (height: string, totalSlots: number) => {
+  // 각 slot의 높이를 계산하는 함수 (각 slot이 동일한 height를 가지고 있어야하기에)
+  if (height.endsWith('px')) {
+    // px 단위인 경우
+    const totalHeightPx = parseInt(height, 10);
+    return `${totalHeightPx / totalSlots}px`;
+  }
+  if (height.endsWith('%')) {
+    // % 단위인 경우
+    const totalHeightPercent = parseInt(height, 10);
+    return `${totalHeightPercent / totalSlots}%`;
+  }
+  // 기본 높이 설정 (예: px)
+  const defaultHeight = 1000; // px
+  return `${defaultHeight / totalSlots}px`;
+};
+
 const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
   taskListInput.filter((task: Task) => {
     const taskStartHour = task.startTime.getHours();
@@ -36,18 +54,8 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
     );
   });
 
-function Timetable({
-  startTime,
-  endTime,
-  slotTime,
-  height,
-  timetableType,
-  displayCurrentTime,
-  taskList,
-}: TimetableProps) {
-  // const now = new Date();
-  console.log(height, timetableType, displayCurrentTime);
-  // lint에러 막기 위한 console
+function Timetable({ startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList }: TimetableProps) {
+  console.log(timetableType); // lint에러 막기 위한 console
 
   const timeSlots = eachMinuteOfInterval(
     {
@@ -60,15 +68,14 @@ function Timetable({
   return (
     <div>
       <div className={styled.container}>
-        <h1>Timetable</h1>
-      </div>
-      <div>
+        {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
         {timeSlots.map((time: Date) => (
           <Slot
             key={`${time.getSeconds()}`}
             headerDate={time}
             slotTime={slotTime}
             taskItem={taskListFilter(taskList, time.getHours(), slotTime)[0]}
+            height={calculateSlotHeight(height, timeSlots.length)}
           />
         ))}
       </div>

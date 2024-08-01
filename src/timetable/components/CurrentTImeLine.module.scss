@@ -1,0 +1,13 @@
+.currentTimeLine {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+
+  .line {
+    height: 1px;
+    background-color: red;
+    flex-grow: 1;
+  }
+}
