@@ -1,7 +1,7 @@
 'use client';
 
 import { eachMinuteOfInterval } from 'date-fns';
-import { parseHeight, distributeHeight } from '../utils';
+import { parseHeight, distributeHeight, hasKey, insertKey } from '../utils';
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
 
@@ -53,20 +53,25 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
 
   const { value, format } = parseHeight(height);
   const slotHeight = distributeHeight(value, timeSlots.length, format);
+  const uniqueTaskIdMap = new Map();
 
   return (
     <div>
       <div className={styled.container} style={{ height }}>
         {timeSlots.map((time: Date, index) => {
           const key = `${time.toDateString()}${index}`;
+          const taskItem = taskListFilter(taskList, time.getHours(), slotTime)[0];
+          const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
+          insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
 
           return (
             <Slot
               key={key}
               headerDate={time}
               slotTime={slotTime}
-              taskItem={taskListFilter(taskList, time.getHours(), slotTime)[0]}
+              taskItem={taskItem}
               height={slotHeight}
+              shouldDisplayTaskContent={shouldDisplayTaskContent}
             />
           );
         })}

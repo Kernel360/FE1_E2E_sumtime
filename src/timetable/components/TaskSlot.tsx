@@ -7,9 +7,10 @@ interface TaskSlotProps {
   headerDate: Date;
   slotTime: number;
   taskItem: Task | undefined;
+  shouldDisplayTaskContent: boolean;
 }
 
-function TaskSlot({ headerDate, slotTime, taskItem }: TaskSlotProps) {
+function TaskSlot({ headerDate, slotTime, taskItem, shouldDisplayTaskContent }: TaskSlotProps) {
   if (!taskItem) {
     return <div className={styled.taskSlotLayout} />;
   }
@@ -38,10 +39,12 @@ function TaskSlot({ headerDate, slotTime, taskItem }: TaskSlotProps) {
           backgroundColor: `${slotColor}`,
         }}
       />
-      <div className={styled.taskSlotContent}>
-        <p className={styled.title}>{title}</p>
-        <p className={styled.description}>{subTitle}</p>
-      </div>
+      {shouldDisplayTaskContent && (
+        <div className={styled.taskSlotContent}>
+          <p className={styled.title}>{title}</p>
+          <p className={styled.description}>{subTitle}</p>
+        </div>
+      )}
     </div>
   );
 }

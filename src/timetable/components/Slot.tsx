@@ -8,13 +8,19 @@ interface SlotProps {
   slotTime: number;
   taskItem: Task | undefined;
   height: string;
+  shouldDisplayTaskContent: boolean;
 }
 
-function Slot({ headerDate, slotTime, taskItem, height }: SlotProps) {
+function Slot({ headerDate, slotTime, taskItem, height, shouldDisplayTaskContent = false }: SlotProps) {
   return (
     <div className={styled.slot} style={{ height }}>
       <TimeSlot headerDate={headerDate} />
-      <TaskSlot headerDate={headerDate} slotTime={slotTime} taskItem={taskItem} />
+      <TaskSlot
+        headerDate={headerDate}
+        slotTime={slotTime}
+        taskItem={taskItem}
+        shouldDisplayTaskContent={shouldDisplayTaskContent}
+      />
     </div>
   );
 }
