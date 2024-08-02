@@ -1,6 +1,6 @@
-import { formatList as properFormatList } from '../constants';
+import { FORMAT_LIST, FormatType } from '../constants';
 
-const isFormatString = (formatType: string) => properFormatList.includes(formatType);
+const isFormatString = (formatType: string): formatType is FormatType => FORMAT_LIST.includes(formatType as FormatType);
 
 const parseHeightFormat = (heightWithFormat: string) => {
   const formatList = heightWithFormat.match(/[a-z%]+/);

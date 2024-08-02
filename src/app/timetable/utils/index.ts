@@ -85,3 +85,4 @@ export {
 };
 export { hasKey, insertKey } from './map';
 export { distributeHeight, isFormatString, parseHeight, parseHeightFormat, parseHeightValue } from './height';
+export { getColor } from './color';
