@@ -1,18 +1,24 @@
-'use client';
-
-import { ClientSafeProvider, LiteralUnion, signIn } from 'next-auth/react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { Button } from '@mui/material';
 
-interface IProps {
-  providers: Record<LiteralUnion<string, string>, ClientSafeProvider>;
-}
-
-export function SignInButton({ providers }: IProps) {
-  return Object.values(providers).map((provider) => (
-    <div key={provider.name}>
-      <Button variant="outlined" onClick={() => signIn(provider.id)} type="button">
-        구글 로그인
+export default function SignInButton() {
+  const { data: session } = useSession();
+  if (session) {
+    return (
+      <>
+        Signed in as {session?.user?.email} <br />
+        <Button variant="outlined" onClick={() => signOut()} type="button">
+          로그아웃
+        </Button>
+      </>
+    );
+  }
+  return (
+    <>
+      Not signed in <br />
+      <Button variant="outlined" onClick={() => signIn('google')} type="button">
+        로그인
       </Button>
-    </div>
-  ));
+    </>
+  );
 }
