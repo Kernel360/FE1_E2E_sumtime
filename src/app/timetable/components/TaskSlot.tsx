@@ -1,5 +1,5 @@
 import { add } from 'date-fns';
-import { calculateTaskOffsetAndHeightPercent } from '../utils';
+import { calculateTaskOffsetAndHeightPercent, getColor } from '../utils';
 import styled from './Slot.module.scss';
 import type { Task } from './Timetable.type';
 
@@ -21,7 +21,7 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
   return (
     <div className={styled.taskSlotLayout}>
       {taskItemList.map((taskItem, index) => {
-        const { startTime, endTime, slotColor, title, subTitle } = taskItem;
+        const { startTime, endTime, slotColor: taskColor, title, subTitle, id } = taskItem;
         const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
           slotStartTime,
           slotEndTime,
@@ -31,6 +31,10 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
         );
         const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
         const key = `${startTime.toDateString()}${endTime.toDateString()}${title}${subTitle}`;
+        const slotColor = taskColor ?? getColor(id);
+
+        console.log(`taskItem: ${taskItem}`);
+        console.log(`slotColor ${slotColor}`);
 
         return (
           <div key={key}>

@@ -91,4 +91,42 @@ const duplicatedTimeTaskList = [
   },
 ];
 
-export { startTime, endTime, taskList, duplicatedTimeTaskList, slotTime, height };
+const taskListWithoutSlotColor = [
+  {
+    id: 1,
+    title: 'title1',
+    subTitle: 'subTitle1',
+    startTime: getDateFromTime(12, 0, 0),
+    endTime: getDateFromTime(13, 0, 0),
+  },
+  {
+    id: 2,
+    title: 'title2',
+    subTitle: 'subTitle2',
+    startTime: getDateFromTime(15, 0, 0),
+    endTime: getDateFromTime(16, 0, 0),
+  },
+  {
+    id: 3,
+    title: 'title3',
+    subTitle: 'subTitle3',
+    startTime: getDateFromTime(18, 0, 0),
+    endTime: getDateFromTime(20, 0, 0),
+  },
+  {
+    id: 5,
+    title: '02:30',
+    subTitle: '02:50',
+    startTime: getDateFromTime(2, 30, 0),
+    endTime: getDateFromTime(2, 50, 0),
+  },
+  {
+    id: 4,
+    title: '01:00',
+    subTitle: '02:20',
+    startTime: getDateFromTime(1, 0, 0),
+    endTime: getDateFromTime(2, 20, 0),
+  },
+];
+
+export { startTime, endTime, taskList, duplicatedTimeTaskList, slotTime, height, taskListWithoutSlotColor };
