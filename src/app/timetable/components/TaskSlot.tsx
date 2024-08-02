@@ -8,9 +8,10 @@ interface TaskSlotProps {
   slotTime: number;
   taskItemList: Task[];
   shouldDisplayTaskContentList: boolean[];
+  taskSlotStyle: React.CSSProperties;
 }
 
-function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContentList }: TaskSlotProps) {
+function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContentList, taskSlotStyle = {} }: TaskSlotProps) {
   if (taskItemList.length === 0) {
     return <div className={styled.taskSlotLayout} />;
   }
@@ -19,7 +20,7 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
   const slotEndTime = add(headerDate, { minutes: slotTime });
 
   return (
-    <div className={styled.taskSlotLayout}>
+    <div className={styled.taskSlotLayout} style={taskSlotStyle}>
       {taskItemList.map((taskItem, index) => {
         const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
         const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(

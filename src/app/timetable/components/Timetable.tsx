@@ -16,7 +16,9 @@ interface TimetableProps {
   timetableType: 'CURCLE' | 'ROW' | 'COLUMN';
   displayCurrentTime?: boolean;
   taskList: Task[];
-  style?: React.CSSProperties;
+  timeTableStyle?: React.CSSProperties;
+  timeSlotStyle?: React.CSSProperties;
+  taskSlotStyle?: React.CSSProperties;
 }
 
 const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
@@ -40,7 +42,9 @@ function Timetable({
   timetableType,
   displayCurrentTime = false,
   taskList,
-  style = { color: 'white', backgroundColor: 'white' },
+  timeTableStyle = { backgroundColor: 'white' },
+  timeSlotStyle = { color: 'black' },
+  taskSlotStyle = { color: 'white' },
 }: TimetableProps) {
   console.log(timetableType);
 
@@ -66,7 +70,7 @@ function Timetable({
 
   return (
     <div>
-      <div className={styled.container} style={{ ...style, height }}>
+      <div className={styled.container} style={{ ...timeTableStyle, height }}>
         {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
         {timeSlots.map((time: Date, index) => {
           const key = `${time.toDateString()}${index}`;
@@ -85,6 +89,8 @@ function Timetable({
               taskItemList={taskItemList}
               height={slotHeight}
               shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+              timeSlotStyle={timeSlotStyle}
+              taskSlotStyle={taskSlotStyle}
             />
           );
         })}
