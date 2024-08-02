@@ -66,7 +66,7 @@ function Timetable({
 
   return (
     <div>
-      <div className={styled.container} style={{ height, ...style }}>
+      <div className={styled.container} style={{ ...style, height }}>
         {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
         {timeSlots.map((time: Date, index) => {
           const key = `${time.toDateString()}${index}`;
