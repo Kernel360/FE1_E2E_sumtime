@@ -1,4 +1,4 @@
-import { formatList as properFormatList } from '../constants';
+import { Task } from '../components/Timetable.type';
 
 const getHourAndMinutesFormat = (data: Date) => {
   const hours = data.getHours();
@@ -42,76 +42,49 @@ const calculateTaskOffsetAndHeightPercent = (
   return { offsetPercent, heightPercent };
 };
 
-const isFormatString = (formatType: string) => properFormatList.includes(formatType);
+const isTimeOverlap = (startTime1: Date, endTime1: Date, startTime2: Date, endTime2: Date): boolean => {
+  const startTime1Minutes = sumHoursAndMinutes(startTime1);
+  const endTime1Minutes = sumHoursAndMinutes(endTime1);
+  const startTime2Minutes = sumHoursAndMinutes(startTime2);
+  const endTime2Minutes = sumHoursAndMinutes(endTime2);
 
-const parseHeightFormat = (heightWithFormat: string) => {
-  const formatList = heightWithFormat.match(/[a-z%]+/);
-
-  if (!formatList || formatList.length >= 2) {
-    throw new Error('Unsupported format');
-  }
-
-  const format = formatList[0];
-
-  if (!isFormatString(format)) {
-    throw new Error('Unsupported format');
-  }
-
-  return format;
+  return startTime1Minutes < endTime2Minutes && startTime2Minutes < endTime1Minutes;
 };
 
-const parseHeightValue = (heightWithFormat: string) => {
-  const value = parseFloat(heightWithFormat);
+const getDateFromTime = (hours: number, minutes: number, second: number) => {
+  const yearMonthDay = '2024-08-01';
 
-  if (Number.isNaN(value)) {
-    throw new Error('No numeric value found in input');
-  }
+  const hourFormat = hours < 10 ? `0${hours}` : hours;
+  const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
+  const secondeFormat = second < 10 ? `0${second}` : second;
 
-  return value;
+  return new Date(`${yearMonthDay}T${hourFormat}:${minutesFormat}:${secondeFormat}`);
 };
 
-const parseHeight = (heightWithFormat: string) => {
-  const format = parseHeightFormat(heightWithFormat);
-  const value = parseHeightValue(heightWithFormat);
+const checkTimeOverlapFromTaskList = (taskList: Task[]) => {
+  let isOverlap = false;
 
-  return { value, format };
-};
-
-const distributeHeight = (totalHeight: number, length: number, format: string = 'px') => {
-  if (!isFormatString(format)) {
-    throw new Error('wrong format');
+  for (let i = 0; i < taskList.length; i += 1) {
+    for (let j = i + 1; j < taskList.length; j += 1) {
+      if (isTimeOverlap(taskList[i].startTime, taskList[i].endTime, taskList[j].startTime, taskList[j].endTime)) {
+        isOverlap = true;
+        return isOverlap;
+      }
+    }
   }
 
-  if (length === 0 || totalHeight <= 0) {
-    throw new Error('wrong number');
-  }
-
-  const height = totalHeight / length;
-  return `${height}${format}`;
-};
-
-const hasKey = (map: Map<unknown, unknown>, key: unknown): boolean => {
-  if (!key) {
-    return false;
-  }
-  return map.has(key);
-};
-
-const insertKey = (map: Map<unknown, unknown>, key: unknown, value: unknown): void => {
-  if (!key) {
-    return;
-  }
-  map.set(key, value);
+  return false;
 };
 
 export {
   getHourAndMinutesFormat,
   sumHoursAndMinutes,
   calculateTaskOffsetAndHeightPercent,
-  parseHeightFormat,
-  parseHeightValue,
-  parseHeight,
-  distributeHeight,
-  hasKey,
-  insertKey,
+  isTimeOverlap,
+  getDateFromTime,
+  checkTimeOverlapFromTaskList,
 };
+
+export { hasKey, insertKey } from './map';
+export { distributeHeight, isFormatString, parseHeight, parseHeightFormat, parseHeightValue } from './height';
+export { getColor } from './color';

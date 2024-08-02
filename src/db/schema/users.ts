@@ -4,6 +4,7 @@ export const usersTable = sqliteTable('users', {
   userId: integer('user_id').primaryKey({ autoIncrement: true }),
   email: text('email').unique().notNull(),
   password: text('password').notNull(),
+  nickname: text('nickname').notNull(),
 });
 
 export type InsertUser = typeof usersTable.$inferInsert;

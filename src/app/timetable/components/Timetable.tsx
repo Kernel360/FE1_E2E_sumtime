@@ -1,10 +1,12 @@
 'use client';
 
+import { useCallback } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
-import { parseHeight, distributeHeight, hasKey, insertKey } from '../utils';
+import { parseHeight, distributeHeight, hasKey, insertKey, checkTimeOverlapFromTaskList } from '../utils';
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
 import CurrentTimeLine from './CurrentTimeLine';
+import { Task } from './Timetable.type';
 
 interface TimetableProps {
   startTime: Date;
@@ -12,17 +14,11 @@ interface TimetableProps {
   slotTime: number;
   height: string;
   timetableType: 'CURCLE' | 'ROW' | 'COLUMN';
-  displayCurrentTime: boolean;
+  displayCurrentTime?: boolean;
   taskList: Task[];
-}
-
-interface Task {
-  id: number;
-  title: string;
-  subTitle: string;
-  slotColor: string;
-  startTime: Date;
-  endTime: Date;
+  timeTableStyle?: React.CSSProperties;
+  timeSlotStyle?: React.CSSProperties;
+  taskSlotStyle?: React.CSSProperties;
 }
 
 const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
@@ -38,8 +34,28 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
     );
   });
 
-function Timetable({ startTime, endTime, slotTime, height, timetableType, displayCurrentTime, taskList }: TimetableProps) {
+function Timetable({
+  startTime,
+  endTime,
+  slotTime,
+  height,
+  timetableType,
+  displayCurrentTime = false,
+  taskList,
+  timeTableStyle = { backgroundColor: 'white' },
+  timeSlotStyle = { color: 'black' },
+  taskSlotStyle = { color: 'white' },
+}: TimetableProps) {
   console.log(timetableType);
+
+  const hasOverlapFromTaskList = useCallback(
+    (currentTaskList: Task[]) => checkTimeOverlapFromTaskList(currentTaskList),
+    [taskList],
+  );
+
+  if (hasOverlapFromTaskList(taskList)) {
+    throw new Error('task time is overlap. please check your taskList');
+  }
 
   const timeSlots = eachMinuteOfInterval(
     {
@@ -48,14 +64,13 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
     },
     { step: slotTime },
   );
-
   const { value, format } = parseHeight(height);
   const slotHeight = distributeHeight(value, timeSlots.length, format);
   const uniqueTaskIdMap = new Map();
 
   return (
     <div>
-      <div className={styled.container} style={{ height }}>
+      <div className={styled.container} style={{ ...timeTableStyle, height }}>
         {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
         {timeSlots.map((time: Date, index) => {
           const key = `${time.toDateString()}${index}`;
@@ -74,6 +89,8 @@ function Timetable({ startTime, endTime, slotTime, height, timetableType, displa
               taskItemList={taskItemList}
               height={slotHeight}
               shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+              timeSlotStyle={timeSlotStyle}
+              taskSlotStyle={taskSlotStyle}
             />
           );
         })}
