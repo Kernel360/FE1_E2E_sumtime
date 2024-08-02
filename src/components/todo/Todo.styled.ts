@@ -6,7 +6,8 @@ export const TodoSection = styled(Flex)`
   justify-content: start;
   width: 50%;
   height: 100%;
-  border: 1px solid #000000;
+  //border: 1px solid #dcd5d5;
+  background-color: whitesmoke;
   border-radius: 5px;
   position: relative;
 `;
@@ -56,6 +57,7 @@ export const TodoContainer = styled(Flex)`
   align-items: center;
   width: 100%;
   border: 1px solid #ccc;
+  border-radius: 5px;
   padding: 10px;
   box-sizing: border-box;
   min-height: 30px;
@@ -77,7 +79,7 @@ export const TodoContainer = styled(Flex)`
 
 export const FloatingButton = styled.div`
   position: absolute;
-  bottom: 400px;
+  top: 400px;
   right: 50px;
   z-index: 1500;
 `;
