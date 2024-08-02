@@ -33,9 +33,6 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
         const key = `${startTime.toDateString()}${endTime.toDateString()}${title}${subTitle}`;
         const slotColor = taskColor ?? getColor(id);
 
-        console.log(`taskItem: ${taskItem}`);
-        console.log(`slotColor ${slotColor}`);
-
         return (
           <div key={key}>
             <div
