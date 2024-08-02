@@ -21,7 +21,7 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
   return (
     <div className={styled.taskSlotLayout}>
       {taskItemList.map((taskItem, index) => {
-        const { startTime, endTime, slotColor: taskColor, title, subTitle, id } = taskItem;
+        const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
         const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
           slotStartTime,
           slotEndTime,
