@@ -1,4 +1,4 @@
-const formatList = [
+const FORMAT_LIST = [
   'px',
   '%',
   'em',
@@ -19,6 +19,9 @@ const formatList = [
   'vi',
   'vb',
   'q',
-];
+] as const;
 
-export { formatList };
+type FormatType = (typeof FORMAT_LIST)[number];
+
+export { FORMAT_LIST };
+export type { FormatType };
