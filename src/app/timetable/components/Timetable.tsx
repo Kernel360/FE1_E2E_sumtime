@@ -104,11 +104,3 @@ function Timetable({
 }
 
 export default Timetable;
-
-Timetable.defaultProps = {
-  displayCurrentTime: false,
-  style: {
-    color: 'black',
-    backgroundColor: 'white',
-  },
-};
