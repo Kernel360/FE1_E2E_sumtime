@@ -6,6 +6,7 @@ import { parseHeight, distributeHeight, hasKey, insertKey, checkTimeOverlapFromT
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
 import CurrentTimeLine from './CurrentTimeLine';
+import { Task } from './Timetable.type';
 
 interface TimetableProps {
   startTime: Date;
@@ -16,15 +17,6 @@ interface TimetableProps {
   displayCurrentTime?: boolean;
   taskList: Task[];
   style?: React.CSSProperties;
-}
-
-interface Task {
-  id: number;
-  title: string;
-  subTitle: string;
-  slotColor: string;
-  startTime: Date;
-  endTime: Date;
 }
 
 const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
