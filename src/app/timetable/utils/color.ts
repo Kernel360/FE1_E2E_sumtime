@@ -10,9 +10,8 @@ const getColor = (id: unknown) => {
     return colorMatchMap.get(id);
   }
 
-  currentColorIndex %= COLOR_LIST_LENGTH;
-  currentColorIndex += 1;
   const color = COLOR_LIST[currentColorIndex];
+  currentColorIndex = (currentColorIndex + 1) % COLOR_LIST_LENGTH;
   colorMatchMap.set(id, color);
   return color;
 };
