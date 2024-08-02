@@ -6,7 +6,6 @@ import { parseHeight, distributeHeight, hasKey, insertKey, checkTimeOverlapFromT
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
 import CurrentTimeLine from './CurrentTimeLine';
-import { Style } from './Timetable.type';
 
 interface TimetableProps {
   startTime: Date;
@@ -16,7 +15,7 @@ interface TimetableProps {
   timetableType: 'CURCLE' | 'ROW' | 'COLUMN';
   displayCurrentTime?: boolean;
   taskList: Task[];
-  style?: Style;
+  style?: React.CSSProperties;
 }
 
 interface Task {
@@ -49,7 +48,7 @@ function Timetable({
   timetableType,
   displayCurrentTime = false,
   taskList,
-  style = { color: 'black', backgroundColor: 'white' },
+  style = { color: 'white', backgroundColor: 'white' },
 }: TimetableProps) {
   console.log(timetableType);
 
@@ -62,7 +61,6 @@ function Timetable({
     throw new Error('task time is overlap. please check your taskList');
   }
 
-  const { color, backgroundColor } = style!;
   const timeSlots = eachMinuteOfInterval(
     {
       start: startTime,
@@ -76,7 +74,7 @@ function Timetable({
 
   return (
     <div>
-      <div className={styled.container} style={{ height, color, backgroundColor }}>
+      <div className={styled.container} style={{ height, ...style }}>
         {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
         {timeSlots.map((time: Date, index) => {
           const key = `${time.toDateString()}${index}`;
