@@ -28,7 +28,7 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
   const slotEndTime = add(headerDate, { minutes: slotTime });
 
   return (
-    <div className={styled.taskSlotLayout} style={taskSlotStyle}>
+    <div className={styled.taskSlotLayout} style={{ color: 'red' }}>
       {taskItemList.map((taskItem, index) => (
         <TaskSlotItem
           key={taskItem.id}

@@ -1,7 +1,8 @@
 import { flip, offset, useClick, useDismiss, useFloating, useInteractions, useMergeRefs } from '@floating-ui/react';
-import { calculateTaskOffsetAndHeightPercent } from '../utils';
+import { calculateTaskOffsetAndHeightPercent, getColor } from '../utils';
 import { Task } from './Timetable.type';
 import styled from './Slot.module.scss';
+import './reset.css';
 
 interface TaskSlotItemProps {
   taskItem: Task;
@@ -24,7 +25,7 @@ function TaskSlotItem({
   isOpen,
   onOpenChange,
 }: TaskSlotItemProps) {
-  const { startTime, endTime, slotColor, title, subTitle } = taskItem;
+  const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
 
   const {
     refs: menuRefs,
@@ -59,17 +60,17 @@ function TaskSlotItem({
   );
   const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
   const key = `${startTime.toDateString()}${endTime.toDateString()}${title}${subTitle}`;
-
+  const taskSlotColor = taskColor ?? getColor(id);
   return (
     <div key={key}>
-      <button type="button" ref={ref} {...props}>
+      <button type="button" ref={ref} {...props} className={styled.buttonInherit}>
         <div
           className={styled.taskSlotBackground}
           style={{
             top: `${offsetPercent}%`,
             left: '0',
             height: `${heightPercent}%`,
-            backgroundColor: `${slotColor}`,
+            backgroundColor: `${taskSlotColor}`,
           }}
         >
           {shouldDisplayTaskContent && (
@@ -87,6 +88,7 @@ function TaskSlotItem({
             ...menuFloatingStyles,
             background: 'white',
             border: '1px solid black',
+
             padding: 30,
             zIndex: 100,
           }}
