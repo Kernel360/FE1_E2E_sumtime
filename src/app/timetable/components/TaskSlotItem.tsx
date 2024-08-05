@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { flip, offset, useClick, useDismiss, useFloating, useInteractions, useMergeRefs } from '@floating-ui/react';
 import { calculateTaskOffsetAndHeightPercent, getColor } from '../utils';
 import { Task } from './Timetable.type';
@@ -42,6 +43,9 @@ function TaskSlotItem({
     ],
   });
 
+  console.log('id', id);
+  console.log('startTime', startTime);
+  console.log(shouldDisplayTaskContentList);
   const { getReferenceProps: getMenuReferenceProps, getFloatingProps: getMenuFloatingProps } = useInteractions([
     useClick(menuContext),
     useDismiss(menuContext),
@@ -59,6 +63,7 @@ function TaskSlotItem({
     slotTime,
   );
   const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
+
   const key = `${startTime.toDateString()}${endTime.toDateString()}${title}${subTitle}`;
   const taskSlotColor = taskColor ?? getColor(id);
   return (
@@ -81,16 +86,18 @@ function TaskSlotItem({
           )}
         </div>
       </button>
-      {isOpen && (
+      {shouldDisplayTaskContent && isOpen && (
         <div
           ref={menuRefs.setFloating}
           style={{
             ...menuFloatingStyles,
             background: 'white',
             border: '1px solid black',
-
+            transform: 'none',
             padding: 30,
             zIndex: 100,
+            top: `${offsetPercent}%`,
+            // left: 0,
           }}
           {...getMenuFloatingProps()}
         >
