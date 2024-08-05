@@ -1,13 +1,10 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import axios, { AxiosError } from 'axios';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import getUserIdByEmail from '@/app/apiTest/calls/getUserIdByEmail';
+import { FormEvent, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { createUser, getUserIdByEmail } from '@/app/apiTest/calls/userCalls';
 
 export default function Login() {
-  const queryClient = useQueryClient();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
@@ -19,40 +16,19 @@ export default function Login() {
   const [color, setColor] = useState('');
   const [todoId, setTodoId] = useState('');
 
-  const createUser = async (event: React.FormEvent) => {
+  const getUserIdByEmailQuery = useQuery({ queryKey: ['userId', email], queryFn: () => getUserIdByEmail(email) });
+
+  const createUserHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const response = await fetch('/api/user/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password, nickname }),
-    });
-
-    if (response.ok) {
-      alert('User added successfully');
-    } else {
-      const errorData = await response.json();
-      alert(`Failed to add user: ${errorData.error}`);
-    }
+    alert(JSON.stringify(createUser(email, password, nickname), null, 2));
   };
 
-  // const getUserIdByEmail = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   try {
-  //     const response = await axios.get(`/api/user/getIdByEmail?email=${encodeURIComponent(email)}`);
-  //     const { data } = response;
-  //     alert(`UID: ${data.userId}`);
-  //   } catch (e) {
-  //     const error = e as AxiosError; // 오류 객체를 AxiosError로 캐스팅
-  //     console.error('이메일을 통해 ID를 가져오는 중 에러가 발생했습니다.', error.message);
-  //   }
-  // };
+  const getUserIdHandler = async (event: React.FormEvent) => {
+    event.preventDefault();
+    alert(getUserIdByEmailQuery.data);
+  };
 
-  const getUserIdByEmailQuery = useQuery({ queryKey: ['userId', email], queryFn: getUserIdByEmail(email) });
-
-  const emailValidation = async (event: React.FormEvent) => {
+  const emailValidationHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const response = await fetch(`/api/user/emailValidation?email=${encodeURIComponent(email)}`, {
@@ -67,7 +43,7 @@ export default function Login() {
       alert(`Error: ${errorData.error}`);
     }
   };
-  const loginValidation = async (event: React.FormEvent) => {
+  const loginValidationHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const response = await fetch('/api/user/loginValidation', {
@@ -162,25 +138,25 @@ export default function Login() {
   return (
     <div>
       <h1 style={{ color: 'orange' }}>Create User</h1>
-      <form onSubmit={createUser}>
+      <form onSubmit={createUserHandler}>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
         <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Nickname" required />
         <button type="submit">Add User</button>
       </form>
       <h1>Get UserId</h1>
-      <form onSubmit={getUserIdByEmail}>
+      <form onSubmit={getUserIdHandler}>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
         <button type="submit">Get UID</button>
       </form>
       <h1>Email Validation</h1>
-      <form onSubmit={emailValidation}>
+      <form onSubmit={emailValidationHandler}>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
         <button type="submit">Can I Use This Email?</button>
       </form>
 
       <h1>Login Validation</h1>
-      <form onSubmit={loginValidation}>
+      <form onSubmit={loginValidationHandler}>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
         <button type="submit">Can I Login?</button>
