@@ -74,6 +74,7 @@ export default function Todo() {
         </Text>
         {todos.map((todo) => (
           <TodoComponent
+            id={todo.id}
             key={todo.id}
             text={todo.text}
             handleOpenModal={() => handleOpenModal(todo)}
