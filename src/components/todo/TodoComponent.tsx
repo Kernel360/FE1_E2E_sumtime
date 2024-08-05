@@ -1,65 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as S from './Todo.styled';
 import { Text } from '../common';
-import TodoModal from './TodoModal';
 
 interface TodoComponentProps {
-  initialText: string;
+  id: number;
+  text: string;
+  handleOpenModal: (id: number) => void; // id를 매개변수로 받도록 수정
+  handleStart: (id: number) => void; // id를 매개변수로 받도록 수정
+  handleEnd: (id: number) => void; // id를 매개변수로 받도록 수정
 }
 
-function TodoComponent({ initialText }: TodoComponentProps) {
-  const [text, setText] = useState(initialText);
-  const [tempText, setTempText] = useState(text);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-
-  const handleTempTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTempText(event.target.value);
-  };
-
-  const handleSave = () => {
-    // Save the updated text and close the modal
-    // setText(text);
-    setText(tempText);
-    setIsModalOpen(false);
-  };
-
-  const handleStart = () => {
-    const now = new Date().toLocaleTimeString();
-    setStartTime(now);
-  };
-
-  const handleEnd = () => {
-    const now = new Date().toLocaleTimeString();
-    setEndTime(now);
-  };
-
+function TodoComponent({ id, text, handleOpenModal, handleStart, handleEnd }: TodoComponentProps) {
   return (
     <S.ATodoComponentContainer>
       <S.TodoContainer>
-        <Text $width="90%" $fontSize="small" text-wrap="wrap" onClick={handleOpenModal}>
+        <Text $width="90%" $fontSize="small" text-wrap="wrap" onClick={() => handleOpenModal(id)}>
           {text}
         </Text>
-        <button type="button" onClick={handleStart}>
+        <button type="button" onClick={() => handleStart(id)}>
           ▶
         </button>
-        <button type="button" onClick={handleEnd}>
+        <button type="button" onClick={() => handleEnd(id)}>
           ❚❚
         </button>
       </S.TodoContainer>
-      <TodoModal
-        open={isModalOpen}
-        handleClose={handleCloseModal}
-        tempText={tempText}
-        handleTempTextChange={handleTempTextChange}
-        startTime={startTime}
-        endTime={endTime}
-        handleSave={handleSave}
-      />
     </S.ATodoComponentContainer>
   );
 }
