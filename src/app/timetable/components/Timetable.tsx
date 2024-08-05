@@ -44,7 +44,7 @@ function Timetable({
   taskList,
   timeTableStyle = { backgroundColor: 'white' },
   timeSlotStyle = { color: 'black' },
-  taskSlotStyle = { color: 'white' },
+  taskSlotStyle = { color: 'black' },
 }: TimetableProps) {
   console.log(timetableType);
 

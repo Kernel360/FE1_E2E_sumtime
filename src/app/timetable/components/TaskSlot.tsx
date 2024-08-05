@@ -1,7 +1,9 @@
 import { add } from 'date-fns';
-import { calculateTaskOffsetAndHeightPercent, getColor } from '../utils';
+import { useState } from 'react';
 import styled from './Slot.module.scss';
 import type { Task } from './Timetable.type';
+
+import TaskSlotItem from './TaskSlotItem';
 
 interface TaskSlotProps {
   headerDate: Date;
@@ -12,6 +14,12 @@ interface TaskSlotProps {
 }
 
 function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContentList, taskSlotStyle = {} }: TaskSlotProps) {
+  const [openTaskIndex, setOpenTaskIndex] = useState<number | null>(null);
+
+  const handleOpenChange = (index: number, isOpen: boolean) => {
+    setOpenTaskIndex(isOpen ? index : null);
+  };
+
   if (taskItemList.length === 0) {
     return <div className={styled.taskSlotLayout} />;
   }
@@ -21,40 +29,19 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
 
   return (
     <div className={styled.taskSlotLayout} style={taskSlotStyle}>
-      {taskItemList.map((taskItem, index) => {
-        const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
-        const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
-          slotStartTime,
-          slotEndTime,
-          startTime,
-          endTime,
-          slotTime,
-        );
-        const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
-        const key = `${startTime.toDateString()}${endTime.toDateString()}${title}${subTitle}`;
-        const slotColor = taskColor ?? getColor(id);
-
-        return (
-          <div key={key}>
-            <div
-              className={styled.taskSlotBackground}
-              style={{
-                top: `${offsetPercent}%`,
-                left: '0',
-                height: `${heightPercent}%`,
-                backgroundColor: `${slotColor}`,
-              }}
-            >
-              {shouldDisplayTaskContent && (
-                <div className={styled.taskSlotContent} style={{ top: `${offsetPercent}%` }}>
-                  <p className={styled.title}>{title}</p>
-                  <p className={styled.description}>{subTitle}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })}
+      {taskItemList.map((taskItem, index) => (
+        <TaskSlotItem
+          key={taskItem.id}
+          taskItem={taskItem}
+          index={index}
+          slotStartTime={slotStartTime}
+          slotEndTime={slotEndTime}
+          slotTime={slotTime}
+          shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+          isOpen={openTaskIndex === index}
+          onOpenChange={(isOpen) => handleOpenChange(index, isOpen)}
+        />
+      ))}
     </div>
   );
 }
