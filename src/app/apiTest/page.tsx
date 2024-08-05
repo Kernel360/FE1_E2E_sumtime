@@ -2,8 +2,12 @@
 
 import { useState, FormEvent } from 'react';
 import axios, { AxiosError } from 'axios';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import getUserIdByEmail from '@/app/apiTest/calls/getUserIdByEmail';
 
 export default function Login() {
+  const queryClient = useQueryClient();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
@@ -34,17 +38,20 @@ export default function Login() {
     }
   };
 
-  const getUserIdByEmail = async (event: React.FormEvent) => {
-    event.preventDefault();
-    try {
-      const response = await axios.get(`/api/user/getIdByEmail?email=${encodeURIComponent(email)}`);
-      const { data } = response;
-      alert(`UID: ${data.userId}`);
-    } catch (e) {
-      const error = e as AxiosError; // 오류 객체를 AxiosError로 캐스팅
-      console.error('이메일을 통해 ID를 가져오는 중 에러가 발생했습니다.', error.message);
-    }
-  };
+  // const getUserIdByEmail = async (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   try {
+  //     const response = await axios.get(`/api/user/getIdByEmail?email=${encodeURIComponent(email)}`);
+  //     const { data } = response;
+  //     alert(`UID: ${data.userId}`);
+  //   } catch (e) {
+  //     const error = e as AxiosError; // 오류 객체를 AxiosError로 캐스팅
+  //     console.error('이메일을 통해 ID를 가져오는 중 에러가 발생했습니다.', error.message);
+  //   }
+  // };
+
+  const getUserIdByEmailQuery = useQuery({ queryKey: ['userId', email], queryFn: getUserIdByEmail(email) });
+
   const emailValidation = async (event: React.FormEvent) => {
     event.preventDefault();
 
