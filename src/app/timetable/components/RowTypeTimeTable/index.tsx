@@ -1,7 +1,10 @@
-import RowSlot from './RowSlot';
+import { useContext } from 'react';
+import RowSlot from './Slot';
 import { Task } from '../Timetable.type';
-import styled from './RowTypeTimeTable.module.scss';
 import { hasKey, insertKey } from '../../utils';
+import TypeContext from '../../TypeContext';
+import rowStyled from './RowTypeTimeTable.module.scss';
+import styled from '../Timetable.module.scss';
 
 interface RowTypeTimeTableProps {
   timeSlots: Date[];
@@ -43,8 +46,13 @@ function RowTypeTimeTable({
   console.log(`width: ${width} slotWidth: ${slotWidth} slotTime=${slotTime}`);
   const uniqueTaskIdMap = new Map();
 
+  const type = useContext(TypeContext);
+  console.log('RowTypeTimeTable', type);
+
+  const styles = type === 'ROW' ? rowStyled : styled;
+
   return (
-    <div className={styled.container} style={timeTableStyle}>
+    <div className={styles.container} style={timeTableStyle}>
       {timeSlots.map((time, index) => {
         const key = `${time.toDateString()}${index}`;
         const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
@@ -58,7 +66,7 @@ function RowTypeTimeTable({
           <RowSlot
             key={key}
             headerDate={time}
-            width={slotWidth}
+            size={slotWidth}
             timeSlotStyle={timeSlotStyle}
             shouldDisplayTaskContentList={shouldDisplayTaskContentList}
             slotTime={slotTime}

@@ -1,8 +1,10 @@
 import { add } from 'date-fns';
-import { useState } from 'react';
-import RowTaskSlotItem from './RowTaskSlotItem';
+import { useContext, useState } from 'react';
+import TaskSlotItem from './TaskSlotItem';
 import { Task } from '../Timetable.type';
-import styled from './RowTypeTimeTable.module.scss';
+import rowStyled from './RowTypeTimeTable.module.scss';
+import styled from '../Slot.module.scss';
+import TypeContext from '../../TypeContext';
 
 interface TaskSlotProps {
   headerDate: Date;
@@ -11,8 +13,9 @@ interface TaskSlotProps {
   shouldDisplayTaskContentList: boolean[];
   taskSlotStyle: React.CSSProperties;
 }
-function RowTaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContentList, taskSlotStyle = {} }: TaskSlotProps) {
+function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContentList, taskSlotStyle = {} }: TaskSlotProps) {
   const [openTaskIndex, setOpenTaskIndex] = useState<number | null>(null);
+  const type = useContext(TypeContext);
 
   const handleOpenChange = (index: number, isOpen: boolean) => {
     setOpenTaskIndex(isOpen ? index : null);
@@ -29,10 +32,12 @@ function RowTaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskCont
   const slotStartTime = headerDate;
   const slotEndTime = add(headerDate, { minutes: slotTime });
 
+  const styles = type === 'ROW' ? rowStyled : styled;
+
   return (
-    <div className={styled.taskSlotLayout} style={taskSlotStyle}>
+    <div className={styles.taskSlotLayout} style={taskSlotStyle}>
       {taskItemList.map((taskItem, index) => (
-        <RowTaskSlotItem
+        <TaskSlotItem
           key={taskItem.id}
           taskItem={taskItem}
           index={index}
@@ -48,4 +53,4 @@ function RowTaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskCont
   );
 }
 
-export default RowTaskSlot;
+export default TaskSlot;

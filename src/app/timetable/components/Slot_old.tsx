@@ -1,11 +1,11 @@
-import TimeSlot from './RowTimeSlot';
-import RowTaskSlot from './RowTaskSlot';
-import { Task } from '../Timetable.type';
-import styled from './RowTypeTimeTable.module.scss';
+import TimeSlot from './RowTypeTimeTable/TimeSlot';
+import TaskSlot from './RowTypeTimeTable/TaskSlot';
+import type { Task } from './Timetable.type';
+import styled from './Slot.module.scss';
 
 interface SlotProps {
   headerDate: Date;
-  width: string;
+  height: string;
   slotTime: number;
   taskItemList: Task[];
   shouldDisplayTaskContentList: boolean[];
@@ -13,21 +13,19 @@ interface SlotProps {
   taskSlotStyle: React.CSSProperties;
 }
 
-function RowSlot({
+function Slot({
   headerDate,
   slotTime,
   taskItemList,
-  width,
+  height,
   shouldDisplayTaskContentList = [],
   timeSlotStyle,
   taskSlotStyle,
 }: SlotProps) {
-  console.log('Row Slot in ', taskItemList, headerDate);
-
   return (
-    <div className={styled.slot} style={{ width }}>
+    <div className={styled.slot} style={{ height }}>
       <TimeSlot headerDate={headerDate} timeSlotStyle={timeSlotStyle} />
-      <RowTaskSlot
+      <TaskSlot
         headerDate={headerDate}
         slotTime={slotTime}
         taskItemList={taskItemList}
@@ -38,4 +36,4 @@ function RowSlot({
   );
 }
 
-export default RowSlot;
+export default Slot;

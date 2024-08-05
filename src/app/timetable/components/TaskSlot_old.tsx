@@ -1,9 +1,10 @@
 import { add } from 'date-fns';
 import { useState } from 'react';
-import styled from './Slot.module.scss';
 import type { Task } from './Timetable.type';
+import TaskSlotItem from './RowTypeTimeTable/TaskSlotItem';
+import styled from './Slot.module.scss';
 
-import TaskSlotItem from './TaskSlotItem';
+// import TaskSlotItem from './TaskSlotItem';
 
 interface TaskSlotProps {
   headerDate: Date;

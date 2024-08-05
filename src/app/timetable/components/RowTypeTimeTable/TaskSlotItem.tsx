@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
-// popper.js를 사용함에 있어 스프레드 연산자를 통해 props를 전달하는 것이 필요합니다.
-// 전체적으로 지켜지면 좋은 lint지만 라이브러리의 의존도로 해당 린트를 해결하기 어려워 파일에서만 비활성화 처리합니다.
-
+import React, { useContext } from 'react';
 import { flip, offset, useClick, useDismiss, useFloating, useInteractions, useMergeRefs } from '@floating-ui/react';
 import { calculateTaskOffsetAndHeightPercent, getColor } from '../../utils';
 import { Task } from '../Timetable.type';
-import styled from './RowTypeTimeTable.module.scss';
+import RowTypeTimeTableStyles from './RowTypeTimeTable.module.scss';
+import SlotStyles from '../Slot.module.scss';
+import TypeContext from '../../TypeContext';
 
 interface TaskSlotItemProps {
   taskItem: Task;
@@ -18,7 +18,7 @@ interface TaskSlotItemProps {
   onOpenChange: (isOpen: boolean) => void;
 }
 
-function RowTaskSlotItem({
+function TaskSlotItem({
   taskItem,
   index,
   shouldDisplayTaskContentList,
@@ -29,6 +29,7 @@ function RowTaskSlotItem({
   onOpenChange,
 }: TaskSlotItemProps) {
   const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
+  const type = useContext(TypeContext);
 
   const {
     refs: menuRefs,
@@ -60,22 +61,29 @@ function RowTaskSlotItem({
   const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
   const taskSlotColor = taskColor ?? getColor(id);
 
+  const styles = type === 'ROW' ? RowTypeTimeTableStyles : SlotStyles;
+
+  const positionStyles =
+    type === 'ROW'
+      ? { top: '0', left: `${offsetPercent}%`, width: `${heightPercent}%` }
+      : { top: `${offsetPercent}%`, left: '0', height: `${heightPercent}%` };
+
+  const floatingPositionStyles = type === 'ROW' ? { left: `${offsetPercent}%` } : { top: `${offsetPercent}%` };
+
   return (
     <div style={{ height: '100%' }}>
-      <button type="button" ref={ref} {...props} className={styled.buttonInherit}>
+      <button type="button" ref={ref} {...props} className={styles.buttonInherit}>
         <div
-          className={styled.taskSlotBackground}
+          className={styles.taskSlotBackground}
           style={{
-            top: '0',
-            left: `${offsetPercent}%`,
-            width: `${heightPercent}%`,
+            ...positionStyles,
             backgroundColor: `${taskSlotColor}`,
           }}
         >
           {shouldDisplayTaskContent && (
-            <div className={styled.taskSlotContent} style={{ left: `${offsetPercent}%` }}>
-              <p className={styled.title}>{title}</p>
-              <p className={styled.description}>{subTitle}</p>
+            <div className={styles.taskSlotContent} style={positionStyles}>
+              <p className={styles.title}>{title}</p>
+              <p className={styles.description}>{subTitle}</p>
             </div>
           )}
         </div>
@@ -90,7 +98,7 @@ function RowTaskSlotItem({
             transform: 'none',
             padding: 30,
             zIndex: 100,
-            left: `${offsetPercent}%`,
+            ...floatingPositionStyles,
           }}
           {...getMenuFloatingProps()}
         >
@@ -102,4 +110,4 @@ function RowTaskSlotItem({
   );
 }
 
-export default RowTaskSlotItem;
+export default TaskSlotItem;

@@ -4,17 +4,18 @@ import { useCallback } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import { parseHeight, distributeHeight, hasKey, insertKey, checkTimeOverlapFromTaskList } from '../utils';
 import styled from './Timetable.module.scss';
-import Slot from './Slot';
+import RowSlot from './RowTypeTimeTable/Slot';
 import CurrentTimeLine from './CurrentTimeLine';
 import RowTypeTimeTable from './RowTypeTimeTable';
-import { Task } from './Timetable.type';
+import { Task, TimetableType } from './Timetable.type';
+import TypeContext from '../TypeContext';
 
 interface TimetableProps {
   startTime: Date;
   endTime: Date;
   slotTime: number;
   height: string;
-  timetableType: 'CURCLE' | 'ROW' | 'COLUMN';
+  timetableType: TimetableType;
   displayCurrentTime?: boolean;
   taskList: Task[];
   timeTableStyle?: React.CSSProperties;
@@ -67,8 +68,8 @@ function Timetable({
   const slotHeight = distributeHeight(value, timeSlots.length, format);
   const uniqueTaskIdMap = new Map();
 
-  if (timetableType === 'ROW') {
-    return (
+  return (
+    <TypeContext.Provider value={timetableType}>
       <RowTypeTimeTable
         timeSlots={timeSlots}
         width={height}
@@ -79,38 +80,54 @@ function Timetable({
         taskSlotStyle={taskSlotStyle}
         timeTableStyle={timeTableStyle}
       />
-    );
-  }
+    </TypeContext.Provider>
+  );
+
+  // if (timetableType === 'ROW') {
+  //   return (
+  //     <TypeContext.Provider value={timetableType}>
+  //       <RowTypeTimeTable
+  //         timeSlots={timeSlots}
+  //         width={height}
+  //         slotWidth={slotHeight}
+  //         taskList={taskList}
+  //         timeSlotStyle={timeSlotStyle}
+  //         slotTime={slotTime}
+  //         taskSlotStyle={taskSlotStyle}
+  //         timeTableStyle={timeTableStyle}
+  //       />
+  //     </TypeContext.Provider>
+  //   );
+  // }
 
   return (
-    <div className={styled.container} style={timeTableStyle}>
-      {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
-      {timeSlots.map((time: Date, index) => {
-        const key = `${time.toDateString()}${index}`;
-        const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
-        const shouldDisplayTaskContentList: boolean[] = taskItemList.map((taskItem) => {
-          const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
-          insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
-          return shouldDisplayTaskContent;
-        });
+    <TypeContext.Provider value={timetableType}>
+      <div className={styled.container} style={timeTableStyle}>
+        {/* {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />} */}
+        {timeSlots.map((time: Date, index) => {
+          const key = `${time.toDateString()}${index}`;
+          const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
+          const shouldDisplayTaskContentList: boolean[] = taskItemList.map((taskItem) => {
+            const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
+            insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
+            return shouldDisplayTaskContent;
+          });
 
-        // console.log(`index: ${index}`);
-        // console.log(taskItemList);
-
-        return (
-          <Slot
-            key={key}
-            headerDate={time}
-            slotTime={slotTime}
-            taskItemList={taskItemList}
-            height={slotHeight}
-            shouldDisplayTaskContentList={shouldDisplayTaskContentList}
-            timeSlotStyle={timeSlotStyle}
-            taskSlotStyle={taskSlotStyle}
-          />
-        );
-      })}
-    </div>
+          return (
+            <RowSlot
+              key={key}
+              headerDate={time}
+              slotTime={slotTime}
+              taskItemList={taskItemList}
+              size={slotHeight}
+              shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+              timeSlotStyle={timeSlotStyle}
+              taskSlotStyle={taskSlotStyle}
+            />
+          );
+        })}
+      </div>
+    </TypeContext.Provider>
   );
 }
 
