@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Flex, Container, Input, Text } from '../common';
+import { Flex, Container } from '../common';
 
 export const TodoSection = styled(Flex)`
   flex-direction: column;
@@ -17,7 +17,8 @@ export const TodoComponentsSection = styled(Container)`
   justify-content: space-between;
   align-items: stretch;
   background-color: #e5e5e5;
-  width: 90%;
+  width: 100%;
+  min-height: 50%;
   max-height: 50%;
   overflow-y: auto; /* scrolling */
   border-radius: 5px;
@@ -26,6 +27,7 @@ export const TodoComponentsSection = styled(Container)`
   padding: 10px;
   border-style: none;
   position: relative;
+  box-sizing: border-box;
 `;
 
 export const ATodoComponentContainer = styled(Container)`
@@ -39,17 +41,6 @@ export const ATodoComponentContainer = styled(Container)`
   padding: 10px;
   box-sizing: border-box;
 `;
-
-// export const TodoDeleteBtnContainer = styled(Flex)`
-//   justify-content: flex-end;
-//   //flex: 1;
-//   width: 100%;
-//   // border: 1px solid #000000;
-//   button {
-//     width: 20px;
-//     height: 20px;
-//   }
-// `;
 
 export const TodoContainer = styled(Flex)`
   display: flex;
