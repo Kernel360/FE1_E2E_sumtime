@@ -11,6 +11,7 @@ interface RowTypeTimeTableProps {
   slotTime: number;
   timeSlotStyle: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
+  timeTableStyle?: React.CSSProperties;
 }
 
 const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
@@ -33,15 +34,17 @@ function RowTypeTimeTable({
   timeSlotStyle,
   taskList,
   slotTime,
+
   taskSlotStyle = {},
+  timeTableStyle = {},
 }: RowTypeTimeTableProps) {
   // console.log('timeSlots');
   // console.log(timeSlots);
-  // console.log(`width: ${width} slotWidth: ${slotWidth} slotTime=${slotTime}`);
+  console.log(`width: ${width} slotWidth: ${slotWidth} slotTime=${slotTime}`);
   const uniqueTaskIdMap = new Map();
 
   return (
-    <div className={styled.container}>
+    <div className={styled.container} style={timeTableStyle}>
       {timeSlots.map((time, index) => {
         const key = `${time.toDateString()}${index}`;
         const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);

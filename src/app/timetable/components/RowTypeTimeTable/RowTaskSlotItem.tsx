@@ -61,7 +61,7 @@ function RowTaskSlotItem({
   const taskSlotColor = taskColor ?? getColor(id);
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <button type="button" ref={ref} {...props} className={styled.buttonInherit}>
         <div
           className={styled.taskSlotBackground}

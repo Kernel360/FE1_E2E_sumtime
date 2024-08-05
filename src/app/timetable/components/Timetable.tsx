@@ -77,40 +77,39 @@ function Timetable({
         timeSlotStyle={timeSlotStyle}
         slotTime={slotTime}
         taskSlotStyle={taskSlotStyle}
+        timeTableStyle={timeTableStyle}
       />
     );
   }
 
   return (
-    <div>
-      <div className={styled.container} style={{ ...timeTableStyle, height }}>
-        {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
-        {timeSlots.map((time: Date, index) => {
-          const key = `${time.toDateString()}${index}`;
-          const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
-          const shouldDisplayTaskContentList: boolean[] = taskItemList.map((taskItem) => {
-            const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
-            insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
-            return shouldDisplayTaskContent;
-          });
+    <div className={styled.container} style={timeTableStyle}>
+      {displayCurrentTime && <CurrentTimeLine timeSlots={timeSlots.length} startTime={startTime} endTime={endTime} />}
+      {timeSlots.map((time: Date, index) => {
+        const key = `${time.toDateString()}${index}`;
+        const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
+        const shouldDisplayTaskContentList: boolean[] = taskItemList.map((taskItem) => {
+          const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
+          insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
+          return shouldDisplayTaskContent;
+        });
 
-          console.log(`index: ${index}`);
-          console.log(taskItemList);
+        // console.log(`index: ${index}`);
+        // console.log(taskItemList);
 
-          return (
-            <Slot
-              key={key}
-              headerDate={time}
-              slotTime={slotTime}
-              taskItemList={taskItemList}
-              height={slotHeight}
-              shouldDisplayTaskContentList={shouldDisplayTaskContentList}
-              timeSlotStyle={timeSlotStyle}
-              taskSlotStyle={taskSlotStyle}
-            />
-          );
-        })}
-      </div>
+        return (
+          <Slot
+            key={key}
+            headerDate={time}
+            slotTime={slotTime}
+            taskItemList={taskItemList}
+            height={slotHeight}
+            shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+            timeSlotStyle={timeSlotStyle}
+            taskSlotStyle={taskSlotStyle}
+          />
+        );
+      })}
     </div>
   );
 }
