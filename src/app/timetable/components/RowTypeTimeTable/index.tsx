@@ -51,9 +51,6 @@ function RowTypeTimeTable({
           return shouldDisplayTaskContent;
         });
 
-        console.log(`index: ${index}`);
-        console.log(taskItemList);
-
         return (
           <RowSlot
             key={key}

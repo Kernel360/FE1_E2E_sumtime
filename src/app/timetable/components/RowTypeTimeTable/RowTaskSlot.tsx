@@ -1,7 +1,8 @@
 import { add } from 'date-fns';
+import { useState } from 'react';
+import RowTaskSlotItem from './RowTaskSlotItem';
 import { Task } from '../Timetable.type';
 import styled from './RowTypeTimeTable.module.scss';
-import { calculateTaskOffsetAndHeightPercent, getColor } from '../../utils';
 
 interface TaskSlotProps {
   headerDate: Date;
@@ -11,10 +12,13 @@ interface TaskSlotProps {
   taskSlotStyle: React.CSSProperties;
 }
 function RowTaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContentList, taskSlotStyle = {} }: TaskSlotProps) {
-  console.log(taskItemList);
+  const [openTaskIndex, setOpenTaskIndex] = useState<number | null>(null);
+
+  const handleOpenChange = (index: number, isOpen: boolean) => {
+    setOpenTaskIndex(isOpen ? index : null);
+  };
 
   if (taskItemList.length === 0) {
-    console.log('length === 0');
     return <div className={styled.taskSlotLayout} />;
   }
 
@@ -27,40 +31,19 @@ function RowTaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskCont
 
   return (
     <div className={styled.taskSlotLayout} style={taskSlotStyle}>
-      {taskItemList.map((taskItem, index) => {
-        const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
-        const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
-          slotStartTime,
-          slotEndTime,
-          startTime,
-          endTime,
-          slotTime,
-        );
-        const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
-        const key = `${startTime.toDateString()}${endTime.toDateString()}${title}${subTitle}`;
-        const slotColor = taskColor ?? getColor(id);
-
-        return (
-          <div key={key} className={styled.taskSlotLayout}>
-            <div
-              className={styled.taskSlotBackground}
-              style={{
-                top: '0',
-                left: `${offsetPercent}%`,
-                width: `${heightPercent}%`,
-                backgroundColor: `${slotColor}`,
-              }}
-            >
-              {shouldDisplayTaskContent && (
-                <div className={styled.taskSlotContent} style={{ left: `${offsetPercent}%` }}>
-                  <p className={styled.title}>{title}</p>
-                  <p className={styled.description}>{subTitle}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })}
+      {taskItemList.map((taskItem, index) => (
+        <RowTaskSlotItem
+          key={taskItem.id}
+          taskItem={taskItem}
+          index={index}
+          slotStartTime={slotStartTime}
+          slotEndTime={slotEndTime}
+          slotTime={slotTime}
+          shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+          isOpen={openTaskIndex === index}
+          onOpenChange={(isOpen) => handleOpenChange(index, isOpen)}
+        />
+      ))}
     </div>
   );
 }

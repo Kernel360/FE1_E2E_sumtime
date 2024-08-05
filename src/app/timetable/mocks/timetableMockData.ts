@@ -11,8 +11,8 @@ const taskList = [
     title: 'title1',
     subTitle: 'subTitle1',
     taskColor: 'red',
-    startTime: getDateFromTime(12, 0, 0),
-    endTime: getDateFromTime(13, 0, 0),
+    startTime: getDateFromTime(11, 0, 0),
+    endTime: getDateFromTime(12, 0, 0),
   },
   {
     id: 2,
@@ -46,38 +46,6 @@ const taskList = [
     startTime: getDateFromTime(1, 0, 0),
     endTime: getDateFromTime(2, 20, 0),
   },
-  // {
-  //   id: 2,
-  //   title: 'title2',
-  //   subTitle: 'subTitle2',
-  //   slotColor: 'blue',
-  //   startTime: getDateFromTime(15, 0, 0),
-  //   endTime: getDateFromTime(16, 0, 0),
-  // },
-  // {
-  //   id: 3,
-  //   title: 'title3',
-  //   subTitle: 'subTitle3',
-  //   slotColor: 'purple',
-  //   startTime: getDateFromTime(18, 0, 0),
-  //   endTime: getDateFromTime(20, 0, 0),
-  // },
-  // {
-  //   id: 5,
-  //   title: '02:30',
-  //   subTitle: '02:50',
-  //   slotColor: 'green',
-  //   startTime: getDateFromTime(2, 30, 0),
-  //   endTime: getDateFromTime(2, 50, 0),
-  // },
-  // {
-  //   id: 4,
-  //   title: '01:00',
-  //   subTitle: '02:20',
-  //   slotColor: 'brown',
-  //   startTime: getDateFromTime(1, 0, 0),
-  //   endTime: getDateFromTime(2, 20, 0),
-  // },
 ];
 
 const duplicatedTimeTaskList = [
@@ -123,7 +91,7 @@ const duplicatedTimeTaskList = [
   },
 ];
 
-const taskListWithoutSlotColor = [
+const taskListWithouttaskColor = [
   {
     id: 1,
     title: 'title1',
@@ -161,4 +129,4 @@ const taskListWithoutSlotColor = [
   },
 ];
 
-export { startTime, endTime, taskList, duplicatedTimeTaskList, slotTime, height, taskListWithoutSlotColor };
+export { startTime, endTime, taskList, duplicatedTimeTaskList, slotTime, height, taskListWithouttaskColor };

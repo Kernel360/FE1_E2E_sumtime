@@ -5,13 +5,16 @@
   overflow-x: auto;
   overflow-y: hidden;
   height: 100%;
+
+  width: 100%;
+  gap: 0;
 }
 
 .slot {
   display: flex;
-  line-height: 1;
   font-size: 1em;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .timeSlotLayout {
@@ -24,8 +27,8 @@
 .taskSlotLayout {
   box-sizing: border-box;
   position: relative;
-  flex: 1 1 90%;
-  min-height: 100px;
+
+  min-height: 50px;
   height: 100%;
   width: 100%;
   line-height: 1;
@@ -36,4 +39,8 @@
   height: 100px;
   z-index: 0;
   container: taskSlot / size;
+}
+
+.buttonInherit {
+  color: inherit;
 }
