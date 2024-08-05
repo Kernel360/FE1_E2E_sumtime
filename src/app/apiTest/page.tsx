@@ -18,11 +18,17 @@ export default function Login() {
   const [todoId, setTodoId] = useState('');
 
   const getUserIdByEmailQuery = useQuery({ queryKey: ['userId', email], queryFn: () => getUserIdByEmail(email) });
+  const emailValidationQuery = useQuery({ queryKey: ['emailValidation', email], queryFn: () => emailValidation(email) });
+  const loginValidationQuery = useQuery({
+    queryKey: ['loginValidation', email, password],
+    queryFn: () => loginValidation(email, password),
+  });
+  const getAllByUserIdQuery = useQuery({ queryKey: ['todos', userId], queryFn: () => getAllByUserId(userId) });
+  const getOneByTodoIdQuery = useQuery({ queryKey: ['todo', todoId], queryFn: () => getOneByTodoId(todoId) });
 
   const createUserHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     alert(await createUser(email, password, nickname));
-    // alert(JSON.stringify(await createUser(email, password, nickname), null, 2));
   };
 
   const getUserIdHandler = async (event: React.FormEvent) => {
@@ -32,11 +38,11 @@ export default function Login() {
 
   const emailValidationHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    alert(await emailValidation(email));
+    alert(await emailValidationQuery.data);
   };
   const loginValidationHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    alert(await loginValidation(email, password));
+    alert(await loginValidationQuery.data);
   };
   const todoSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,10 +54,10 @@ export default function Login() {
         alert(JSON.stringify(await createTodo(userId, title, content, startTime, endTime, color), null, 2));
         break;
       case 'getAllByUserId':
-        alert(JSON.stringify(await getAllByUserId(userId), null, 2));
+        alert(JSON.stringify(getAllByUserIdQuery.data, null, 2));
         break;
       case 'getOneByTodoId':
-        alert(JSON.stringify(await getOneByTodoId(todoId), null, 2));
+        alert(JSON.stringify(await getOneByTodoIdQuery.data, null, 2));
         break;
       case 'update':
         alert(JSON.stringify(await update(todoId, title, content, startTime, endTime, color), null, 2));
