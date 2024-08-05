@@ -3,23 +3,27 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { TextField } from '@mui/material';
+import { TextField, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
+interface TodoItem {
+  id: number;
+  text: string;
+  startTime: string;
+  endTime: string;
+}
 interface TodoModalProps {
   open: boolean;
   handleClose: () => void;
-  tempText: string;
-  startTime: string;
-  endTime: string;
-  handleTempTextChange: (event: React.ChangeEvent<HTMLInputElement>) => void; // modal에 입력되는 Text는 변경되어야함
-  handleSave: () => void;
+  currentTodo: TodoItem | null;
+  handleSave: (text: string, startTime: string, endTime: string) => void;
+  handleDelete: () => void;
 }
 
 const style = {
   position: 'absolute' as const,
   top: '50%',
   left: '50%',
-  // transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -27,43 +31,41 @@ const style = {
   p: 4,
 };
 
-export default function TodoModal({
-  open,
-  handleClose,
-  tempText,
-  startTime,
-  endTime,
-  handleTempTextChange,
-  handleSave,
-}: TodoModalProps) {
+export default function TodoModal({ open, handleClose, currentTodo, handleSave, handleDelete }: TodoModalProps) {
+  const [text, setText] = React.useState(currentTodo?.text || '');
+  const [startTime, setStartTime] = React.useState(currentTodo?.startTime || '');
+  const [endTime, setEndTime] = React.useState(currentTodo?.endTime || '');
+
+  React.useEffect(() => {
+    setText(currentTodo?.text || '');
+    setStartTime(currentTodo?.startTime || '');
+    setEndTime(currentTodo?.endTime || '');
+  }, [currentTodo]);
+
   return (
-    <div>
-      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            수정하기
+    <Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
+      <Box sx={style}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography id="modal-title" variant="h6" component="h2">
+            {currentTodo ? 'Todo 수정' : '새로운 Todo 생성'}
           </Typography>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="내용"
-            value={tempText} // tempText넘겨주니 여기에 tempText로 바뀜?
-            onChange={handleTempTextChange}
-          />
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            시작 시간: {startTime}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            종료 시간: {endTime}
-          </Typography>
-          <Button onClick={handleSave} variant="contained" color="primary">
-            수정
-          </Button>
-          <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ ml: 2 }}>
-            취소
-          </Button>
+          {currentTodo && (
+            <IconButton onClick={handleDelete} color="secondary">
+              <DeleteIcon />
+            </IconButton>
+          )}
         </Box>
-      </Modal>
-    </div>
+        <TextField fullWidth margin="normal" label="내용" value={text} onChange={(e) => setText(e.target.value)} />
+        <TextField fullWidth margin="normal" label="시작 시간" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+        <TextField fullWidth margin="normal" label="종료 시간" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+        <Button onClick={() => handleSave(text, startTime, endTime)} variant="contained" color="primary">
+          저장
+        </Button>
+
+        <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ ml: 2 }}>
+          취소
+        </Button>
+      </Box>
+    </Modal>
   );
 }
