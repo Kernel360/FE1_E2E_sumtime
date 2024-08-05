@@ -6,7 +6,6 @@ export const TodoSection = styled(Flex)`
   justify-content: start;
   width: 50%;
   height: 100%;
-  //border: 1px solid #dcd5d5;
   background-color: whitesmoke;
   border-radius: 5px;
   position: relative;
@@ -74,3 +73,15 @@ export const FloatingButton = styled.div`
   right: 50px;
   z-index: 1500;
 `;
+
+// mui TodoModal에만 쓰이는 Style
+export const TodoModalStyle = {
+  position: 'absolute' as const,
+  top: '50%',
+  left: '50%',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};

@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { TodoModalStyle } from './Todo.styled';
 
 interface TodoItem {
   id: number;
@@ -20,23 +22,12 @@ interface TodoModalProps {
   handleDelete: () => void;
 }
 
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
 export default function TodoModal({ open, handleClose, currentTodo, handleSave, handleDelete }: TodoModalProps) {
   const [text, setText] = React.useState(currentTodo?.text || '');
   const [startTime, setStartTime] = React.useState(currentTodo?.startTime || '');
   const [endTime, setEndTime] = React.useState(currentTodo?.endTime || '');
 
-  React.useEffect(() => {
+  useEffect(() => {
     setText(currentTodo?.text || '');
     setStartTime(currentTodo?.startTime || '');
     setEndTime(currentTodo?.endTime || '');
@@ -44,7 +35,7 @@ export default function TodoModal({ open, handleClose, currentTodo, handleSave, 
 
   return (
     <Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
-      <Box sx={style}>
+      <Box sx={TodoModalStyle}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography id="modal-title" variant="h6" component="h2">
             {currentTodo ? 'Todo 수정' : '새로운 Todo 생성'}
