@@ -20,7 +20,8 @@ export default function Login() {
 
   const createUserHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    alert(JSON.stringify(createUser(email, password, nickname), null, 2));
+    console.log(await createUser(email, password, nickname));
+    // alert(JSON.stringify(await createUser(email, password, nickname), null, 2));
   };
 
   const getUserIdHandler = async (event: React.FormEvent) => {

@@ -13,8 +13,9 @@ export async function POST(req: NextRequest) {
         nickname,
       })
       .returning({ userId: schema.usersTable.userId });
-
-    return NextResponse.json({ message: 'User added successfully', userId: result });
+    const userId = result[0]?.userId;
+    console.error(userId);
+    return NextResponse.json({ message: 'User added successfully', userId });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: 'Failed to add user', details: error.message }, { status: 500 });
