@@ -35,17 +35,9 @@ function TaskSlotItem({
   } = useFloating({
     open: isOpen,
     onOpenChange,
-    // placement: 'right-start',
-    middleware: [
-      offset({ mainAxis: 0, crossAxis: 400 }),
-      // shift({ padding: 0 }),
-      flip(),
-    ],
+    middleware: [offset({ mainAxis: 0, crossAxis: 400 }), flip()],
   });
 
-  console.log('id', id);
-  console.log('startTime', startTime);
-  console.log(shouldDisplayTaskContentList);
   const { getReferenceProps: getMenuReferenceProps, getFloatingProps: getMenuFloatingProps } = useInteractions([
     useClick(menuContext),
     useDismiss(menuContext),
