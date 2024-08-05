@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
@@ -10,14 +11,15 @@ import * as S from './Todo.styled';
 import { Text } from '../common';
 
 interface TodoItem {
-  id: number;
-  text: string;
+  todoId: number;
+  title: string;
   startTime: string;
   endTime: string;
 }
 
 export default function Todo() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
+  //
   const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
   const { value: isModalOpen, setTrue, setFalse } = useBooleanState();
 
@@ -31,42 +33,77 @@ export default function Todo() {
     setCurrentTodo(null);
   };
 
-  const handleSave = (text: string, startTime: string, endTime: string) => {
+  const handleSave = async (title: string, startTime: string, endTime: string) => {
     if (currentTodo) {
       // 기존 todo 수정
-      setTodos(todos.map((todo) => (todo.id === currentTodo.id ? { ...todo, text, startTime, endTime } : todo)));
+      setTodos(todos.map((todo) => (todo.todoId === currentTodo.todoId ? { ...todo, title, startTime, endTime } : todo)));
     } else {
       // 새로운 todo 추가
-      setTodos([
-        ...todos,
-        {
-          id: Date.now(),
-          text,
-          startTime,
-          endTime,
-        },
-      ]);
+      // try {
+      //   const response = await axios.post(
+      //     '/api/todo/create',
+      //     {
+      //       userId: '1',
+      //       title,
+      //       startTime,
+      //       endTime,
+      //     },
+      //     {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //     },
+      //   );
+      // } catch (error) {
+      //   console.error(error);
+      //   alert('Create action failed');
+      // }
     }
+
     handleCloseModal();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (currentTodo) {
-      setTodos(todos.filter((todo) => todo.id !== currentTodo.id));
+      // const response = await axios.delete('/api/todo/delete', {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+
       handleCloseModal();
     }
   };
 
   const handleStart = (id: number) => {
     const now = new Date().toLocaleTimeString();
-    setTodos(todos.map((todo) => (todo.id === id ? { ...todo, startTime: now } : todo)));
+    setTodos(todos.map((todo) => (todo.todoId === id ? { ...todo, startTime: now } : todo)));
   };
 
   const handleEnd = (id: number) => {
     const now = new Date().toLocaleTimeString();
-    setTodos(todos.map((todo) => (todo.id === id ? { ...todo, endTime: now } : todo)));
+    setTodos(todos.map((todo) => (todo.todoId === id ? { ...todo, endTime: now } : todo)));
   };
 
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const response = await axios.get('/api/todo/getAllByUserId?userId=1', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        // axios의 응답 데이터는 response.data로 접근합니다.
+        console.log(response.data.todos);
+        setTodos(response.data.todos);
+      } catch (error) {
+        console.error('Error fetching todos:', error);
+      }
+    };
+
+    fetchTodos();
+  }, []);
   return (
     <S.TodoSection>
       <S.TodoComponentsSection>
@@ -75,12 +112,12 @@ export default function Todo() {
         </Text>
         {todos.map((todo) => (
           <TodoComponent
-            id={todo.id}
-            key={todo.id}
-            text={todo.text}
+            todoId={todo.todoId}
+            key={`sss_${todo.todoId}`}
+            title={todo.title}
             handleOpenModal={() => handleOpenModal(todo)}
-            handleStart={() => handleStart(todo.id)}
-            handleEnd={() => handleEnd(todo.id)}
+            handleStart={() => handleStart(todo.todoId)}
+            handleEnd={() => handleEnd(todo.todoId)}
           />
         ))}
       </S.TodoComponentsSection>

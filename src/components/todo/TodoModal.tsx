@@ -9,8 +9,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { TodoModalStyle } from './Todo.styled';
 
 interface TodoItem {
-  id: number;
-  text: string;
+  todoId: number;
+  title: string;
   startTime: string;
   endTime: string;
 }
