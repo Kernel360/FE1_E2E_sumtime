@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import axios, { AxiosError } from 'axios';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ export default function Login() {
   const [endTime, setEndTime] = useState('');
   const [color, setColor] = useState('');
   const [todoId, setTodoId] = useState('');
-  // commit위한 주석
+
   const createUser = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -32,19 +33,16 @@ export default function Login() {
       alert(`Failed to add user: ${errorData.error}`);
     }
   };
+
   const getUserIdByEmail = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const response = await fetch(`/api/user/getIdByEmail?email=${encodeURIComponent(email)}`, {
-      method: 'GET',
-    });
-
-    if (response.ok) {
-      const data = await response.json();
+    try {
+      const response = await axios.get(`/api/user/getIdByEmail?email=${encodeURIComponent(email)}`);
+      const { data } = response;
       alert(`UID: ${data.userId}`);
-    } else {
-      const errorData = await response.json();
-      alert(`Error: ${errorData.error}`);
+    } catch (e) {
+      const error = e as AxiosError; // 오류 객체를 AxiosError로 캐스팅
+      console.error('이메일을 통해 ID를 가져오는 중 에러가 발생했습니다.', error.message);
     }
   };
   const emailValidation = async (event: React.FormEvent) => {
