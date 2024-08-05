@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import TodoComponent from './TodoComponent';
+import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
 import { Text } from '../common';
-import TodoModal from './TodoModal';
 
 interface TodoItem {
   id: number;
