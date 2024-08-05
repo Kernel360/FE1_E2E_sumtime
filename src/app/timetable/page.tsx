@@ -14,7 +14,6 @@ export default function TimetablePage() {
           taskList={taskList}
           height="2000px"
           timetableType="ROW"
-          // timetableType="COLUMN"
           displayCurrentTime
           timeTableStyle={{ backgroundColor: 'white' }}
           timeSlotStyle={{ color: 'black' }}
@@ -28,7 +27,6 @@ export default function TimetablePage() {
           slotTime={slotTime}
           taskList={taskList}
           height="2000px"
-          // timetableType="ROW"
           timetableType="COLUMN"
           displayCurrentTime
           timeTableStyle={{ backgroundColor: 'white' }}

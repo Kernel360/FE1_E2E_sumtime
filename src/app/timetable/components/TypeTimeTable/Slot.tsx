@@ -25,7 +25,6 @@ function Slot({
   timeSlotStyle,
   taskSlotStyle,
 }: SlotProps) {
-  // console.log('Row Slot in ', taskItemList, headerDate);
   const type = useContext(TypeContext);
 
   const style = type === 'ROW' ? { width: size } : { height: size };

@@ -25,10 +25,6 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
     return <div className={styled.taskSlotLayout} />;
   }
 
-  // console.log('taskItemList in:');
-  // console.log(headerDate);
-  // console.log(taskItemList);
-
   const slotStartTime = headerDate;
   const slotEndTime = add(headerDate, { minutes: slotTime });
 
