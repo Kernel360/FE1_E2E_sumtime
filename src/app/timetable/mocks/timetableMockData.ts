@@ -11,8 +11,8 @@ const taskList = [
     title: 'title1',
     subTitle: 'subTitle1',
     taskColor: 'red',
-    startTime: getDateFromTime(12, 0, 0),
-    endTime: getDateFromTime(13, 0, 0),
+    startTime: getDateFromTime(11, 0, 0),
+    endTime: getDateFromTime(12, 0, 0),
   },
   {
     id: 2,
@@ -91,7 +91,7 @@ const duplicatedTimeTaskList = [
   },
 ];
 
-const taskListWithoutSlotColor = [
+const taskListWithouttaskColor = [
   {
     id: 1,
     title: 'title1',
@@ -129,4 +129,4 @@ const taskListWithoutSlotColor = [
   },
 ];
 
-export { startTime, endTime, taskList, duplicatedTimeTaskList, slotTime, height, taskListWithoutSlotColor };
+export { startTime, endTime, taskList, duplicatedTimeTaskList, slotTime, height, taskListWithouttaskColor };
