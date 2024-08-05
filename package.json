@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.13.0",
     "@floating-ui/react": "^0.26.20",
     "@libsql/client": "^0.7.0",
+    "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.6",
     "@mui/material-nextjs": "^5.16.4",
     "@popperjs/core": "^2.11.8",

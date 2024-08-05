@@ -31,9 +31,9 @@ const Input = styled.input<InputProps>`
   outline: ${(props) => (props?.$outline ? props.$outline : 'none')};
   appearance: ${(props) => (props?.$appearance ? props.$appearance : 'none')};
   letter-spacing: ${(props) => (props?.$letterSpacing ? props.$letterSpacing : '-0.02em')};
-  font-size: ${(props) => (props?.$fontSize ? props.$fontSize : props.theme?.fontSize.xs)};
-  background-color: ${(props) => (props?.$backgroundColor ? props.$backgroundColor : props.theme?.color.backgroundColor)};
-  color: ${(props) => (props?.$color ? props.$color : props.theme?.color.fontColor)};
+  font-size: ${(props) => (props?.$fontSize ? props.$fontSize : props.theme?.fontSize?.xs)};
+  background-color: ${(props) => (props?.$backgroundColor ? props.$backgroundColor : props.theme?.color?.backgroundColor)};
+  color: ${(props) => (props?.$color ? props.$color : props.theme?.color?.fontColor)};
   &::-webkit-calendar-picker-indicator {
     cursor: pointer;
     background: transparent;
