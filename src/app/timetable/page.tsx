@@ -1,6 +1,7 @@
 'use client';
 
 import Timetable from './components/Timetable';
+
 import { taskList, startTime, endTime, slotTime } from './mocks/timetableMockData';
 
 export default function TimetablePage() {
@@ -12,7 +13,6 @@ export default function TimetablePage() {
       taskList={taskList}
       height="2000px"
       timetableType="ROW"
-      // timetableType="COLUMN"
       displayCurrentTime
       timeTableStyle={{ backgroundColor: 'black' }}
       timeSlotStyle={{ color: 'red' }}

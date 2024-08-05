@@ -8,6 +8,7 @@ const getHourAndMinutesFormat = (data: Date) => {
 
   return currentTime; // HH:MM
 };
+
 // 시간을 분단위로 바꿔버리고 더해주는 함수
 const sumHoursAndMinutes = (date: Date) => date.getHours() * 60 + date.getMinutes();
 
@@ -83,6 +84,7 @@ export {
   getDateFromTime,
   checkTimeOverlapFromTaskList,
 };
+
 export { hasKey, insertKey } from './map';
 export { distributeHeight, isFormatString, parseHeight, parseHeightFormat, parseHeightValue } from './height';
 export { getColor } from './color';

@@ -8,7 +8,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 1,
         title: 'title1',
         subTitle: 'subTitle1',
-        slotColor: 'red',
+        taskColor: 'red',
         startTime: getDateFromTime(12, 0, 0),
         endTime: getDateFromTime(13, 0, 0),
       };
@@ -16,7 +16,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 2,
         title: 'title2',
         subTitle: 'subTitle2',
-        slotColor: 'blue',
+        taskColor: 'blue',
         startTime: getDateFromTime(12, 10, 0),
         endTime: getDateFromTime(12, 30, 0),
       };
@@ -32,7 +32,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 1,
         title: 'title1',
         subTitle: 'subTitle1',
-        slotColor: 'red',
+        taskColor: 'red',
         startTime: getDateFromTime(12, 0, 0),
         endTime: getDateFromTime(13, 0, 0),
       };
@@ -40,7 +40,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 2,
         title: 'title2',
         subTitle: 'subTitle2',
-        slotColor: 'blue',
+        taskColor: 'blue',
         startTime: getDateFromTime(12, 30, 0),
         endTime: getDateFromTime(14, 30, 0),
       };
@@ -56,7 +56,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 1,
         title: 'title1',
         subTitle: 'subTitle1',
-        slotColor: 'red',
+        taskColor: 'red',
         startTime: getDateFromTime(12, 0, 0),
         endTime: getDateFromTime(13, 0, 0),
       };
@@ -64,7 +64,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 2,
         title: 'title2',
         subTitle: 'subTitle2',
-        slotColor: 'blue',
+        taskColor: 'blue',
         startTime: getDateFromTime(11, 30, 0),
         endTime: getDateFromTime(13, 30, 0),
       };
@@ -82,7 +82,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 1,
         title: 'title1',
         subTitle: 'subTitle1',
-        slotColor: 'red',
+        taskColor: 'red',
         startTime: getDateFromTime(12, 0, 0),
         endTime: getDateFromTime(13, 0, 0),
       };
@@ -90,7 +90,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 2,
         title: 'title2',
         subTitle: 'subTitle2',
-        slotColor: 'blue',
+        taskColor: 'blue',
         startTime: getDateFromTime(13, 10, 0),
         endTime: getDateFromTime(13, 50, 0),
       };
@@ -105,7 +105,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 1,
         title: 'title1',
         subTitle: 'subTitle1',
-        slotColor: 'red',
+        taskColor: 'red',
         startTime: getDateFromTime(12, 0, 0),
         endTime: getDateFromTime(13, 0, 0),
       };
@@ -113,7 +113,7 @@ describe('taskList를 받았을 떄, 겹치는 시간이 있는지 확인하기'
         id: 2,
         title: 'title2',
         subTitle: 'subTitle2',
-        slotColor: 'blue',
+        taskColor: 'blue',
         startTime: getDateFromTime(13, 0, 0),
         endTime: getDateFromTime(13, 50, 0),
       };
