@@ -19,6 +19,7 @@ interface TodoItem {
 
 export default function Todo() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
+  //
   const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
   const { value: isModalOpen, setTrue, setFalse } = useBooleanState();
 
