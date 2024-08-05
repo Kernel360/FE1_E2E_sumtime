@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import useBooleanState from '@/hooks/utils/useBooleanState';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
@@ -17,16 +18,16 @@ interface TodoItem {
 
 export default function Todo() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
+  const { value: isModalOpen, setTrue, setFalse } = useBooleanState();
 
   const handleOpenModal = (todo?: TodoItem) => {
     setCurrentTodo(todo || null);
-    setIsModalOpen(true);
+    setTrue();
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setFalse();
     setCurrentTodo(null);
   };
 
