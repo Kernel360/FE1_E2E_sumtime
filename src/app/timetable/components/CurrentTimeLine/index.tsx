@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import styled from './CurrentTImeLine.module.scss';
-import { sumHoursAndMinutes } from '../utils';
+import styled from './CurrentTimeLine.module.scss';
+import { sumHoursAndMinutes } from '../../utils';
 
 interface CurrentTimeLineProps {
   timeSlots: number;
