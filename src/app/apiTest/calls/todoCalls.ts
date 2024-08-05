@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export const createTodo = async (
   userId: string,
@@ -8,18 +8,39 @@ export const createTodo = async (
   endTime: string,
   color: string,
 ) => {
-  const response = await axios.post('/api/todo/create', { userId, title, content, startTime, endTime, color });
-  return response.data.todo;
+  try {
+    const { data } = await axios.post('/api/todo/create', { userId, title, content, startTime, endTime, color });
+    return data.todo;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    throw error;
+  }
 };
 
 export const getAllByUserId = async (userId: string) => {
-  const response = await axios.post('/api/todo/getAllByUserId', { userId });
-  return response.data.todos;
+  try {
+    const { data } = await axios.post('/api/todo/getAllByUserId', { userId });
+    return data.todos;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    throw error;
+  }
 };
 
 export const getOneByTodoId = async (todoId: string) => {
-  const response = await axios.post('/api/todo/getOneByTodoId', { todoId });
-  return response.data.todo;
+  try {
+    const { data } = await axios.post('/api/todo/getOneByTodoId', { todoId });
+    return data.todo;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    throw error;
+  }
 };
 
 export const update = async (
@@ -30,10 +51,24 @@ export const update = async (
   endTime: string,
   color: string,
 ) => {
-  const response = await axios.put('/api/todo/update', { todoId, title, content, startTime, endTime, color });
-  return response.data.todo;
+  try {
+    const { data } = await axios.put('/api/todo/update', { todoId, title, content, startTime, endTime, color });
+    return data.todo;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    throw error;
+  }
 };
 export const remove = async (todoId: string) => {
-  const response = await axios.delete('/api/todo/delete/', { data: { todoId } });
-  return response.data.message;
+  try {
+    const { data } = await axios.delete('/api/todo/delete/', { data: { todoId } });
+    return data.message;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    throw error;
+  }
 };

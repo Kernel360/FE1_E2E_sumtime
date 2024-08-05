@@ -17,14 +17,23 @@ export default function Login() {
   const [color, setColor] = useState('');
   const [todoId, setTodoId] = useState('');
 
-  const getUserIdByEmailQuery = useQuery({ queryKey: ['userId', email], queryFn: () => getUserIdByEmail(email) });
-  const emailValidationQuery = useQuery({ queryKey: ['emailValidation', email], queryFn: () => emailValidation(email) });
-  const loginValidationQuery = useQuery({
+  const { refetch: refetchGetUserId } = useQuery({
+    queryKey: ['userId', email],
+    queryFn: () => getUserIdByEmail(email),
+    enabled: false,
+  });
+  const { refetch: refetchEmailValidation } = useQuery({
+    queryKey: ['emailValidation', email],
+    queryFn: () => emailValidation(email),
+    enabled: false,
+  });
+  const { refetch: refetchLoginValidation } = useQuery({
     queryKey: ['loginValidation', email, password],
     queryFn: () => loginValidation(email, password),
+    enabled: false,
   });
-  const getAllByUserIdQuery = useQuery({ queryKey: ['todos', userId], queryFn: () => getAllByUserId(userId) });
-  const getOneByTodoIdQuery = useQuery({ queryKey: ['todo', todoId], queryFn: () => getOneByTodoId(todoId) });
+  const getAllByUserIdQuery = useQuery({ queryKey: ['todos', userId], queryFn: () => getAllByUserId(userId), enabled: true });
+  const getOneByTodoIdQuery = useQuery({ queryKey: ['todo', todoId], queryFn: () => getOneByTodoId(todoId), enabled: true });
 
   const createUserHandler = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -33,16 +42,19 @@ export default function Login() {
 
   const getUserIdHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    alert(await getUserIdByEmailQuery.data);
+    const { data } = await refetchGetUserId();
+    alert(data);
   };
 
   const emailValidationHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    alert(await emailValidationQuery.data);
+    const { data } = await refetchEmailValidation();
+    alert(data);
   };
   const loginValidationHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    alert(await loginValidationQuery.data);
+    const { data } = await refetchLoginValidation();
+    alert(data);
   };
   const todoSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
