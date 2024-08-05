@@ -37,8 +37,6 @@ function Timetable({
     [taskList],
   );
 
-  console.log('displayCurrentTime', displayCurrentTime);
-
   if (hasOverlapFromTaskList(taskList)) {
     throw new Error('task time is overlap. please check your taskList');
   }

@@ -41,11 +41,8 @@ function TypeTimeTable({
   taskSlotStyle = {},
   timeTableStyle = {},
 }: TypeTimeTableProps) {
-  console.log(`width: ${width} slotWidth: ${slotWidth} slotTime=${slotTime}`);
   const uniqueTaskIdMap = new Map();
-
   const type = useContext(TypeContext);
-  // console.log('RowTypeTimeTable', type);
 
   const styles = type === 'ROW' ? rowStyled : styled;
 
