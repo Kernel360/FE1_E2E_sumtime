@@ -3,6 +3,7 @@
 import { FormEvent, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { createUser, emailValidation, getUserIdByEmail, loginValidation } from '@/app/apiTest/calls/userCalls';
+import { createTodo, getAllByUserId, getOneByTodoId, remove, update } from '@/app/apiTest/calls/todoCalls';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -20,7 +21,7 @@ export default function Login() {
 
   const createUserHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(await createUser(email, password, nickname));
+    alert(await createUser(email, password, nickname));
     // alert(JSON.stringify(await createUser(email, password, nickname), null, 2));
   };
 
@@ -42,71 +43,24 @@ export default function Login() {
     const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
     const { name } = submitter;
 
-    let endpoint = '';
-    let method = '';
-    let body: string | undefined;
-
     switch (name) {
       case 'create':
-        endpoint = '/api/todo/create';
-        method = 'POST';
-        body = JSON.stringify({ userId, title, content, startTime, endTime, color });
+        alert(JSON.stringify(await createTodo(userId, title, content, startTime, endTime, color), null, 2));
         break;
       case 'getAllByUserId':
-        endpoint = `/api/todo/getAllByUserId?userId=${userId}`;
-        method = 'GET';
+        alert(JSON.stringify(await getAllByUserId(userId), null, 2));
         break;
       case 'getOneByTodoId':
-        endpoint = `/api/todo/getOneByTodoId?todoId=${todoId}`;
-        method = 'GET';
+        alert(JSON.stringify(await getOneByTodoId(todoId), null, 2));
         break;
       case 'update':
-        endpoint = '/api/todo/update';
-        method = 'PUT';
-        body = JSON.stringify({ todoId, title, content, startTime, endTime, color });
+        alert(JSON.stringify(await update(todoId, title, content, startTime, endTime, color), null, 2));
         break;
       case 'delete':
-        endpoint = '/api/todo/delete';
-        method = 'DELETE';
-        body = JSON.stringify({ todoId });
+        alert(await remove(todoId));
         break;
       default:
         alert('Unknown action');
-        return;
-    }
-    const response = await fetch(endpoint, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body,
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      alert(`${name.charAt(0).toUpperCase() + name.slice(1)} action was successful`);
-      alert(JSON.stringify(data, null, 2));
-      if (name === 'getAllByUserId') {
-        setUserId(data.todos[0].userId);
-        setTodoId(data.todos[0].todoId);
-        setTitle(data.todos[0].title);
-        setContent(data.todos[0].content);
-        setStartTime(data.todos[0].startTime);
-        setEndTime(data.todos[0].endTime);
-        setColor(data.todos[0].color);
-      }
-      if (name === 'getOneByTodoId') {
-        setUserId(data.todo.userId);
-        setTodoId(data.todo.todoId);
-        setTitle(data.todo.title);
-        setContent(data.todo.content);
-        setStartTime(data.todo.startTime);
-        setEndTime(data.todo.endTime);
-        setColor(data.todo.color);
-      }
-    } else {
-      const errorData = await response.json();
-      alert(`Failed to ${name} Todo: ${errorData.error}`);
     }
   };
 
