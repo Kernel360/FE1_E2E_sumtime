@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { createUser, getUserIdByEmail } from '@/app/apiTest/calls/userCalls';
+import { createUser, emailValidation, getUserIdByEmail, loginValidation } from '@/app/apiTest/calls/userCalls';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -26,42 +26,16 @@ export default function Login() {
 
   const getUserIdHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    alert(getUserIdByEmailQuery.data);
+    alert(await getUserIdByEmailQuery.data);
   };
 
   const emailValidationHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const response = await fetch(`/api/user/emailValidation?email=${encodeURIComponent(email)}`, {
-      method: 'GET',
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      alert(`Validation: ${data.isValid}`);
-    } else {
-      const errorData = await response.json();
-      alert(`Error: ${errorData.error}`);
-    }
+    alert(await emailValidation(email));
   };
   const loginValidationHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const response = await fetch('/api/user/loginValidation', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      alert(`Validation: ${data.isValid}`);
-    } else {
-      const errorData = await response.json();
-      alert(`Error: ${errorData.error}`);
-    }
+    alert(await loginValidation(email, password));
   };
   const todoSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

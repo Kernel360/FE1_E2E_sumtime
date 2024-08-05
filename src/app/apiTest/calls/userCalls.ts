@@ -16,7 +16,7 @@ export const emailValidation = async (email: string) => {
   return response.data.isValid;
 };
 
-export const loginValidation = async () => {
-  const response = await axios.post('/api/user/loginValidation');
+export const loginValidation = async (email: string, password: string) => {
+  const response = await axios.post('/api/user/loginValidation', { email, password });
   return response.data.isValid;
 };
