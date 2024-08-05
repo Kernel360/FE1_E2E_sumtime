@@ -8,7 +8,6 @@ import styled from '../Timetable.module.scss';
 
 interface TypeTimeTableProps {
   timeSlots: Date[];
-  width: string;
   slotWidth: string;
   taskList: Task[];
   slotTime: number;
@@ -32,7 +31,6 @@ const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput:
 
 function TypeTimeTable({
   timeSlots,
-  width,
   slotWidth,
   timeSlotStyle,
   taskList,
