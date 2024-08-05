@@ -1,4 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
+// popper.js를 사용함에 있어 스프레드 연산자를 통해 props를 전달하는 것이 필요합니다.
+// 전체적으로 지켜지면 좋은 lint지만 라이브러리의 의존도로 해당 린트를 해결하기 어려워 파일에서만 비활성화 처리합니다.
+
 import { flip, offset, useClick, useDismiss, useFloating, useInteractions, useMergeRefs } from '@floating-ui/react';
 import { calculateTaskOffsetAndHeightPercent, getColor } from '../utils';
 import { Task } from './Timetable.type';
@@ -54,10 +57,13 @@ function TaskSlotItem({
     endTime,
     slotTime,
   );
+
   const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
 
   const key = `${startTime.toDateString()}${endTime.toDateString()}${title}${subTitle}`;
+
   const taskSlotColor = taskColor ?? getColor(id);
+
   return (
     <div key={key}>
       <button type="button" ref={ref} {...props} className={styled.buttonInherit}>
@@ -89,7 +95,6 @@ function TaskSlotItem({
             padding: 30,
             zIndex: 100,
             top: `${offsetPercent}%`,
-            // left: 0,
           }}
           {...getMenuFloatingProps()}
         >
