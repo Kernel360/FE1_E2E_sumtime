@@ -3,7 +3,6 @@
 import { useCallback } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import { parseHeight, distributeHeight, checkTimeOverlapFromTaskList } from '../utils';
-
 import { Task, TimetableType } from './Timetable.type';
 import TypeContext from '../TypeContext';
 import TypeTimeTable from './TypeTimeTable';

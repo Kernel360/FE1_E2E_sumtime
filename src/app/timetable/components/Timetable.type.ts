@@ -6,6 +6,6 @@ interface Task {
   startTime: Date;
   endTime: Date;
 }
-type TimetableType = 'CURCLE' | 'ROW' | 'COLUMN';
+type TimetableType = 'CIRCLE' | 'ROW' | 'COLUMN';
 
 export type { Task, TimetableType };
