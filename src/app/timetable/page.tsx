@@ -8,11 +8,17 @@ export default function TimetablePage() {
     <Timetable
       startTime={startTime}
       endTime={endTime}
-      slotTime={slotTime}
+      slotTime={60}
       taskList={taskList}
-      height="800px"
+      height="2000px"
+      timetableType="ROW"
+      // timetableType="COLUMN"
       displayCurrentTime
-      timetableType="COLUMN"
+      timeTableStyle={{ backgroundColor: 'black' }}
+      timeSlotStyle={{ color: 'red' }}
+      taskSlotStyle={{ color: 'white' }}
     />
   );
 }
+
+// slotTime

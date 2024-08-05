@@ -6,6 +6,7 @@ import { parseHeight, distributeHeight, hasKey, insertKey, checkTimeOverlapFromT
 import styled from './Timetable.module.scss';
 import Slot from './Slot';
 import CurrentTimeLine from './CurrentTimeLine';
+import RowTypeTimeTable from './RowTypeTimeTable';
 import { Task } from './Timetable.type';
 
 interface TimetableProps {
@@ -46,8 +47,6 @@ function Timetable({
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'white' },
 }: TimetableProps) {
-  console.log(timetableType);
-
   const hasOverlapFromTaskList = useCallback(
     (currentTaskList: Task[]) => checkTimeOverlapFromTaskList(currentTaskList),
     [taskList],
@@ -68,6 +67,20 @@ function Timetable({
   const slotHeight = distributeHeight(value, timeSlots.length, format);
   const uniqueTaskIdMap = new Map();
 
+  if (timetableType === 'ROW') {
+    return (
+      <RowTypeTimeTable
+        timeSlots={timeSlots}
+        width={height}
+        slotWidth={slotHeight}
+        taskList={taskList}
+        timeSlotStyle={timeSlotStyle}
+        slotTime={slotTime}
+        taskSlotStyle={taskSlotStyle}
+      />
+    );
+  }
+
   return (
     <div>
       <div className={styled.container} style={{ ...timeTableStyle, height }}>
@@ -80,6 +93,9 @@ function Timetable({
             insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
             return shouldDisplayTaskContent;
           });
+
+          console.log(`index: ${index}`);
+          console.log(taskItemList);
 
           return (
             <Slot
