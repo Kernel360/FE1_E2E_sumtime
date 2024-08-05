@@ -13,10 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr">
-      <body>
-        {children}
-        <div id="portal" />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

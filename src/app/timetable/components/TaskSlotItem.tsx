@@ -60,12 +60,10 @@ function TaskSlotItem({
 
   const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
 
-  const key = `${startTime.toDateString()}${endTime.toDateString()}${title}${subTitle}`;
-
   const taskSlotColor = taskColor ?? getColor(id);
 
   return (
-    <div key={key}>
+    <div>
       <button type="button" ref={ref} {...props} className={styled.buttonInherit}>
         <div
           className={styled.taskSlotBackground}
