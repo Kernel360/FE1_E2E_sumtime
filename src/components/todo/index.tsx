@@ -91,7 +91,7 @@ export default function Todo() {
     setTodos(todos.map((todo) => (todo.todoId === id ? { ...todo, endTime: now } : todo)));
   };
 
-  // userId에 해당하는 todo 목록을 화면에 렌더링 됨. 굳이 useState사용하지 않아도 됨.
+  // userId에 해당하는 todo 목록이 화면에 렌더링 됨
   useEffect(() => {
     const fetchTodos = async () => {
       try {
