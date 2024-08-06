@@ -12,8 +12,9 @@ import { TodoModalStyle } from './Todo.styled';
 interface TodoItem {
   todoId: number;
   title: string;
-  startTime: string;
-  endTime: string;
+  content: string | null;
+  startTime: string | null;
+  endTime: string | null;
 }
 interface TodoModalProps {
   open: boolean;

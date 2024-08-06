@@ -13,14 +13,26 @@ interface TodoComponentProps {
 function TodoComponent({ todoId, title, handleOpenModal, handleStart, handleEnd }: TodoComponentProps) {
   return (
     <S.ATodoComponentContainer>
-      <S.TodoContainer>
-        <Text $width="90%" $fontSize="small" title-wrap="wrap" onClick={() => handleOpenModal(todoId)}>
+      <S.TodoContainer onClick={() => handleOpenModal(todoId)}>
+        <Text $width="90%" $fontSize="small" title-wrap="wrap">
           {title}
         </Text>
-        <button type="button" onClick={() => handleStart(todoId)}>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleStart(todoId);
+          }}
+        >
           ▶
         </button>
-        <button type="button" onClick={() => handleEnd(todoId)}>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleEnd(todoId);
+          }}
+        >
           ❚❚
         </button>
       </S.TodoContainer>

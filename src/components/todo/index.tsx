@@ -5,6 +5,7 @@ import axios from 'axios';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
+import { useGetAllTodos } from '@/app/apiTest/hooks/todoQueries';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
@@ -13,14 +14,23 @@ import { Text } from '../common';
 interface TodoItem {
   todoId: number;
   title: string;
-  startTime: string;
-  endTime: string;
+  content: string | null;
+  startTime: string | null;
+  endTime: string | null;
 }
 
 export default function Todo() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
   const { value: isModalOpen, setTrue, setFalse } = useBooleanState();
+  const { data: todoList } = useGetAllTodos('1');
+
+  // todoList 초기 로딩
+  useEffect(() => {
+    if (todoList) {
+      setTodos(todoList);
+    }
+  });
 
   const handleOpenModal = (todo?: TodoItem) => {
     setCurrentTodo(todo || null);
@@ -91,25 +101,24 @@ export default function Todo() {
   };
 
   // userId에 해당하는 todo 목록이 화면에 렌더링 됨
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const response = await axios.post('/api/todo/getAllByUserId', {
-          userId: 1,
-
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        setTodos(response.data.todos);
-      } catch (error) {
-        console.error('Error fetching todos:', error);
-      }
-    };
-
-    fetchTodos();
-  }, []);
+  // useEffect(() => {
+  //   // const fetchTodos = async () => {
+  //   //   try {
+  //   //     const response = await axios.post('/api/todo/getAllByUserId', {
+  //   //       userId: 1,
+  //   //
+  //   //       headers: {
+  //   //         'Content-Type': 'application/json',
+  //   //       },
+  //   //     });
+  //   //
+  //   //     setTodos(response.data.todos);
+  //   //   } catch (error) {
+  //   //     console.error('Error fetching todos:', error);
+  //   //   }
+  //   // };
+  //   // fetchTodos();
+  // }, []);
   return (
     <S.TodoSection>
       <S.TodoComponentsSection>
