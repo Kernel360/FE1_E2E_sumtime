@@ -19,7 +19,6 @@ interface TodoItem {
 
 export default function Todo() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  //
   const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
   const { value: isModalOpen, setTrue, setFalse } = useBooleanState();
 
@@ -120,7 +119,7 @@ export default function Todo() {
         {todos.map((todo) => (
           <TodoComponent
             todoId={todo.todoId}
-            key={`sss_${todo.todoId}`}
+            key={todo.todoId}
             title={todo.title}
             handleOpenModal={() => handleOpenModal(todo)}
             handleStart={() => handleStart(todo.todoId)}
