@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+
 import styled from './CurrentTimeLine.module.scss';
 import { calculateCurrentTimeOffset, parseHeight } from '../../utils';
+import TypeContext from '../../TypeContext';
 
 interface CurrentTimeLineProps {
   startTime: Date;
@@ -9,6 +11,7 @@ interface CurrentTimeLineProps {
 }
 
 function CurrentTimeLine({ startTime, endTime, height }: CurrentTimeLineProps) {
+  const type = useContext(TypeContext);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const { value, format } = parseHeight(height);
@@ -25,8 +28,26 @@ function CurrentTimeLine({ startTime, endTime, height }: CurrentTimeLineProps) {
   const { offsetPercent } = calculateCurrentTimeOffset(currentTime, startTime, endTime);
   const test = (offsetPercent * value) / 100 + format;
 
+  const getCurrentTimeLineClass = () => {
+    if (type === 'ROW') {
+      return `${styled.currentTimeLineRow}`;
+    }
+    if (type === 'COLUMN') {
+      return `${styled.currentTimeLineColumn}`;
+    }
+    return styled.currentTimeLine;
+  };
+
+  const dynamicStyle: React.CSSProperties = {};
+
+  if (type === 'COLUMN') {
+    dynamicStyle.top = `${test}`;
+  } else if (type === 'ROW') {
+    dynamicStyle.left = `${test}`;
+  }
+
   return (
-    <div className={styled.currentTimeLine} style={{ top: test }}>
+    <div className={getCurrentTimeLineClass()} style={dynamicStyle}>
       <div className={styled.line} />
     </div>
   );
