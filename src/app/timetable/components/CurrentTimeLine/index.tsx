@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import styled from './CurrentTimeLine.module.scss';
-import { sumHoursAndMinutes } from '../../utils';
+import { calculateCurrentTimeOffset, parseHeight } from '../../utils';
 
 interface CurrentTimeLineProps {
-  timeSlots: number;
   startTime: Date;
   endTime: Date;
+  height: string;
 }
 
-function CurrentTimeLine({ timeSlots, startTime, endTime }: CurrentTimeLineProps) {
+function CurrentTimeLine({ startTime, endTime, height }: CurrentTimeLineProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  const { value, format } = parseHeight(height);
+
+  // 여기서 전체 offset을 정리해서 두자.
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date());
@@ -19,19 +22,13 @@ function CurrentTimeLine({ timeSlots, startTime, endTime }: CurrentTimeLineProps
     return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 타이머 정리
   }, []);
 
-  const currentMinutes = sumHoursAndMinutes(currentTime);
-  const totalMinutes = timeSlots * 60;
-
-  const topPosition = `${(currentMinutes / totalMinutes) * 100}%`;
-
-  const isCurrentTimeVisible = currentTime >= startTime && currentTime <= endTime;
+  const { offsetPercent } = calculateCurrentTimeOffset(currentTime, startTime, endTime);
+  const test = (offsetPercent * value) / 100 + format;
 
   return (
-    isCurrentTimeVisible && (
-      <div className={styled.currentTimeLine} style={{ top: topPosition }}>
-        <div className={styled.line} />
-      </div>
-    )
+    <div className={styled.currentTimeLine} style={{ top: test }}>
+      <div className={styled.line} />
+    </div>
   );
 }
 

@@ -5,15 +5,18 @@ import { hasKey, insertKey } from '../../utils';
 import TypeContext from '../../TypeContext';
 import rowStyled from './RowTypeTimeTable.module.scss';
 import styled from '../Timetable.module.scss';
+import CurrentTimeLine from '../CurrentTimeLine';
 
 interface TypeTimeTableProps {
   timeSlots: Date[];
   slotWidth: string;
   taskList: Task[];
   slotTime: number;
+  displayCurrentTime?: boolean;
   timeSlotStyle: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
   timeTableStyle?: React.CSSProperties;
+  height: string;
 }
 
 const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
@@ -35,17 +38,24 @@ function TypeTimeTable({
   timeSlotStyle,
   taskList,
   slotTime,
-
+  displayCurrentTime,
   taskSlotStyle = {},
   timeTableStyle = {},
+  height,
 }: TypeTimeTableProps) {
   const uniqueTaskIdMap = new Map();
   const type = useContext(TypeContext);
 
   const styles = type === 'ROW' ? rowStyled : styled;
+  const currentTime = new Date();
 
+  const isCurrentTimeVisible = timeSlots[0] <= currentTime && currentTime <= timeSlots[timeSlots.length - 1];
   return (
     <div className={styles.container} style={timeTableStyle}>
+      {displayCurrentTime && isCurrentTimeVisible && (
+        <CurrentTimeLine startTime={timeSlots[0]} endTime={timeSlots[timeSlots.length - 1]} height={height} />
+      )}
+
       {timeSlots.map((time, index) => {
         const key = `${time.toDateString()}${index}`;
         const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
