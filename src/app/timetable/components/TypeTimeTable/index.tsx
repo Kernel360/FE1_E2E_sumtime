@@ -11,11 +11,13 @@ interface TypeTimeTableProps {
   slotWidth: string;
   taskList: Task[];
   slotTime: number;
+  height: string;
+  startTime: Date;
+  endTime: Date;
   displayCurrentTime?: boolean;
   timeSlotStyle: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
   timeTableStyle?: React.CSSProperties;
-  height: string;
 }
 
 const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
@@ -41,6 +43,8 @@ function TypeTimeTable({
   taskSlotStyle = {},
   timeTableStyle = {},
   height,
+  startTime,
+  endTime,
 }: TypeTimeTableProps) {
   const uniqueTaskIdMap = new Map();
   const type = useContext(TypeContext);
@@ -50,9 +54,7 @@ function TypeTimeTable({
   const isCurrentTimeVisible = timeSlots[0] <= currentTime && currentTime <= timeSlots[timeSlots.length - 1];
   return (
     <div className={generateClassNameWithType(styles, 'container', type)} style={timeTableStyle}>
-      {displayCurrentTime && isCurrentTimeVisible && (
-        <CurrentTimeLine startTime={timeSlots[0]} endTime={timeSlots[timeSlots.length - 1]} height={height} />
-      )}
+      {displayCurrentTime && isCurrentTimeVisible && <CurrentTimeLine startTime={startTime} endTime={endTime} height={height} />}
       {timeSlots.map((time, index) => {
         const key = `${time.toDateString()}${index}`;
         const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
