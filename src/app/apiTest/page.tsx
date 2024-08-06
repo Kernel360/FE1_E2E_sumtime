@@ -52,11 +52,9 @@ export default function Login() {
         alert(JSON.stringify(await createTodo(userId, title, content, startTime, endTime, color), null, 2));
         break;
       case 'getAllByUserId':
-        // alert(JSON.stringify(getAllByUserIdQuery.data, null, 2));
         alert(JSON.stringify(todos, null, 2));
         break;
       case 'getOneByTodoId':
-        // alert(JSON.stringify(await getOneByTodoIdQuery.data, null, 2));
         alert(JSON.stringify(todo, null, 2));
         break;
       case 'update':
