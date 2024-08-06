@@ -3,7 +3,7 @@
 import { FormEvent, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { createUser, emailValidation, getUserIdByEmail, loginValidation } from '@/app/apiTest/calls/userCalls';
-import { createTodo, getAllByUserId, getOneByTodoId, remove, update } from '@/app/apiTest/calls/todoCalls';
+import { createTodo, getAllByUserId, getOneByTodoId, deleteTodo, updateTodo } from '@/app/apiTest/calls/todoCalls';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -72,10 +72,10 @@ export default function Login() {
         alert(JSON.stringify(await getOneByTodoIdQuery.data, null, 2));
         break;
       case 'update':
-        alert(JSON.stringify(await update(todoId, title, content, startTime, endTime, color), null, 2));
+        alert(JSON.stringify(await updateTodo(todoId, title, content, startTime, endTime, color), null, 2));
         break;
       case 'delete':
-        alert(await remove(todoId));
+        alert(await deleteTodo(todoId));
         break;
       default:
         alert('Unknown action');

@@ -43,7 +43,7 @@ export const getOneByTodoId = async (todoId: string) => {
   }
 };
 
-export const update = async (
+export const updateTodo = async (
   todoId: string,
   title: string,
   content: string,
@@ -61,7 +61,7 @@ export const update = async (
     throw error;
   }
 };
-export const remove = async (todoId: string) => {
+export const deleteTodo = async (todoId: string) => {
   try {
     const { data } = await axios.delete('/api/todo/delete/', { data: { todoId } });
     return data.message;
