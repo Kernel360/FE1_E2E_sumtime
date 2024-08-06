@@ -1,10 +1,9 @@
 import { useContext } from 'react';
 import Slot from './Slot';
 import { Task } from '../Timetable.type';
-import { hasKey, insertKey } from '../../utils';
+import { hasKey, insertKey, generateClassNameWithType } from '../../utils';
 import TypeContext from '../../TypeContext';
-import rowStyled from './RowTypeTimeTable.module.scss';
-import styled from '../Timetable.module.scss';
+import styles from './TypeTimeTable.module.scss';
 
 interface TypeTimeTableProps {
   timeSlots: Date[];
@@ -42,10 +41,8 @@ function TypeTimeTable({
   const uniqueTaskIdMap = new Map();
   const type = useContext(TypeContext);
 
-  const styles = type === 'ROW' ? rowStyled : styled;
-
   return (
-    <div className={styles.container} style={timeTableStyle}>
+    <div className={generateClassNameWithType(styles, 'container', type)} style={timeTableStyle}>
       {timeSlots.map((time, index) => {
         const key = `${time.toDateString()}${index}`;
         const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
