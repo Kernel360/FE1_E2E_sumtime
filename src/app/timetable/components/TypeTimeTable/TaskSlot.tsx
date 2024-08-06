@@ -2,9 +2,9 @@ import { add } from 'date-fns';
 import { useContext, useState } from 'react';
 import TaskSlotItem from './TaskSlotItem';
 import { Task } from '../Timetable.type';
-import rowStyled from './RowTypeTimeTable.module.scss';
-import styled from '../Slot.module.scss';
 import TypeContext from '../../TypeContext';
+import styles from './TypeTimeTable.module.scss';
+import { generateClassNameWithType } from '../../utils';
 
 interface TaskSlotProps {
   headerDate: Date;
@@ -22,16 +22,14 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
   };
 
   if (taskItemList.length === 0) {
-    return <div className={styled.taskSlotLayout} />;
+    return <div className={generateClassNameWithType(styles, 'taskSlotLayout', type)} />;
   }
 
   const slotStartTime = headerDate;
   const slotEndTime = add(headerDate, { minutes: slotTime });
 
-  const styles = type === 'ROW' ? rowStyled : styled;
-
   return (
-    <div className={styles.taskSlotLayout} style={taskSlotStyle}>
+    <div className={generateClassNameWithType(styles, 'taskSlotLayout', type)} style={taskSlotStyle}>
       {taskItemList.map((taskItem, index) => (
         <TaskSlotItem
           key={taskItem.id}

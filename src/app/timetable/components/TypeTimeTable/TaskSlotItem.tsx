@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react';
 import { flip, offset, useClick, useDismiss, useFloating, useInteractions, useMergeRefs } from '@floating-ui/react';
-import { calculateTaskOffsetAndHeightPercent, getColor } from '../../utils';
+import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType } from '../../utils';
 import { Task } from '../Timetable.type';
-import RowTypeTimeTableStyles from './RowTypeTimeTable.module.scss';
-import SlotStyles from '../Slot.module.scss';
 import TypeContext from '../../TypeContext';
+import styles from './TypeTimeTable.module.scss';
 
 interface TaskSlotItemProps {
   taskItem: Task;
@@ -61,8 +60,6 @@ function TaskSlotItem({
   const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
   const taskSlotColor = taskColor ?? getColor(id);
 
-  const styles = type === 'ROW' ? RowTypeTimeTableStyles : SlotStyles;
-
   const positionStyles =
     type === 'ROW'
       ? { top: '0', left: `${offsetPercent}%`, width: `${heightPercent}%` }
@@ -72,18 +69,18 @@ function TaskSlotItem({
 
   return (
     <div style={{ height: '100%' }}>
-      <button type="button" ref={ref} {...props} className={styles.buttonInherit}>
+      <button type="button" ref={ref} {...props} className={generateClassNameWithType(styles, 'buttonInherit', type)}>
         <div
-          className={styles.taskSlotBackground}
+          className={generateClassNameWithType(styles, 'taskSlotBackground', type)}
           style={{
             ...positionStyles,
             backgroundColor: `${taskSlotColor}`,
           }}
         >
-          {shouldDisplayTaskContent && (
-            <div className={styles.taskSlotContent} style={positionStyles}>
-              <p className={styles.title}>{title}</p>
-              <p className={styles.description}>{subTitle}</p>
+          {shouldDisplayTaskContent && ( // taskSlotContent
+            <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
+              <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
+              <p className={generateClassNameWithType(styles, 'description', type)}>{subTitle}</p>
             </div>
           )}
         </div>
