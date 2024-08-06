@@ -2,9 +2,10 @@ interface Task {
   id: number;
   title: string;
   subTitle: string;
-  slotColor: string;
+  taskColor?: string;
   startTime: Date;
   endTime: Date;
 }
+type TimetableType = 'CIRCLE' | 'ROW' | 'COLUMN';
 
-export type { Task };
+export type { Task, TimetableType };

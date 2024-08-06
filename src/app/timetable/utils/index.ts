@@ -8,6 +8,7 @@ const getHourAndMinutesFormat = (data: Date) => {
 
   return currentTime; // HH:MM
 };
+
 // 시간을 분단위로 바꿔버리고 더해주는 함수
 const sumHoursAndMinutes = (date: Date) => date.getHours() * 60 + date.getMinutes();
 
@@ -51,7 +52,7 @@ const isTimeOverlap = (startTime1: Date, endTime1: Date, startTime2: Date, endTi
 };
 
 const getDateFromTime = (hours: number, minutes: number, second: number) => {
-  const yearMonthDay = '2024-08-01';
+  const yearMonthDay = '2024-08-05';
 
   const hourFormat = hours < 10 ? `0${hours}` : hours;
   const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
@@ -83,5 +84,7 @@ export {
   getDateFromTime,
   checkTimeOverlapFromTaskList,
 };
+
 export { hasKey, insertKey } from './map';
 export { distributeHeight, isFormatString, parseHeight, parseHeightFormat, parseHeightValue } from './height';
+export { getColor } from './color';
