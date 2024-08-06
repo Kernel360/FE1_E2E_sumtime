@@ -5,6 +5,7 @@ import AuthProvider from '@/components/common/AuthProvider';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
+
 export const metadata: Metadata = {
   title: 'sumday',
   description: 'kernel FE E2E project',
