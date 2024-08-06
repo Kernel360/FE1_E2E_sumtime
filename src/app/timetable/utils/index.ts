@@ -52,7 +52,7 @@ const isTimeOverlap = (startTime1: Date, endTime1: Date, startTime2: Date, endTi
 };
 
 const getDateFromTime = (hours: number, minutes: number, second: number) => {
-  const yearMonthDay = '2024-08-05';
+  const yearMonthDay = '2024-08-06';
 
   const hourFormat = hours < 10 ? `0${hours}` : hours;
   const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
@@ -76,6 +76,17 @@ const checkTimeOverlapFromTaskList = (taskList: Task[]) => {
   return false;
 };
 
+const calculateCurrentTimeOffset = (currentTime: Date, slotStartTime: Date, endTime: Date) => {
+  let offsetPercent = 0;
+
+  const currentMinutes = sumHoursAndMinutes(currentTime); // 현재 시간
+  const slotStartMinutes = sumHoursAndMinutes(slotStartTime); // 슬롯의 시작 시간
+  const slotEndMinutes = sumHoursAndMinutes(endTime); // 슬롯의 종료 시간
+  offsetPercent = ((currentMinutes - slotStartMinutes) / (slotEndMinutes - slotStartMinutes)) * 100;
+
+  return { offsetPercent };
+};
+
 export {
   getHourAndMinutesFormat,
   sumHoursAndMinutes,
@@ -83,6 +94,7 @@ export {
   isTimeOverlap,
   getDateFromTime,
   checkTimeOverlapFromTaskList,
+  calculateCurrentTimeOffset,
 };
 
 export { hasKey, insertKey } from './map';

@@ -51,18 +51,18 @@ function Timetable({
   const { value, format } = parseHeight(height);
   const slotHeight = distributeHeight(value, timeSlots.length, format);
 
-  console.log('displayCurrentTime', displayCurrentTime);
-
   return (
     <TypeContext.Provider value={timetableType}>
       <TypeTimeTable
         timeSlots={timeSlots}
         slotWidth={slotHeight}
         taskList={taskList}
-        timeSlotStyle={timeSlotStyle}
         slotTime={slotTime}
+        displayCurrentTime={displayCurrentTime}
+        timeSlotStyle={timeSlotStyle}
         taskSlotStyle={taskSlotStyle}
         timeTableStyle={timeTableStyle}
+        height={height}
       />
     </TypeContext.Provider>
   );
