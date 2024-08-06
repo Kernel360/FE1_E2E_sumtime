@@ -47,3 +47,15 @@ export const loginValidation = async (email: string, password: string): Promise<
     throw e;
   }
 };
+
+export const deleteUser = async (userId: string): Promise<string> => {
+  try {
+    const { data } = await axios.delete('/api/user/delete/', { data: { userId } });
+    return data.message;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    throw error;
+  }
+};

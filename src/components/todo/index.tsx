@@ -21,11 +21,12 @@ interface TodoItem {
 
 export default function Todo() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [currentTodo, setCurrentTodo] = useState<TodoItem | null>(null);
+  const [modalTodo, setModalTodo] = useState<TodoItem | null>(null);
   const { value: isModalOpen, setTrue, setFalse } = useBooleanState();
+  // TSQuery 사용
   const { data: todoList } = useGetAllTodos('1');
 
-  // todoList 초기 로딩
+  // todoList 초기 로드
   useEffect(() => {
     if (todoList) {
       setTodos(todoList);
@@ -33,22 +34,22 @@ export default function Todo() {
   });
 
   const handleOpenModal = (todo?: TodoItem) => {
-    setCurrentTodo(todo || null);
+    setModalTodo(todo || null);
     setTrue();
   };
 
   const handleCloseModal = () => {
     setFalse();
-    setCurrentTodo(null);
+    setModalTodo(null);
   };
 
   const handleSave = async (title: string, startTime: string, endTime: string) => {
     try {
       let response;
-      if (currentTodo) {
+      if (modalTodo) {
         // 기존 todo 수정
         response = await axios.put('/api/todo/update', {
-          todoId: currentTodo.todoId,
+          todoId: modalTodo.todoId,
           title,
           startTime,
           endTime,
@@ -77,10 +78,10 @@ export default function Todo() {
     }
   };
   const handleDelete = async () => {
-    if (currentTodo) {
+    if (modalTodo) {
       const response = await axios.delete('/api/todo/delete', {
         data: {
-          todoId: currentTodo.todoId,
+          todoId: modalTodo.todoId,
         },
       });
       console.log(response); // 변수 미사용 Lint에러 방지 위한 response 사용하는 console.log 추가
@@ -144,7 +145,7 @@ export default function Todo() {
       <TodoModal
         open={isModalOpen}
         handleClose={handleCloseModal}
-        currentTodo={currentTodo}
+        currentTodo={modalTodo}
         handleSave={handleSave}
         handleDelete={handleDelete}
       />
