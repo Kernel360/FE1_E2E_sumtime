@@ -60,6 +60,7 @@
   z-index: 0;
   container: taskSlot / size;
   width: 100%;
+  top: 0;
 
   &.row {
     height: 100%;
@@ -82,15 +83,22 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  align-items: center;
+  align-items: flex-start;
   font-size: 1em;
 }
 
 .buttonInherit {
   color: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: absolute;
 
   &.row {
     height: 100%;
+  }
+  &.column {
+    width: 100%;
   }
 }
 
