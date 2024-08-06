@@ -59,24 +59,25 @@ function TaskSlotItem({
 
   const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
   const taskSlotColor = taskColor ?? getColor(id);
-
   const positionStyles =
     type === 'ROW'
       ? { top: '0', left: `${offsetPercent}%`, width: `${heightPercent}%` }
       : { top: `${offsetPercent}%`, left: '0', height: `${heightPercent}%` };
-
   const floatingPositionStyles = type === 'ROW' ? { left: `${offsetPercent}%` } : { top: `${offsetPercent}%` };
 
   return (
-    <div style={{ height: '100%' }}>
-      <button type="button" ref={ref} {...props} className={generateClassNameWithType(styles, 'buttonInherit', type)}>
-        <div
-          className={generateClassNameWithType(styles, 'taskSlotBackground', type)}
-          style={{
-            ...positionStyles,
-            backgroundColor: `${taskSlotColor}`,
-          }}
-        >
+    <div>
+      <button
+        type="button"
+        ref={ref}
+        {...props}
+        className={generateClassNameWithType(styles, 'buttonInherit', type)}
+        style={{
+          ...positionStyles,
+          backgroundColor: `${taskSlotColor}`,
+        }}
+      >
+        <div className={generateClassNameWithType(styles, 'taskSlotBackground', type)}>
           {shouldDisplayTaskContent && ( // taskSlotContent
             <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
               <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
