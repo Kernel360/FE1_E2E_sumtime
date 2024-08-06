@@ -34,35 +34,39 @@ export default function Todo() {
   };
 
   const handleSave = async (title: string, startTime: string, endTime: string) => {
-    if (currentTodo) {
-      // 기존 todo 수정
-      const response = await axios.put('/api/todo/update', {
-        todoId: currentTodo.todoId,
-        title,
-        startTime,
-        endTime,
-      });
-    } else {
-      // 새로운 todo 추가
-      const response = await axios.post(
-        '/api/todo/create',
-        {
-          userId: '1',
+    try {
+      let response;
+      if (currentTodo) {
+        // 기존 todo 수정
+        response = await axios.put('/api/todo/update', {
+          todoId: currentTodo.todoId,
           title,
           startTime,
           endTime,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
+        });
+      } else {
+        // 새로운 todo 추가
+        response = await axios.post(
+          '/api/todo/create',
+          {
+            userId: '1',
+            title,
+            startTime,
+            endTime,
           },
-        },
-      );
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+      }
+      console.log(response); // 변수 미사용 Lint에러 방지 위한 response 사용하는 console.log 추가
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving todo:', error);
     }
-
-    handleCloseModal();
   };
-
   const handleDelete = async () => {
     if (currentTodo) {
       const response = await axios.delete('/api/todo/delete', {
@@ -70,6 +74,8 @@ export default function Todo() {
           todoId: currentTodo.todoId,
         },
       });
+      console.log(response); // 변수 미사용 Lint에러 방지 위한 response 사용하는 console.log 추가
+
       handleCloseModal();
     }
   };
@@ -88,13 +94,19 @@ export default function Todo() {
   // userId에 해당하는 todo 목록을 화면에 렌더링 됨. 굳이 useState사용하지 않아도 됨.
   useEffect(() => {
     const fetchTodos = async () => {
-      const response = await axios.get('/api/todo/getAllByUserId?userId=1', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      try {
+        const response = await axios.post('/api/todo/getAllByUserId', {
+          userId: 1,
 
-      setTodos(response.data.todos);
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        setTodos(response.data.todos);
+      } catch (error) {
+        console.error('Error fetching todos:', error);
+      }
     };
 
     fetchTodos();
