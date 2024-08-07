@@ -5,37 +5,45 @@ import axios from 'axios';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useGetAllTodos } from '@/app/apiTest/hooks/todoQueries';
+import { useGetAllTodos, useGetOneTodo } from '@/app/apiTest/hooks/todoQueries';
+import { SelectTodo } from '@/db/schema/todos';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 
-interface TodoItem {
-  todoId: number;
-  title: string;
-  content: string | null;
-  startTime: string | null;
-  endTime: string | null;
-}
-
 export default function Todo() {
-  const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [modalTodo, setModalTodo] = useState<TodoItem | null>(null);
+  const [todos, setTodos] = useState<SelectTodo[]>([]);
+  const [todoId, setTodoId] = useState<string>();
+  const [modalTodo, setModalTodo] = useState<SelectTodo | null>(null);
   const { value: isModalOpen, setTrue, setFalse } = useBooleanState();
   // TSQuery 사용
-  const { data: todoList } = useGetAllTodos('1');
+  const { data: todoListData } = useGetAllTodos('1');
+  const { data: todoData, isSuccess: isTodoDataSuccess } = useGetOneTodo(todoId ?? '');
 
   // todoList 초기 로드
   useEffect(() => {
-    if (todoList) {
-      setTodos(todoList);
+    if (todoListData) {
+      setTodos(todoListData);
     }
-  });
+  }, [todoListData]);
+  useEffect(() => {
+    if (isTodoDataSuccess && todoData) {
+      setModalTodo(todoData || null);
 
-  const handleOpenModal = (todo?: TodoItem) => {
-    setModalTodo(todo || null);
-    setTrue();
+      setTrue();
+    }
+  }, [todoData, isTodoDataSuccess]);
+
+  // const handleOpenModal = (todo?: SelectTodo) => {
+  //   setTodoId(todo?.todoId.toString());
+  //   setModalTodo(todoData || null);
+  //   console.log('투두데이터', todoData);
+  //   if () setTrue();
+  // };
+  const handleOpenModal = (todo?: SelectTodo) => {
+    setTodoId(todo?.todoId.toString());
+    console.log('투두데이터', todoData);
   };
 
   const handleCloseModal = () => {
