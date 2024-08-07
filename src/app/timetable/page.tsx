@@ -18,7 +18,6 @@ export default function TimetablePage() {
           timeTableStyle={{ backgroundColor: 'white' }}
           timeSlotStyle={{ color: 'black' }}
           taskSlotStyle={{ color: 'black' }}
-          hoverable
           defaultValue="..."
         />
       </div>
@@ -34,7 +33,6 @@ export default function TimetablePage() {
           timeTableStyle={{ backgroundColor: 'white' }}
           timeSlotStyle={{ color: 'black' }}
           taskSlotStyle={{ color: 'black' }}
-          hoverable
           defaultValue="..."
         />
       </div>

@@ -19,7 +19,6 @@ interface TimetableProps {
   timeTableStyle?: React.CSSProperties;
   timeSlotStyle?: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
-  hoverable: boolean;
   defaultValue: string;
 }
 
@@ -34,7 +33,6 @@ function Timetable({
   timeTableStyle = { backgroundColor: 'white' },
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },
-  hoverable,
   defaultValue,
 }: TimetableProps) {
   const checkOverlapFromTaskList = useCallback(
@@ -55,12 +53,12 @@ function Timetable({
   );
   const { value, format } = parseSize(timeTableSize);
   const slotSize = distributeSize(value, timeSlots.length, format);
+
   const contextValue = useMemo(
     () => ({
-      hoverable,
       defaultValue,
     }),
-    [hoverable, defaultValue],
+    [defaultValue],
   );
   return (
     <TypeContext.Provider value={timetableType}>

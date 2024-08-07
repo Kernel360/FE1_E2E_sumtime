@@ -9,7 +9,6 @@ interface Task {
 type TimetableType = 'CIRCLE' | 'ROW' | 'COLUMN';
 
 interface TaskSlotContextProps {
-  hoverable: boolean;
   defaultValue: string;
 }
 
