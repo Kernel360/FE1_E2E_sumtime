@@ -79,6 +79,7 @@ export default function Todo() {
         {
           onSuccess: (createdTodo) => {
             setTodos((prevTodos) => [...prevTodos, createdTodo]);
+            refetchAllTodos();
             handleCloseModal();
           },
           onError: (error) => {
@@ -89,12 +90,12 @@ export default function Todo() {
     }
     handleCloseModal();
   };
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (modalTodo) {
       deleteTodo(modalTodo.todoId.toString(), {
         onSuccess: () => {
-          handleCloseModal();
           refetchAllTodos();
+          handleCloseModal();
         },
         onError: (error) => {
           refetchAllTodos();
