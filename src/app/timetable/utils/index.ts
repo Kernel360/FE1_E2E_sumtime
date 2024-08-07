@@ -98,6 +98,30 @@ const calculateCurrentTimeOffset = (currentTime: Date, startTime: Date, endTime:
   return { offsetPercent };
 };
 
+const filterTaskListByTimeSlot = (taskListInput: Task[], slotStartHour: number, slotMinutes: number) =>
+  taskListInput.filter((task: Task) => {
+    const taskStartHour = task.startTime.getHours();
+    const taskEndHour = task.endTime.getHours();
+    const taskEndMinute = task.endTime.getMinutes();
+
+    return (
+      taskStartHour <= slotStartHour &&
+      taskEndHour >= slotStartHour &&
+      !(taskEndHour === slotStartHour && taskEndMinute === slotMinutes % 60)
+    );
+  });
+
+const isDateInRange = (startDate: Date, date: Date, endDate: Date) => startDate <= date && date <= endDate;
+
+const getShouldDisplayTaskContentList = (taskItemList: Task[], uniqueTaskIdMap: Map<unknown, unknown>): boolean[] =>
+  taskItemList.map((taskItem) => {
+    const shouldDisplayTaskContent = !!(taskItem?.id && !uniqueTaskIdMap.has(taskItem.id));
+    if (taskItem?.id) {
+      uniqueTaskIdMap.set(taskItem.id, taskItem.id);
+    }
+    return shouldDisplayTaskContent;
+  });
+
 export {
   getHourAndMinutesFormat,
   sumHoursAndMinutes,
@@ -106,9 +130,12 @@ export {
   getDateFromTime,
   checkTimeOverlapFromTaskList,
   calculateCurrentTimeOffset,
+  filterTaskListByTimeSlot,
+  isDateInRange,
+  getShouldDisplayTaskContentList,
 };
 
 export { hasKey, insertKey } from './map';
-export { distributeHeight, isFormatString, parseHeight, parseHeightFormat, parseHeightValue } from './height';
+export { distributeSize, isFormatString, parseSize, parseSizeFormat, parseSizeValue } from './height';
 export { getColor } from './color';
 export { generateClassNameWithType } from './css';

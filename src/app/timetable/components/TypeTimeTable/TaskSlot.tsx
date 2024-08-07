@@ -30,19 +30,23 @@ function TaskSlot({ headerDate, slotTime, taskItemList, shouldDisplayTaskContent
 
   return (
     <div className={generateClassNameWithType(styles, 'taskSlotLayout', type)} style={taskSlotStyle}>
-      {taskItemList.map((taskItem, index) => (
-        <TaskSlotItem
-          key={taskItem.id}
-          taskItem={taskItem}
-          index={index}
-          slotStartTime={slotStartTime}
-          slotEndTime={slotEndTime}
-          slotTime={slotTime}
-          shouldDisplayTaskContentList={shouldDisplayTaskContentList}
-          isOpen={openTaskIndex === index}
-          onOpenChange={(isOpen) => handleOpenChange(index, isOpen)}
-        />
-      ))}
+      {taskItemList.map((taskItem, index) => {
+        const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
+
+        return (
+          <TaskSlotItem
+            key={taskItem.id}
+            taskItem={taskItem}
+            index={index}
+            slotStartTime={slotStartTime}
+            slotEndTime={slotEndTime}
+            slotTime={slotTime}
+            shouldDisplayTaskContent={shouldDisplayTaskContent}
+            isOpen={openTaskIndex === index}
+            onOpenChange={(isOpen) => handleOpenChange(index, isOpen)}
+          />
+        );
+      })}
     </div>
   );
 }
