@@ -12,7 +12,7 @@ export default function TimetablePage() {
           endTime={endTime}
           slotTime={slotTime}
           taskList={taskList}
-          height="2000px"
+          timeTableSize="2000px"
           timetableType="ROW"
           displayCurrentTime
           timeTableStyle={{ backgroundColor: 'white' }}
@@ -26,7 +26,7 @@ export default function TimetablePage() {
           endTime={endTime}
           slotTime={slotTime}
           taskList={taskList}
-          height="2000px"
+          timeTableSize="2000px"
           timetableType="COLUMN"
           displayCurrentTime
           timeTableStyle={{ backgroundColor: 'white' }}

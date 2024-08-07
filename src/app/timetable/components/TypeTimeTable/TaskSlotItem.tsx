@@ -9,7 +9,7 @@ import styles from './TypeTimeTable.module.scss';
 interface TaskSlotItemProps {
   taskItem: Task;
   index: number;
-  shouldDisplayTaskContentList: boolean[];
+  shouldDisplayTaskContent: boolean;
   slotStartTime: Date;
   slotEndTime: Date;
   slotTime: number;
@@ -19,8 +19,7 @@ interface TaskSlotItemProps {
 
 function TaskSlotItem({
   taskItem,
-  index,
-  shouldDisplayTaskContentList,
+  shouldDisplayTaskContent,
   slotStartTime,
   slotEndTime,
   slotTime,
@@ -60,7 +59,6 @@ function TaskSlotItem({
     slotTime,
   );
 
-  const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
   const taskSlotColor = taskColor ?? getColor(id);
   const positionStyles =
     type === 'ROW'
