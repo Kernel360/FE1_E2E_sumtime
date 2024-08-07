@@ -4,10 +4,10 @@ import { SelectTodo } from '@/db/schema/todos';
 export const createTodo = async (
   userId: string,
   title: string,
-  content: string,
-  startTime: string,
-  endTime: string,
-  color: string,
+  content: string | null,
+  startTime: string | null,
+  endTime: string | null,
+  color: string | null,
 ): Promise<SelectTodo> => {
   try {
     const { data } = await axios.post('/api/todo/create', { userId, title, content, startTime, endTime, color });
@@ -47,10 +47,10 @@ export const getOneByTodoId = async (todoId: string): Promise<SelectTodo> => {
 export const updateTodo = async (
   todoId: string,
   title: string,
-  content: string,
-  startTime: string,
-  endTime: string,
-  color: string,
+  content: string | null,
+  startTime: string | null,
+  endTime: string | null,
+  color: string | null,
 ): Promise<SelectTodo> => {
   try {
     const { data } = await axios.put('/api/todo/update', { todoId, title, content, startTime, endTime, color });
