@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import Slot from './Slot';
 import { Task } from '../Timetable.type';
-import { generateClassNameWithType, hasKey, insertKey, taskListFilter } from '../../utils';
+import { generateClassNameWithType, hasKey, insertKey, filterTaskListByTimeSlot, isDateInRange } from '../../utils';
 import TypeContext from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
 import CurrentTimeLine from '../CurrentTimeLine';
@@ -33,18 +33,16 @@ function TypeTimeTable({
   startTime,
   endTime,
 }: TypeTimeTableProps) {
-  const uniqueTaskIdMap = new Map();
   const type = useContext(TypeContext);
+  const uniqueTaskIdMap = new Map();
+  const isCurrentTimeVisible = displayCurrentTime && isDateInRange(timeSlots[0], new Date(), timeSlots[timeSlots.length - 1]);
 
-  const currentTime = new Date();
-
-  const isCurrentTimeVisible = timeSlots[0] <= currentTime && currentTime <= timeSlots[timeSlots.length - 1];
   return (
     <div className={generateClassNameWithType(styles, 'container', type)} style={timeTableStyle}>
-      {displayCurrentTime && isCurrentTimeVisible && <CurrentTimeLine startTime={startTime} endTime={endTime} size={size} />}
+      {isCurrentTimeVisible && <CurrentTimeLine startTime={startTime} endTime={endTime} size={size} />}
       {timeSlots.map((time, index) => {
         const key = `${time.toDateString()}${index}`;
-        const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
+        const taskItemList = filterTaskListByTimeSlot(taskList, time.getHours(), slotTime);
         const shouldDisplayTaskContentList: boolean[] = taskItemList.map((taskItem) => {
           const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
           insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);

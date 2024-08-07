@@ -32,12 +32,12 @@ function Timetable({
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },
 }: TimetableProps) {
-  const hasOverlapFromTaskList = useCallback(
+  const checkOverlapFromTaskList = useCallback(
     (currentTaskList: Task[]) => checkTimeOverlapFromTaskList(currentTaskList),
     [taskList],
   );
 
-  if (hasOverlapFromTaskList(taskList)) {
+  if (checkOverlapFromTaskList(taskList)) {
     throw new Error('task time is overlap. please check your taskList');
   }
 
