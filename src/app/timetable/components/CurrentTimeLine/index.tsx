@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 import styled from './CurrentTimeLine.module.scss';
-import { calculateCurrentTimeOffset, parseHeight, generateClassNameWithType } from '../../utils';
+import { calculateCurrentTimeOffset, parseSize, generateClassNameWithType } from '../../utils';
 import TypeContext from '../../TypeContext';
 
 interface CurrentTimeLineProps {
@@ -13,7 +13,7 @@ interface CurrentTimeLineProps {
 function CurrentTimeLine({ startTime, endTime, height }: CurrentTimeLineProps) {
   const type = useContext(TypeContext);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const { value, format } = parseHeight(height);
+  const { value, format } = parseSize(height);
 
   // 여기서 전체 offset을 정리해서 두자.
   useEffect(() => {

@@ -123,6 +123,6 @@ export {
 };
 
 export { hasKey, insertKey } from './map';
-export { distributeHeight, isFormatString, parseHeight, parseHeightFormat, parseHeightValue } from './height';
+export { distributeSize, isFormatString, parseSize, parseSizeFormat, parseSizeValue } from './height';
 export { getColor } from './color';
 export { generateClassNameWithType } from './css';

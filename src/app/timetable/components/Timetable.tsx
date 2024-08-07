@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
-import { parseHeight, distributeHeight, checkTimeOverlapFromTaskList } from '../utils';
+import { parseSize, distributeSize, checkTimeOverlapFromTaskList } from '../utils';
 import { Task, TimetableType } from './Timetable.type';
 import TypeContext from '../TypeContext';
 import TypeTimeTable from './TypeTimeTable';
@@ -48,8 +48,8 @@ function Timetable({
     },
     { step: slotTime },
   );
-  const { value, format } = parseHeight(height);
-  const slotSize = distributeHeight(value, timeSlots.length, format);
+  const { value, format } = parseSize(height);
+  const slotSize = distributeSize(value, timeSlots.length, format);
 
   return (
     <TypeContext.Provider value={timetableType}>

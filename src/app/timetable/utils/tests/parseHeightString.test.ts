@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { parseHeightFormat, parseHeightValue } from '..';
+import { parseSizeFormat, parseSizeValue } from '..';
 import { FORMAT_LIST } from '../../constants';
 
 describe('Timetable의 height 값 나누기', () => {
@@ -12,7 +12,7 @@ describe('Timetable의 height 값 나누기', () => {
         const heightString = `${height}${format}`;
 
         // when
-        const result = parseHeightFormat(heightString);
+        const result = parseSizeFormat(heightString);
 
         // then
         expect(result).toEqual(format);
@@ -28,7 +28,7 @@ describe('Timetable의 height 값 나누기', () => {
         const height = `${heightValue}${format}`;
         test(`height으로 ${height}이 주어졌을 때 값 ${heightValue}을 분리할 수 있다.`, () => {
           // when
-          const result = parseHeightValue(height);
+          const result = parseSizeValue(height);
           // then
           expect(result).toEqual(heightValue);
         });
