@@ -113,6 +113,15 @@ const filterTaskListByTimeSlot = (taskListInput: Task[], slotStartHour: number, 
 
 const isDateInRange = (startDate: Date, date: Date, endDate: Date) => startDate <= date && date <= endDate;
 
+const getShouldDisplayTaskContentList = (taskItemList: Task[], uniqueTaskIdMap: Map<unknown, unknown>): boolean[] =>
+  taskItemList.map((taskItem) => {
+    const shouldDisplayTaskContent = !!(taskItem?.id && !uniqueTaskIdMap.has(taskItem.id));
+    if (taskItem?.id) {
+      uniqueTaskIdMap.set(taskItem.id, taskItem.id);
+    }
+    return shouldDisplayTaskContent;
+  });
+
 export {
   getHourAndMinutesFormat,
   sumHoursAndMinutes,
@@ -123,6 +132,7 @@ export {
   calculateCurrentTimeOffset,
   filterTaskListByTimeSlot,
   isDateInRange,
+  getShouldDisplayTaskContentList,
 };
 
 export { hasKey, insertKey } from './map';

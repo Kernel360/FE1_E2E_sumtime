@@ -1,7 +1,14 @@
 import { useContext } from 'react';
 import Slot from './Slot';
 import { Task } from '../Timetable.type';
-import { generateClassNameWithType, hasKey, insertKey, filterTaskListByTimeSlot, isDateInRange } from '../../utils';
+import {
+  generateClassNameWithType,
+  hasKey,
+  insertKey,
+  filterTaskListByTimeSlot,
+  isDateInRange,
+  getShouldDisplayTaskContentList,
+} from '../../utils';
 import TypeContext from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
 import CurrentTimeLine from '../CurrentTimeLine';
@@ -43,11 +50,7 @@ function TypeTimeTable({
       {timeSlots.map((time, index) => {
         const key = `${time.toDateString()}${index}`;
         const taskItemList = filterTaskListByTimeSlot(taskList, time.getHours(), slotTime);
-        const shouldDisplayTaskContentList: boolean[] = taskItemList.map((taskItem) => {
-          const shouldDisplayTaskContent = !!(taskItem?.id && !hasKey(uniqueTaskIdMap, taskItem.id));
-          insertKey(uniqueTaskIdMap, taskItem?.id, taskItem?.id);
-          return shouldDisplayTaskContent;
-        });
+        const shouldDisplayTaskContentList = getShouldDisplayTaskContentList(taskItemList, uniqueTaskIdMap);
 
         return (
           <Slot
