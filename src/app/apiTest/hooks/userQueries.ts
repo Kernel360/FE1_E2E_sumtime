@@ -1,6 +1,11 @@
 import { useMutation, UseMutationResult, useQuery, UseQueryResult } from '@tanstack/react-query';
-import { createUser, deleteUser, emailValidation, getUserIdByEmail, loginValidation } from '@/app/apiTest/calls/userCalls';
+import { createUser, deleteUser, emailValidation, getUserIdByEmail, login } from '@/app/apiTest/calls/userCalls';
 
+interface User {
+  userId: number;
+  email: string;
+  nickname: string;
+}
 export const useCreateUser = (): UseMutationResult<string, Error, { email: string; password: string; nickname: string }> =>
   useMutation({
     mutationFn: ({ email, password, nickname }) => createUser(email, password, nickname),
@@ -19,10 +24,10 @@ export const useEmailValidation = (email: string): UseQueryResult<boolean, Error
     enabled: !!email,
   });
 
-export const useLoginValidation = (email: string, password: string): UseQueryResult<boolean, Error> =>
+export const useLogin = (email: string, password: string): UseQueryResult<User, Error> =>
   useQuery({
-    queryKey: ['loginValidation', email, password],
-    queryFn: () => loginValidation(email, password),
+    queryKey: ['login', email, password],
+    queryFn: () => login(email, password),
     enabled: !!email && !!password,
   });
 
