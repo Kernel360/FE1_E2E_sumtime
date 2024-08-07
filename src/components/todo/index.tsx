@@ -40,7 +40,7 @@ export default function Todo() {
   // todoId가 변경될 때마다 modalTodo 설정
   useEffect(() => {
     if (isTodoDataSuccess && todoData) {
-      setModalTodo(todoData || null);
+      setModalTodo(todoData);
       setIsModalOpenTrue();
     }
   }, [todoData, isTodoDataSuccess]);
