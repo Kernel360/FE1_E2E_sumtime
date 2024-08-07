@@ -8,7 +8,7 @@ import CurrentTimeLine from '../CurrentTimeLine';
 
 interface TypeTimeTableProps {
   timeSlots: Date[];
-  slotWidth: string;
+  slotSize: string;
   taskList: Task[];
   slotTime: number;
   height: string;
@@ -22,7 +22,7 @@ interface TypeTimeTableProps {
 
 function TypeTimeTable({
   timeSlots,
-  slotWidth,
+  slotSize,
   timeSlotStyle,
   taskList,
   slotTime,
@@ -55,7 +55,7 @@ function TypeTimeTable({
           <Slot
             key={key}
             headerDate={time}
-            size={slotWidth}
+            size={slotSize}
             timeSlotStyle={timeSlotStyle}
             shouldDisplayTaskContentList={shouldDisplayTaskContentList}
             slotTime={slotTime}

@@ -49,13 +49,13 @@ function Timetable({
     { step: slotTime },
   );
   const { value, format } = parseHeight(height);
-  const slotHeight = distributeHeight(value, timeSlots.length, format);
+  const slotSize = distributeHeight(value, timeSlots.length, format);
 
   return (
     <TypeContext.Provider value={timetableType}>
       <TypeTimeTable
         timeSlots={timeSlots}
-        slotWidth={slotHeight}
+        slotSize={slotSize}
         taskList={taskList}
         slotTime={slotTime}
         displayCurrentTime={displayCurrentTime}
