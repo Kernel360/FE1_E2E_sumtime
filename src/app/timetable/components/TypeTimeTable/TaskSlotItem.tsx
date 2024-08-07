@@ -30,7 +30,7 @@ function TaskSlotItem({
   const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
-
+  const defaultValue = '...'; // 이 부분이 이후에 Props로 전달 받아서 표현 될 내용이다.
   const type = useContext(TypeContext);
 
   const {
@@ -69,18 +69,24 @@ function TaskSlotItem({
   const floatingPositionStyles = type === 'ROW' ? { left: `${offsetPercent}%` } : { top: `${offsetPercent}%` };
 
   useEffect(() => {
-    if (taskSlotRef.current) {
-      const height = taskSlotRef.current.offsetHeight;
-      setIsContentVisible(height > 40);
+    if (type === 'ROW') {
+      if (taskSlotRef.current) {
+        const width = taskSlotRef.current.offsetWidth;
+        setIsContentVisible(width > 40);
+      }
     }
-  }, [taskSlotRef.current]);
-
+    if (type === 'COLUMN') {
+      if (taskSlotRef.current) {
+        const height = taskSlotRef.current.offsetHeight;
+        setIsContentVisible(height > 40);
+      }
+    }
+  }, [taskSlotRef.current, type]);
   return (
     <div>
       <button
         type="button"
         ref={ref}
-        // ref={taskSlotRef}
         {...props}
         className={generateClassNameWithType(styles, 'buttonInherit', type)}
         style={{
@@ -89,11 +95,17 @@ function TaskSlotItem({
         }}
       >
         <div ref={taskSlotRef} className={generateClassNameWithType(styles, 'taskSlotBackground', type)}>
-          {isContentVisible &&
-            shouldDisplayTaskContent && ( // taskSlotContent
+          {shouldDisplayTaskContent &&
+            isContentVisible && ( // taskSlotContent
               <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
                 <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
                 <p className={generateClassNameWithType(styles, 'description', type)}>{subTitle}</p>
+              </div>
+            )}
+          {shouldDisplayTaskContent &&
+            !isContentVisible && ( // taskSlotContent
+              <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
+                <p className={generateClassNameWithType(styles, 'title', type)}>{defaultValue}</p>
               </div>
             )}
         </div>
