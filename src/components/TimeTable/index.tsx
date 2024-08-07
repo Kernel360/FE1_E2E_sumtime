@@ -15,6 +15,8 @@ function TimeTable() {
         timeTableSize="2000px"
         timetableType="COLUMN"
         displayCurrentTime
+        hoverable
+        defaultValue="+"
       />
     </S.TimeTableSection>
   );
