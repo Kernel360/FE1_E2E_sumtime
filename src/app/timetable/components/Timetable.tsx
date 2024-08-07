@@ -63,6 +63,8 @@ function Timetable({
         taskSlotStyle={taskSlotStyle}
         timeTableStyle={timeTableStyle}
         height={height}
+        startTime={startTime}
+        endTime={endTime}
       />
     </TypeContext.Provider>
   );

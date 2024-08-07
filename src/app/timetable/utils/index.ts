@@ -12,6 +12,14 @@ const getHourAndMinutesFormat = (data: Date) => {
 // 시간을 분단위로 바꿔버리고 더해주는 함수
 const sumHoursAndMinutes = (date: Date) => date.getHours() * 60 + date.getMinutes();
 
+const TimeToMilliseconds = (date: Date) => {
+  const hourToMilliseconds = date.getHours() * 60 * 60 * 1000;
+  const minutesToMilliseconds = date.getMinutes() * 60 * 1000;
+  const secondsToMilliseconds = date.getSeconds() * 1000;
+
+  return hourToMilliseconds + minutesToMilliseconds + secondsToMilliseconds;
+};
+
 const calculateTaskOffsetAndHeightPercent = (
   slotStartTime: Date,
   slotEndTime: Date,
@@ -52,8 +60,12 @@ const isTimeOverlap = (startTime1: Date, endTime1: Date, startTime2: Date, endTi
 };
 
 const getDateFromTime = (hours: number, minutes: number, second: number) => {
-  const yearMonthDay = '2024-08-06';
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+  const day = now.getDate().toString().padStart(2, '0');
 
+  const yearMonthDay = `${year}-${month}-${day}`;
   const hourFormat = hours < 10 ? `0${hours}` : hours;
   const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
   const secondeFormat = second < 10 ? `0${second}` : second;
@@ -76,13 +88,12 @@ const checkTimeOverlapFromTaskList = (taskList: Task[]) => {
   return false;
 };
 
-const calculateCurrentTimeOffset = (currentTime: Date, slotStartTime: Date, endTime: Date) => {
+const calculateCurrentTimeOffset = (currentTime: Date, startTime: Date, endTime: Date) => {
   let offsetPercent = 0;
-
-  const currentMinutes = sumHoursAndMinutes(currentTime); // 현재 시간
-  const slotStartMinutes = sumHoursAndMinutes(slotStartTime); // 슬롯의 시작 시간
-  const slotEndMinutes = sumHoursAndMinutes(endTime); // 슬롯의 종료 시간
-  offsetPercent = ((currentMinutes - slotStartMinutes) / (slotEndMinutes - slotStartMinutes)) * 100;
+  const currentMinutes = TimeToMilliseconds(currentTime); // 현재 시간
+  const startMinutes = TimeToMilliseconds(startTime); // 슬롯의 시작 시간
+  const endMinutes = TimeToMilliseconds(endTime); // 슬롯의 종료 시간
+  offsetPercent = ((currentMinutes - startMinutes) / (endMinutes - startMinutes)) * 100;
 
   return { offsetPercent };
 };
