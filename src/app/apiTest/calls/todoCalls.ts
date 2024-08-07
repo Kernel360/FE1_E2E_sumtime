@@ -62,6 +62,18 @@ export const updateTodo = async (
     throw error;
   }
 };
+export const updateTodoTime = async (todoId: string, startTime: string | null, endTime: string | null): Promise<SelectTodo> => {
+  try {
+    const { data } = await axios.put('/api/todo/updateTime', { todoId, startTime, endTime });
+    return data.todo;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
 export const deleteTodo = async (todoId: string): Promise<string> => {
   try {
     const { data } = await axios.delete('/api/todo/delete/', { data: { todoId } });

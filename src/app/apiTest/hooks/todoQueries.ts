@@ -1,5 +1,12 @@
 import { useMutation, UseMutationResult, useQuery, UseQueryResult } from '@tanstack/react-query';
-import { createTodo, deleteTodo, getAllByUserId, getOneByTodoId, updateTodo } from '@/app/apiTest/calls/todoCalls';
+import {
+  createTodo,
+  deleteTodo,
+  getAllByUserId,
+  getOneByTodoId,
+  updateTodo,
+  updateTodoTime,
+} from '@/app/apiTest/calls/todoCalls';
 import { SelectTodo } from '@/db/schema/todos';
 
 export const useCreateTodo = (): UseMutationResult<
@@ -25,6 +32,14 @@ export const useUpdateTodo = (): UseMutationResult<
   useMutation({
     mutationFn: ({ todoId, title, content, startTime, endTime, color }) =>
       updateTodo(todoId, title, content, startTime, endTime, color),
+  });
+export const useUpdateTodoTime = (): UseMutationResult<
+  SelectTodo,
+  Error,
+  { todoId: string; startTime: string | null; endTime: string | null }
+> =>
+  useMutation({
+    mutationFn: ({ todoId, startTime, endTime }) => updateTodoTime(todoId, startTime, endTime),
   });
 
 export const useDeleteTodo = (): UseMutationResult<string, Error, string> =>

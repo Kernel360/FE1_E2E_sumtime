@@ -4,7 +4,14 @@ import React, { useEffect, useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useCreateTodo, useDeleteTodo, useGetAllTodos, useGetOneTodo, useUpdateTodo } from '@/app/apiTest/hooks/todoQueries';
+import {
+  useCreateTodo,
+  useDeleteTodo,
+  useGetAllTodos,
+  useGetOneTodo,
+  useUpdateTodo,
+  useUpdateTodoTime,
+} from '@/app/apiTest/hooks/todoQueries';
 import { SelectTodo } from '@/db/schema/todos';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
@@ -22,6 +29,7 @@ export default function Todo() {
   const { mutate: updateTodo } = useUpdateTodo();
   const { mutate: createTodo } = useCreateTodo();
   const { mutate: deleteTodo } = useDeleteTodo();
+  const { mutate: updateTodoTime } = useUpdateTodoTime();
 
   // todoList 초기 로드
   useEffect(() => {
@@ -37,7 +45,7 @@ export default function Todo() {
     }
   }, [todoData, isTodoDataSuccess]);
 
-  const handleOpenModal = (todo?: SelectTodo) => {
+  const handleOpenModal = async (todo?: SelectTodo) => {
     // TodoList를 클릭한 경우
     if (todo) setTodoId(todo?.todoId.toString());
     // FAB 클릭한 경우
@@ -61,7 +69,7 @@ export default function Todo() {
             handleCloseModal();
           },
           onError: (error) => {
-            console.error('Todo 업데이트 중 문제가 발생했습니다.', error);
+            alert(`Todo 업데이트에 실패했습니다.${error}`);
           },
         },
       );
@@ -74,7 +82,7 @@ export default function Todo() {
             handleCloseModal();
           },
           onError: (error) => {
-            console.error('Todo를 생성하는 데 문제가 발생했습니다.', error);
+            alert(`Todo를 생성하는 데 실패했습니다.${error}`);
           },
         },
       );
@@ -85,26 +93,53 @@ export default function Todo() {
     if (modalTodo) {
       deleteTodo(modalTodo.todoId.toString(), {
         onSuccess: () => {
-          alert('Todo 삭제가 완료되었습니다.');
-          refetchAllTodos();
           handleCloseModal();
+          refetchAllTodos();
         },
         onError: (error) => {
-          console.error('Todo를 삭제하는 데 실패했습니다.', error);
+          refetchAllTodos();
+          alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
         },
       });
     }
   };
 
   const handleStart = (id: number) => {
-    const now = new Date().toLocaleTimeString();
+    const startTime = new Date().toLocaleTimeString();
+    const endTime = null;
 
-    setTodos(todos.map((todo) => (todo.todoId === id ? { ...todo, startTime: now } : todo)));
+    updateTodoTime(
+      { todoId: id.toString(), startTime, endTime },
+      {
+        onSuccess: (updatedTodo) => {
+          setTodos((prevTodos) => prevTodos.map((todo) => (todo.todoId === updatedTodo.todoId ? updatedTodo : todo)));
+          refetchAllTodos();
+          handleCloseModal();
+        },
+        onError: (error) => {
+          alert(`Todo 업데이트에 실패했습니다.${error}`);
+        },
+      },
+    );
   };
 
   const handleEnd = (id: number) => {
-    const now = new Date().toLocaleTimeString();
-    setTodos(todos.map((todo) => (todo.todoId === id ? { ...todo, endTime: now } : todo)));
+    const startTime = null;
+    const endTime = new Date().toLocaleTimeString();
+
+    updateTodoTime(
+      { todoId: id.toString(), startTime, endTime },
+      {
+        onSuccess: (updatedTodo) => {
+          setTodos((prevTodos) => prevTodos.map((todo) => (todo.todoId === updatedTodo.todoId ? updatedTodo : todo)));
+          refetchAllTodos();
+          handleCloseModal();
+        },
+        onError: (error) => {
+          alert(`Todo 업데이트에 실패했습니다.${error}`);
+        },
+      },
+    );
   };
 
   return (
