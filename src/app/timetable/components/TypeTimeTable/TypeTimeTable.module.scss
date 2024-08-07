@@ -62,12 +62,13 @@
   container: taskSlot / size;
   width: 100%;
   top: 0;
-
+  height: 100%; //얘를 넘겨줘야 ref 로 height 값을 받아오고 그것으로 높이에 따라서 렌더링을 달리 할 수 있음.
   &.row {
     height: 100%;
   }
 
   &.col {
+    height: 100%;
     @container taskSlot (height < 40px) {
       & .taskSlotContent {
         flex-direction: row;

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import { flip, offset, useClick, useDismiss, useFloating, useInteractions, useMergeRefs } from '@floating-ui/react';
 import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType } from '../../utils';
 import { Task } from '../Timetable.type';
@@ -28,6 +28,9 @@ function TaskSlotItem({
   onOpenChange,
 }: TaskSlotItemProps) {
   const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
+  const taskSlotRef = useRef<HTMLDivElement>(null);
+  const [isContentVisible, setIsContentVisible] = useState(false);
+
   const type = useContext(TypeContext);
 
   const {
@@ -65,11 +68,19 @@ function TaskSlotItem({
       : { top: `${offsetPercent}%`, left: '0', height: `${heightPercent}%` };
   const floatingPositionStyles = type === 'ROW' ? { left: `${offsetPercent}%` } : { top: `${offsetPercent}%` };
 
+  useEffect(() => {
+    if (taskSlotRef.current) {
+      const height = taskSlotRef.current.offsetHeight;
+      setIsContentVisible(height > 40);
+    }
+  }, [taskSlotRef.current]);
+
   return (
     <div>
       <button
         type="button"
         ref={ref}
+        // ref={taskSlotRef}
         {...props}
         className={generateClassNameWithType(styles, 'buttonInherit', type)}
         style={{
@@ -77,13 +88,14 @@ function TaskSlotItem({
           backgroundColor: `${taskSlotColor}`,
         }}
       >
-        <div className={generateClassNameWithType(styles, 'taskSlotBackground', type)}>
-          {shouldDisplayTaskContent && ( // taskSlotContent
-            <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
-              <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
-              <p className={generateClassNameWithType(styles, 'description', type)}>{subTitle}</p>
-            </div>
-          )}
+        <div ref={taskSlotRef} className={generateClassNameWithType(styles, 'taskSlotBackground', type)}>
+          {isContentVisible &&
+            shouldDisplayTaskContent && ( // taskSlotContent
+              <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
+                <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
+                <p className={generateClassNameWithType(styles, 'description', type)}>{subTitle}</p>
+              </div>
+            )}
         </div>
       </button>
       {shouldDisplayTaskContent && isOpen && (
