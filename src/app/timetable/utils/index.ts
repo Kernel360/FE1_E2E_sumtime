@@ -60,8 +60,12 @@ const isTimeOverlap = (startTime1: Date, endTime1: Date, startTime2: Date, endTi
 };
 
 const getDateFromTime = (hours: number, minutes: number, second: number) => {
-  const yearMonthDay = '2024-08-06';
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+  const day = now.getDate().toString().padStart(2, '0');
 
+  const yearMonthDay = `${year}-${month}-${day}`;
   const hourFormat = hours < 10 ? `0${hours}` : hours;
   const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
   const secondeFormat = second < 10 ? `0${second}` : second;
