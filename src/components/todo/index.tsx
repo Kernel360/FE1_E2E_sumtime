@@ -1,11 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useGetAllTodos, useGetOneTodo } from '@/app/apiTest/hooks/todoQueries';
+import { useCreateTodo, useDeleteTodo, useGetAllTodos, useGetOneTodo, useUpdateTodo } from '@/app/apiTest/hooks/todoQueries';
 import { SelectTodo } from '@/db/schema/todos';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
@@ -16,10 +15,13 @@ export default function Todo() {
   const [todos, setTodos] = useState<SelectTodo[]>([]);
   const [todoId, setTodoId] = useState<string>();
   const [modalTodo, setModalTodo] = useState<SelectTodo | null>(null);
-  const { value: isModalOpen, setTrue, setFalse } = useBooleanState();
+  const { value: isModalOpen, setTrue: setIsModalOpenTrue, setFalse: setIsModalOpenFalse } = useBooleanState();
   // TSQuery 사용
-  const { data: todoListData } = useGetAllTodos('1');
+  const { data: todoListData, refetch: refetchAllTodos } = useGetAllTodos('1');
   const { data: todoData, isSuccess: isTodoDataSuccess } = useGetOneTodo(todoId ?? '');
+  const { mutate: updateTodo } = useUpdateTodo();
+  const { mutate: createTodo } = useCreateTodo();
+  const { mutate: deleteTodo } = useDeleteTodo();
 
   // todoList 초기 로드
   useEffect(() => {
@@ -27,74 +29,70 @@ export default function Todo() {
       setTodos(todoListData);
     }
   }, [todoListData]);
+  // todoId가 변경될 때마다 modalTodo 설정
   useEffect(() => {
     if (isTodoDataSuccess && todoData) {
       setModalTodo(todoData || null);
-
-      setTrue();
+      setIsModalOpenTrue();
     }
   }, [todoData, isTodoDataSuccess]);
 
-  // const handleOpenModal = (todo?: SelectTodo) => {
-  //   setTodoId(todo?.todoId.toString());
-  //   setModalTodo(todoData || null);
-  //   console.log('투두데이터', todoData);
-  //   if () setTrue();
-  // };
   const handleOpenModal = (todo?: SelectTodo) => {
-    setTodoId(todo?.todoId.toString());
-    console.log('투두데이터', todoData);
+    // TodoList를 클릭한 경우
+    if (todo) setTodoId(todo?.todoId.toString());
+    // FAB 클릭한 경우
+    else setIsModalOpenTrue();
   };
 
   const handleCloseModal = () => {
-    setFalse();
+    setIsModalOpenFalse();
     setModalTodo(null);
+    setTodoId('');
   };
 
-  const handleSave = async (title: string, startTime: string, endTime: string) => {
-    try {
-      let response;
-      if (modalTodo) {
-        // 기존 todo 수정
-        response = await axios.put('/api/todo/update', {
-          todoId: modalTodo.todoId,
-          title,
-          startTime,
-          endTime,
-        });
-      } else {
-        // 새로운 todo 추가
-        response = await axios.post(
-          '/api/todo/create',
-          {
-            userId: '1',
-            title,
-            startTime,
-            endTime,
+  const handleSave = async (title: string, content: string, startTime: string, endTime: string, color: string) => {
+    if (modalTodo) {
+      updateTodo(
+        { todoId: modalTodo.todoId.toString(), title, content, startTime, endTime, color },
+        {
+          onSuccess: (updatedTodo) => {
+            setTodos((prevTodos) => prevTodos.map((todo) => (todo.todoId === updatedTodo.todoId ? updatedTodo : todo)));
+            refetchAllTodos();
+            handleCloseModal();
           },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
+          onError: (error) => {
+            console.error('Todo 업데이트 중 문제가 발생했습니다.', error);
           },
-        );
-      }
-      console.log(response); // 변수 미사용 Lint에러 방지 위한 response 사용하는 console.log 추가
-      handleCloseModal();
-    } catch (error) {
-      console.error('Error saving todo:', error);
+        },
+      );
+    } else {
+      createTodo(
+        { userId: '1', title, content, startTime, endTime, color },
+        {
+          onSuccess: (createdTodo) => {
+            setTodos((prevTodos) => [...prevTodos, createdTodo]);
+            handleCloseModal();
+          },
+          onError: (error) => {
+            console.error('Todo를 생성하는 데 문제가 발생했습니다.', error);
+          },
+        },
+      );
     }
+    handleCloseModal();
   };
   const handleDelete = async () => {
     if (modalTodo) {
-      const response = await axios.delete('/api/todo/delete', {
-        data: {
-          todoId: modalTodo.todoId,
+      deleteTodo(modalTodo.todoId.toString(), {
+        onSuccess: () => {
+          alert('Todo 삭제가 완료되었습니다.');
+          refetchAllTodos();
+          handleCloseModal();
+        },
+        onError: (error) => {
+          console.error('Todo를 삭제하는 데 실패했습니다.', error);
         },
       });
-      console.log(response); // 변수 미사용 Lint에러 방지 위한 response 사용하는 console.log 추가
-
-      handleCloseModal();
     }
   };
 
@@ -109,25 +107,6 @@ export default function Todo() {
     setTodos(todos.map((todo) => (todo.todoId === id ? { ...todo, endTime: now } : todo)));
   };
 
-  // userId에 해당하는 todo 목록이 화면에 렌더링 됨
-  // useEffect(() => {
-  //   // const fetchTodos = async () => {
-  //   //   try {
-  //   //     const response = await axios.post('/api/todo/getAllByUserId', {
-  //   //       userId: 1,
-  //   //
-  //   //       headers: {
-  //   //         'Content-Type': 'application/json',
-  //   //       },
-  //   //     });
-  //   //
-  //   //     setTodos(response.data.todos);
-  //   //   } catch (error) {
-  //   //     console.error('Error fetching todos:', error);
-  //   //   }
-  //   // };
-  //   // fetchTodos();
-  // }, []);
   return (
     <S.TodoSection>
       <S.TodoComponentsSection>
@@ -136,8 +115,8 @@ export default function Todo() {
         </Text>
         {todos.map((todo) => (
           <TodoComponent
-            todoId={todo.todoId}
             key={todo.todoId}
+            todoId={todo.todoId}
             title={todo.title}
             handleOpenModal={() => handleOpenModal(todo)}
             handleStart={() => handleStart(todo.todoId)}
