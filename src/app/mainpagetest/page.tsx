@@ -4,7 +4,6 @@ import React from 'react';
 import Todo from '@/components/todo';
 import { BasicContainer } from '@/components/common';
 
-
 export default function mainTestPage() {
   return (
     <BasicContainer>
