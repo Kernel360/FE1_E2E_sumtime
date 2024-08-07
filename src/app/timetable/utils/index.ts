@@ -98,6 +98,19 @@ const calculateCurrentTimeOffset = (currentTime: Date, startTime: Date, endTime:
   return { offsetPercent };
 };
 
+const taskListFilter = (taskListInput: Task[], checkHour: number, slotTimeInput: number) =>
+  taskListInput.filter((task: Task) => {
+    const taskStartHour = task.startTime.getHours();
+    const taskEndHour = task.endTime.getHours();
+    const taskEndMinute = task.endTime.getMinutes();
+
+    return (
+      taskStartHour <= checkHour &&
+      taskEndHour >= checkHour &&
+      !(taskEndHour === checkHour && taskEndMinute === slotTimeInput % 60)
+    );
+  });
+
 export {
   getHourAndMinutesFormat,
   sumHoursAndMinutes,
@@ -106,6 +119,7 @@ export {
   getDateFromTime,
   checkTimeOverlapFromTaskList,
   calculateCurrentTimeOffset,
+  taskListFilter,
 };
 
 export { hasKey, insertKey } from './map';
