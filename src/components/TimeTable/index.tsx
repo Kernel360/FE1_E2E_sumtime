@@ -12,7 +12,7 @@ function TimeTable() {
         endTime={endTime}
         slotTime={60}
         taskList={taskListWithouttaskColor}
-        height="2000px"
+        timeTableSize="2000px"
         timetableType="COLUMN"
         displayCurrentTime
       />
