@@ -11,7 +11,7 @@ interface TimetableProps {
   startTime: Date;
   endTime: Date;
   slotTime: number;
-  height: string;
+  timeTableSize: string;
   timetableType: TimetableType;
   displayCurrentTime?: boolean;
   taskList: Task[];
@@ -24,7 +24,7 @@ function Timetable({
   startTime,
   endTime,
   slotTime,
-  height,
+  timeTableSize,
   timetableType,
   displayCurrentTime = false,
   taskList,
@@ -48,7 +48,7 @@ function Timetable({
     },
     { step: slotTime },
   );
-  const { value, format } = parseSize(height);
+  const { value, format } = parseSize(timeTableSize);
   const slotSize = distributeSize(value, timeSlots.length, format);
 
   return (
@@ -62,7 +62,7 @@ function Timetable({
         timeSlotStyle={timeSlotStyle}
         taskSlotStyle={taskSlotStyle}
         timeTableStyle={timeTableStyle}
-        height={height}
+        size={timeTableSize}
         startTime={startTime}
         endTime={endTime}
       />

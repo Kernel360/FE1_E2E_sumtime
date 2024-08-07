@@ -7,13 +7,13 @@ import TypeContext from '../../TypeContext';
 interface CurrentTimeLineProps {
   startTime: Date;
   endTime: Date;
-  height: string;
+  size: string;
 }
 
-function CurrentTimeLine({ startTime, endTime, height }: CurrentTimeLineProps) {
+function CurrentTimeLine({ startTime, endTime, size }: CurrentTimeLineProps) {
   const type = useContext(TypeContext);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const { value, format } = parseSize(height);
+  const { value, format } = parseSize(size);
 
   // 여기서 전체 offset을 정리해서 두자.
   useEffect(() => {

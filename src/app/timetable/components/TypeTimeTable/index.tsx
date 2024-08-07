@@ -11,7 +11,7 @@ interface TypeTimeTableProps {
   slotSize: string;
   taskList: Task[];
   slotTime: number;
-  height: string;
+  size: string;
   startTime: Date;
   endTime: Date;
   displayCurrentTime?: boolean;
@@ -29,7 +29,7 @@ function TypeTimeTable({
   displayCurrentTime,
   taskSlotStyle = {},
   timeTableStyle = {},
-  height,
+  size,
   startTime,
   endTime,
 }: TypeTimeTableProps) {
@@ -41,7 +41,7 @@ function TypeTimeTable({
   const isCurrentTimeVisible = timeSlots[0] <= currentTime && currentTime <= timeSlots[timeSlots.length - 1];
   return (
     <div className={generateClassNameWithType(styles, 'container', type)} style={timeTableStyle}>
-      {displayCurrentTime && isCurrentTimeVisible && <CurrentTimeLine startTime={startTime} endTime={endTime} height={height} />}
+      {displayCurrentTime && isCurrentTimeVisible && <CurrentTimeLine startTime={startTime} endTime={endTime} size={size} />}
       {timeSlots.map((time, index) => {
         const key = `${time.toDateString()}${index}`;
         const taskItemList = taskListFilter(taskList, time.getHours(), slotTime);
