@@ -1,5 +1,4 @@
 import React from 'react';
-import { SelectTodo } from '@/db/schema/todos';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUpdateTodoTime } from '@/app/apiTest/hooks/todoQueries';
 import * as S from './Todo.styled';
@@ -8,47 +7,32 @@ import { Text } from '../common';
 interface TodoComponentProps {
   todoId: number;
   title: string;
-  todo: SelectTodo;
+  setTodoId: (s: string) => void;
 
-  setModalTodo: (todo: SelectTodo | null) => void;
   setIsModalOpenTrue: () => void;
-  setIsModalOpenFalse: () => void;
-  setTodoId: (s: string | undefined) => void;
+  setIsModalOpenedByFABFalse: () => void;
 }
 
-function TodoComponent({
-  todoId,
-  setTodoId,
-  todo,
-  title,
-  setIsModalOpenTrue,
-  setIsModalOpenFalse,
-  setModalTodo,
-}: TodoComponentProps) {
+function TodoComponent({ todoId, title, setTodoId, setIsModalOpenTrue, setIsModalOpenedByFABFalse }: TodoComponentProps) {
   const queryClient = useQueryClient();
   const { mutate: updateTodoTime } = useUpdateTodoTime();
 
   const handleOpenModal = () => {
     // TodoList를 클릭한 경우
-    if (todo) setTodoId(todo?.todoId.toString());
-    // FAB 클릭한 경우
-    else setIsModalOpenTrue();
+    setTodoId(todoId.toString());
+    setIsModalOpenedByFABFalse();
+    setIsModalOpenTrue();
   };
-  const handleCloseModal = () => {
-    setIsModalOpenFalse();
-    setModalTodo(null);
-    setTodoId('');
-  };
-  const handleStart = (id: number) => {
+
+  const handleStart = async (id: number) => {
     const startTime = new Date().toLocaleTimeString();
     const endTime = null;
 
-    updateTodoTime(
+    await updateTodoTime(
       { todoId: id.toString(), startTime, endTime },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
-          handleCloseModal();
+          queryClient.invalidateQueries({ queryKey: ['todo', todoId.toString()] });
         },
         onError: (error) => {
           alert(`Todo 업데이트에 실패했습니다.${error}`);
@@ -57,16 +41,15 @@ function TodoComponent({
     );
   };
 
-  const handleEnd = (id: number) => {
+  const handleEnd = async (id: number) => {
     const startTime = null;
     const endTime = new Date().toLocaleTimeString();
 
-    updateTodoTime(
+    await updateTodoTime(
       { todoId: id.toString(), startTime, endTime },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
-          handleCloseModal();
+          queryClient.invalidateQueries({ queryKey: ['todo', todoId.toString()] });
         },
         onError: (error) => {
           alert(`Todo 업데이트에 실패했습니다.${error}`);

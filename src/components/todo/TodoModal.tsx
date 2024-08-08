@@ -6,36 +6,24 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { SelectTodo } from '@/db/schema/todos';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCreateTodo, useDeleteTodo, useUpdateTodo } from '@/app/apiTest/hooks/todoQueries';
+import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/app/apiTest/hooks/todoQueries';
 import { TodoModalStyle } from './Todo.styled';
 
 interface TodoModalProps {
   open: boolean;
-  // handleClose: () => void;
-  currentTodo: SelectTodo | null;
-  // handleSave: (title: string, startTime: string, endTime: string) => void;
-  // handleDelete: () => void;
-  modalTodo: SelectTodo | null;
-  setModalTodo: (todo: SelectTodo | null) => void;
+  todoId: string;
+  isModalOpenedByFAB: boolean;
   setIsModalOpenFalse: () => void;
-  setTodoId: (s: string | undefined) => void;
 }
 
-export default function TodoModal({
-  open,
-  currentTodo,
-  setIsModalOpenFalse,
-  modalTodo,
-  setModalTodo,
-  setTodoId,
-}: TodoModalProps) {
-  const [title, setTitle] = React.useState(currentTodo?.title || '');
-  const [content, setContent] = React.useState(currentTodo?.content || '');
-  const [startTime, setStartTime] = React.useState(currentTodo?.startTime || '');
-  const [endTime, setEndTime] = React.useState(currentTodo?.endTime || '');
-  const [color, setColor] = React.useState(currentTodo?.color || '');
+export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModalOpenFalse }: TodoModalProps) {
+  const { data: todoData } = useGetOneTodo(todoId ?? '');
+  const [title, setTitle] = React.useState('');
+  const [content, setContent] = React.useState('');
+  const [startTime, setStartTime] = React.useState('');
+  const [endTime, setEndTime] = React.useState('');
+  const [color, setColor] = React.useState('');
 
   const queryClient = useQueryClient();
   const { mutate: updateTodo } = useUpdateTodo();
@@ -43,62 +31,69 @@ export default function TodoModal({
   const { mutate: deleteTodo } = useDeleteTodo();
 
   useEffect(() => {
-    setTitle(currentTodo?.title || '');
-    setStartTime(currentTodo?.startTime || '');
-    setEndTime(currentTodo?.endTime || '');
-
-    console.log('currentTodo', currentTodo);
-  }, [currentTodo]);
+    if (open) {
+      if (isModalOpenedByFAB) {
+        setTitle('');
+        setContent('');
+        setStartTime('');
+        setEndTime('');
+        setColor('');
+      } else {
+        setTitle(todoData?.title || '');
+        setContent(todoData?.content || '');
+        setStartTime(todoData?.startTime || '');
+        setEndTime(todoData?.endTime || '');
+        setColor(todoData?.color || '');
+      }
+    }
+  }, [open, isModalOpenedByFAB, todoData]);
 
   const handleCloseModal = () => {
     setIsModalOpenFalse();
-    setModalTodo(null);
-    setTodoId('');
   };
 
-  const handleSave = () => {
-    if (modalTodo) {
-      updateTodo(
-        { todoId: modalTodo.todoId.toString(), title, content, startTime, endTime, color },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
-            handleCloseModal();
-          },
-          onError: (error) => {
-            alert(`Todo 업데이트에 실패했습니다.${error}`);
-          },
+  const handleUpdateTodo = () => {
+    updateTodo(
+      { todoId, title, content, startTime, endTime, color },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
+          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
+          handleCloseModal();
         },
-      );
-    } else {
-      createTodo(
-        { userId: '1', title, content, startTime, endTime, color },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
-            handleCloseModal();
-          },
-          onError: (error) => {
-            alert(`Todo를 생성하는 데 실패했습니다.${error}`);
-          },
+        onError: (error) => {
+          alert(`Todo 업데이트에 실패했습니다.${error}`);
         },
-      );
-    }
-    handleCloseModal();
+      },
+    );
   };
-  const handleDelete = () => {
-    if (modalTodo) {
-      deleteTodo(modalTodo.todoId.toString(), {
+
+  const handleCreateTodo = () => {
+    createTodo(
+      { userId: '1', title, content, startTime, endTime, color },
+      {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
           handleCloseModal();
         },
         onError: (error) => {
-          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
-          alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
+          alert(`Todo를 생성하는 데 실패했습니다.${error}`);
         },
-      });
-    }
+      },
+    );
+  };
+
+  const handleDelete = () => {
+    deleteTodo(todoId.toString(), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
+        handleCloseModal();
+      },
+      onError: (error) => {
+        queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
+        alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
+      },
+    });
   };
 
   return (
@@ -106,9 +101,9 @@ export default function TodoModal({
       <Box sx={TodoModalStyle}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography id="modal-title" variant="h6" component="h2">
-            {currentTodo ? 'Todo 수정' : '새로운 Todo 생성'}
+            {isModalOpenedByFAB ? 'Todo 생성' : 'Todo 수정'}
           </Typography>
-          {currentTodo && (
+          {!isModalOpenedByFAB && (
             <IconButton onClick={handleDelete} color="secondary">
               <DeleteIcon />
             </IconButton>
@@ -119,10 +114,9 @@ export default function TodoModal({
         <TextField fullWidth margin="normal" label="시작 시간" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
         <TextField fullWidth margin="normal" label="종료 시간" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
         <TextField fullWidth margin="normal" label="색" value={color} onChange={(e) => setColor(e.target.value)} />
-        <Button onClick={() => handleSave()} variant="contained" color="primary">
+        <Button onClick={isModalOpenedByFAB ? handleCreateTodo : handleUpdateTodo} variant="contained" color="primary">
           저장
         </Button>
-
         <Button onClick={handleCloseModal} variant="outlined" color="secondary" sx={{ ml: 2 }}>
           취소
         </Button>

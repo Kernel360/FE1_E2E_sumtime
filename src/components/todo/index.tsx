@@ -1,37 +1,35 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useGetAllTodos, useGetOneTodo } from '@/app/apiTest/hooks/todoQueries';
-import { SelectTodo } from '@/db/schema/todos';
+import { useGetAllTodos } from '@/app/apiTest/hooks/todoQueries';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 
 export default function Todo() {
-  const [todoId, setTodoId] = useState<string>();
-  const [modalTodo, setModalTodo] = useState<SelectTodo | null>(null);
+  const [todoId, setTodoId] = useState<string>('');
   const { value: isModalOpen, setTrue: setIsModalOpenTrue, setFalse: setIsModalOpenFalse } = useBooleanState();
-
-  // TSQuery 사용
+  const {
+    value: isModalOpenedByFAB,
+    setTrue: setIsModalOpenedByFABTrue,
+    setFalse: setIsModalOpenedByFABFalse,
+  } = useBooleanState();
   const { data: todoListData } = useGetAllTodos('1');
-  const { data: todoData, isSuccess: isTodoDataSuccess } = useGetOneTodo(todoId ?? '');
 
-  useEffect(() => {
-    if (isTodoDataSuccess && todoData) {
-      setModalTodo(todoData);
-      setIsModalOpenTrue();
-    }
-  }, [todoData, isTodoDataSuccess]);
+  const handleOpenFAB = () => {
+    setIsModalOpenedByFABTrue();
+    setTodoId(''); // 새로 추가하는 경우 todoId를 빈 문자열로 설정
+    setIsModalOpenTrue();
+  };
 
-  const handleOpenModal = async (todo?: SelectTodo) => {
-    // TodoList를 클릭한 경우
-    if (todo) setTodoId(todo?.todoId.toString());
-    // FAB 클릭한 경우
-    else setIsModalOpenTrue();
+  const handleOpenTodo = (id: string) => {
+    setIsModalOpenedByFABFalse();
+    setTodoId(id);
+    setIsModalOpenTrue();
   };
 
   return (
@@ -45,27 +43,23 @@ export default function Todo() {
             <TodoComponent
               key={todo.todoId}
               todoId={todo.todoId}
-              setTodoId={setTodoId}
               title={todo.title}
-              todo={todo}
+              setTodoId={handleOpenTodo}
               setIsModalOpenTrue={setIsModalOpenTrue}
-              setIsModalOpenFalse={setIsModalOpenFalse}
-              setModalTodo={setModalTodo}
+              setIsModalOpenedByFABFalse={setIsModalOpenedByFABFalse}
             />
           ))}
         </S.TodoComponentsSection>
         <S.FloatingButton>
-          <Fab color="primary" size="small" aria-label="add" onClick={() => handleOpenModal()}>
+          <Fab color="primary" size="small" aria-label="add" onClick={handleOpenFAB}>
             <AddIcon />
           </Fab>
         </S.FloatingButton>
         <TodoModal
           open={isModalOpen}
-          currentTodo={modalTodo}
           setIsModalOpenFalse={setIsModalOpenFalse}
-          setModalTodo={setModalTodo}
-          modalTodo={modalTodo}
-          setTodoId={setTodoId}
+          todoId={todoId}
+          isModalOpenedByFAB={isModalOpenedByFAB}
         />
       </S.TodoSection>
     )
