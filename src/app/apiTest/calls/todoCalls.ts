@@ -62,6 +62,7 @@ export const updateTodo = async (
     throw error;
   }
 };
+
 export const updateTodoTime = async (todoId: string, startTime: string | null, endTime: string | null): Promise<SelectTodo> => {
   try {
     const { data } = await axios.put('/api/todo/updateTime', { todoId, startTime, endTime });

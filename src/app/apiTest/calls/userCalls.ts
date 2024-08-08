@@ -5,6 +5,7 @@ interface User {
   email: string;
   nickname: string;
 }
+
 export const createUser = async (email: string, password: string, nickname: string): Promise<string> => {
   try {
     const response = await axios.post('/api/user/create', { email, password, nickname });

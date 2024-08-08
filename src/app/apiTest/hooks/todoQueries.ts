@@ -18,6 +18,7 @@ export const useCreateTodo = (): UseMutationResult<
     mutationFn: ({ userId, title, content, startTime, endTime, color }) =>
       createTodo(userId.toString(), title, content, startTime, endTime, color),
   });
+
 export const useGetAllTodos = (userId: string): UseQueryResult<SelectTodo[], Error> =>
   useQuery({ queryKey: ['todos', userId], queryFn: () => getAllByUserId(userId), enabled: !!userId });
 
@@ -33,6 +34,7 @@ export const useUpdateTodo = (): UseMutationResult<
     mutationFn: ({ todoId, title, content, startTime, endTime, color }) =>
       updateTodo(todoId, title, content, startTime, endTime, color),
   });
+
 export const useUpdateTodoTime = (): UseMutationResult<
   SelectTodo,
   Error,
