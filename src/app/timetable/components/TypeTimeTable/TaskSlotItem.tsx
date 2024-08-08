@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { flip, offset, useClick, useDismiss, useFloating, useInteractions, useMergeRefs } from '@floating-ui/react';
 import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType } from '../../utils';
+import { useFloatingInReference } from '../../hooks';
 import { Task } from '../Timetable.type';
 import TypeContext from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
@@ -31,26 +31,8 @@ function TaskSlotItem({
   const [isContentVisible, setIsContentVisible] = useState(false);
   const defaultValue = '...'; // 이 부분이 이후에 Props로 전달 받아서 표현 될 내용이다.
   const type = useContext(TypeContext);
-
-  const {
-    refs: menuRefs,
-    floatingStyles: menuFloatingStyles,
-    context: menuContext,
-  } = useFloating({
-    open: isOpen,
-    onOpenChange,
-    middleware: [offset({ mainAxis: 0, crossAxis: 400 }), flip()],
-  });
-
-  const { getReferenceProps: getMenuReferenceProps, getFloatingProps: getMenuFloatingProps } = useInteractions([
-    useClick(menuContext),
-    useDismiss(menuContext),
-  ]);
-
-  const ref = useMergeRefs([menuRefs.setReference]);
-
-  const props = getMenuReferenceProps();
-
+  const { isFloatingTargetVisible, refs, floatingStyles, getFloatingProps, getReferenceProps, onFloating } =
+    useFloatingInReference();
   const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
     slotStartTime,
     slotEndTime,
@@ -58,13 +40,11 @@ function TaskSlotItem({
     endTime,
     slotTime,
   );
-
   const taskSlotColor = taskColor ?? getColor(id);
   const positionStyles =
     type === 'ROW'
       ? { top: '0', left: `${offsetPercent}%`, width: `${heightPercent}%` }
       : { top: `${offsetPercent}%`, left: '0', height: `${heightPercent}%` };
-  const floatingPositionStyles = type === 'ROW' ? { left: `${offsetPercent}%` } : { top: `${offsetPercent}%` };
 
   useEffect(() => {
     if (type === 'ROW') {
@@ -80,17 +60,19 @@ function TaskSlotItem({
       }
     }
   }, [taskSlotRef.current, type]);
+
   return (
     <div>
       <button
         type="button"
-        ref={ref}
-        {...props}
+        ref={refs.setReference}
+        {...getReferenceProps}
         className={generateClassNameWithType(styles, 'buttonInherit', type)}
         style={{
           ...positionStyles,
           backgroundColor: `${taskSlotColor}`,
         }}
+        onClick={onFloating}
       >
         <div ref={taskSlotRef} className={generateClassNameWithType(styles, 'taskSlotBackground', type)}>
           {shouldDisplayTaskContent &&
@@ -108,19 +90,17 @@ function TaskSlotItem({
             )}
         </div>
       </button>
-      {shouldDisplayTaskContent && isOpen && (
+      {isFloatingTargetVisible && (
         <div
-          ref={menuRefs.setFloating}
+          {...getFloatingProps()}
+          ref={refs.setFloating}
           style={{
-            ...menuFloatingStyles,
+            ...floatingStyles,
             background: 'white',
             border: '1px solid black',
-            transform: 'none',
             padding: 30,
             zIndex: 100,
-            ...floatingPositionStyles,
           }}
-          {...getMenuFloatingProps()}
         >
           {title}
           {subTitle}
