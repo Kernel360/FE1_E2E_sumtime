@@ -8,9 +8,10 @@ interface CurrentTimeLineProps {
   startTime: Date;
   endTime: Date;
   size: string;
+  currentTimeLineStyle?: React.CSSProperties;
 }
 
-function CurrentTimeLine({ startTime, endTime, size }: CurrentTimeLineProps) {
+function CurrentTimeLine({ startTime, endTime, size, currentTimeLineStyle }: CurrentTimeLineProps) {
   const type = useContext(TypeContext);
   const [currentTime, setCurrentTime] = useState(new Date());
   const { value, format } = parseSize(size);
@@ -28,11 +29,9 @@ function CurrentTimeLine({ startTime, endTime, size }: CurrentTimeLineProps) {
   const currentTimeLinePosition = `${(offsetPercent * value) / 100}${format}`;
   const dynamicStyle: React.CSSProperties = type === 'ROW' ? { left: currentTimeLinePosition } : { top: currentTimeLinePosition };
 
-  return (
-    <div className={generateClassNameWithType(styled, 'currentTimeLine', type)} style={dynamicStyle}>
-      <div className={generateClassNameWithType(styled, 'line', type)} />
-    </div>
-  );
+  const mergedStyle: React.CSSProperties = { ...dynamicStyle, ...currentTimeLineStyle };
+
+  return <hr className={generateClassNameWithType(styled, 'line', type)} style={mergedStyle} />;
 }
 
 export default CurrentTimeLine;

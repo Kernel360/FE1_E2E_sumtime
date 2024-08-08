@@ -16,6 +16,7 @@ function TimeTable() {
         timetableType="COLUMN"
         displayCurrentTime
         defaultValue="+"
+        currentTimeLineStyle={{ border: 'dashed 1px red' }}
       />
     </S.TimeTableSection>
   );

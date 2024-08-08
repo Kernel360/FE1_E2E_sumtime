@@ -20,6 +20,7 @@ interface TimetableProps {
   timeSlotStyle?: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
   defaultValue: string;
+  currentTimeLineStyle?: React.CSSProperties;
 }
 
 function Timetable({
@@ -34,6 +35,7 @@ function Timetable({
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },
   defaultValue,
+  currentTimeLineStyle,
 }: TimetableProps) {
   const checkOverlapFromTaskList = useCallback(
     (currentTaskList: Task[]) => checkTimeOverlapFromTaskList(currentTaskList),
@@ -51,6 +53,7 @@ function Timetable({
     },
     { step: slotTime },
   );
+
   const { value, format } = parseSize(timeTableSize);
   const slotSize = distributeSize(value, timeSlots.length, format);
 
@@ -60,6 +63,7 @@ function Timetable({
     }),
     [defaultValue],
   );
+
   return (
     <TypeContext.Provider value={timetableType}>
       <TaskSlotContext.Provider value={contextValue}>
@@ -75,6 +79,7 @@ function Timetable({
           size={timeTableSize}
           startTime={startTime}
           endTime={endTime}
+          currentTimeLineStyle={currentTimeLineStyle}
         />
       </TaskSlotContext.Provider>
     </TypeContext.Provider>
