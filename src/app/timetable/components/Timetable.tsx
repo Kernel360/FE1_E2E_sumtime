@@ -3,8 +3,8 @@
 import { useCallback } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import { parseSize, distributeSize, checkTimeOverlapFromTaskList } from '../utils';
-import { Task, TimetableType } from './Timetable.type';
-import TypeContext from '../TypeContext';
+import { PopoverType, Task, TimetableType } from './Timetable.type';
+import { TypeContext, PopoverTypeContext } from '../TypeContext';
 import TypeTimeTable from './TypeTimeTable';
 
 interface TimetableProps {
@@ -15,6 +15,7 @@ interface TimetableProps {
   timetableType: TimetableType;
   displayCurrentTime?: boolean;
   taskList: Task[];
+  popoverType?: PopoverType;
   timeTableStyle?: React.CSSProperties;
   timeSlotStyle?: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
@@ -28,6 +29,7 @@ function Timetable({
   timetableType,
   displayCurrentTime = false,
   taskList,
+  popoverType = 'Click',
   timeTableStyle = { backgroundColor: 'white' },
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },
@@ -53,19 +55,21 @@ function Timetable({
 
   return (
     <TypeContext.Provider value={timetableType}>
-      <TypeTimeTable
-        timeSlots={timeSlots}
-        slotSize={slotSize}
-        taskList={taskList}
-        slotTime={slotTime}
-        displayCurrentTime={displayCurrentTime}
-        timeSlotStyle={timeSlotStyle}
-        taskSlotStyle={taskSlotStyle}
-        timeTableStyle={timeTableStyle}
-        size={timeTableSize}
-        startTime={startTime}
-        endTime={endTime}
-      />
+      <PopoverTypeContext.Provider value={popoverType}>
+        <TypeTimeTable
+          timeSlots={timeSlots}
+          slotSize={slotSize}
+          taskList={taskList}
+          slotTime={slotTime}
+          displayCurrentTime={displayCurrentTime}
+          timeSlotStyle={timeSlotStyle}
+          taskSlotStyle={taskSlotStyle}
+          timeTableStyle={timeTableStyle}
+          size={timeTableSize}
+          startTime={startTime}
+          endTime={endTime}
+        />
+      </PopoverTypeContext.Provider>
     </TypeContext.Provider>
   );
 }

@@ -2,7 +2,7 @@ import { add } from 'date-fns';
 import { useContext } from 'react';
 import TaskSlotItem from './TaskSlotItem';
 import { Task } from '../Timetable.type';
-import TypeContext from '../../TypeContext';
+import { TypeContext } from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
 import { generateClassNameWithType } from '../../utils';
 

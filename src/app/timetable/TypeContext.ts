@@ -1,6 +1,7 @@
 import { createContext } from 'react';
-import { TimetableType } from './components/Timetable.type';
+import { TimetableType, PopoverType } from './components/Timetable.type';
 
 const TypeContext = createContext<TimetableType>('COLUMN');
+const PopoverTypeContext = createContext<PopoverType>('Click');
 
-export default TypeContext;
+export { TypeContext, PopoverTypeContext };

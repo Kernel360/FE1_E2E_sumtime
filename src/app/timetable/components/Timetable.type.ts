@@ -7,5 +7,6 @@ interface Task {
   endTime: Date;
 }
 type TimetableType = 'CIRCLE' | 'ROW' | 'COLUMN';
+type PopoverType = 'Click' | 'Hover';
 
-export type { Task, TimetableType };
+export type { Task, TimetableType, PopoverType };

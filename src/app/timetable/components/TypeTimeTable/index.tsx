@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import Slot from './Slot';
 import { Task } from '../Timetable.type';
 import { generateClassNameWithType, filterTaskListByTimeSlot, isDateInRange, getShouldDisplayTaskContentList } from '../../utils';
-import TypeContext from '../../TypeContext';
+import { TypeContext } from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
 import CurrentTimeLine from '../CurrentTimeLine';
 
