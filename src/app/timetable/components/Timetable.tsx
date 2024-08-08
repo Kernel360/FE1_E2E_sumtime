@@ -20,7 +20,7 @@ interface TimetableProps {
   timeSlotStyle?: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
   defaultValue: string;
-  currentTimeLineStyle?: React.CSSProperties;
+  currentTimeLineStyle?: string;
 }
 
 function Timetable({

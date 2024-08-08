@@ -18,7 +18,7 @@ interface TypeTimeTableProps {
   timeSlotStyle: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
   timeTableStyle?: React.CSSProperties;
-  currentTimeLineStyle?: React.CSSProperties;
+  currentTimeLineStyle?: string;
 }
 
 function TypeTimeTable({
