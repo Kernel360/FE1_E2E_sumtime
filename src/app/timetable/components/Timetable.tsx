@@ -1,11 +1,12 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import { parseSize, distributeSize, checkTimeOverlapFromTaskList } from '../utils';
 import { Task, TimetableType } from './Timetable.type';
 import TypeContext from '../TypeContext';
 import TypeTimeTable from './TypeTimeTable';
+import TaskSlotContext from '../TaskSlotContext';
 
 interface TimetableProps {
   startTime: Date;
@@ -18,6 +19,7 @@ interface TimetableProps {
   timeTableStyle?: React.CSSProperties;
   timeSlotStyle?: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
+  defaultValue: string;
 }
 
 function Timetable({
@@ -31,6 +33,7 @@ function Timetable({
   timeTableStyle = { backgroundColor: 'white' },
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },
+  defaultValue,
 }: TimetableProps) {
   const checkOverlapFromTaskList = useCallback(
     (currentTaskList: Task[]) => checkTimeOverlapFromTaskList(currentTaskList),
@@ -51,21 +54,29 @@ function Timetable({
   const { value, format } = parseSize(timeTableSize);
   const slotSize = distributeSize(value, timeSlots.length, format);
 
+  const contextValue = useMemo(
+    () => ({
+      defaultValue,
+    }),
+    [defaultValue],
+  );
   return (
     <TypeContext.Provider value={timetableType}>
-      <TypeTimeTable
-        timeSlots={timeSlots}
-        slotSize={slotSize}
-        taskList={taskList}
-        slotTime={slotTime}
-        displayCurrentTime={displayCurrentTime}
-        timeSlotStyle={timeSlotStyle}
-        taskSlotStyle={taskSlotStyle}
-        timeTableStyle={timeTableStyle}
-        size={timeTableSize}
-        startTime={startTime}
-        endTime={endTime}
-      />
+      <TaskSlotContext.Provider value={contextValue}>
+        <TypeTimeTable
+          timeSlots={timeSlots}
+          slotSize={slotSize}
+          taskList={taskList}
+          slotTime={slotTime}
+          displayCurrentTime={displayCurrentTime}
+          timeSlotStyle={timeSlotStyle}
+          taskSlotStyle={taskSlotStyle}
+          timeTableStyle={timeTableStyle}
+          size={timeTableSize}
+          startTime={startTime}
+          endTime={endTime}
+        />
+      </TaskSlotContext.Provider>
     </TypeContext.Provider>
   );
 }

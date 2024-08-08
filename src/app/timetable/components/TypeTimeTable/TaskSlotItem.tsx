@@ -3,6 +3,7 @@ import React, { useContext, useRef, useEffect, useState } from 'react';
 import { flip, offset, useClick, useDismiss, useFloating, useInteractions, useMergeRefs } from '@floating-ui/react';
 import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType } from '../../utils';
 import { Task } from '../Timetable.type';
+import TaskSlotContext from '../../TaskSlotContext';
 import TypeContext from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
 
@@ -29,8 +30,9 @@ function TaskSlotItem({
   const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
-  const defaultValue = '...'; // 이 부분이 이후에 Props로 전달 받아서 표현 될 내용이다.
+
   const type = useContext(TypeContext);
+  const taskOption = useContext(TaskSlotContext);
 
   const {
     refs: menuRefs,
@@ -80,6 +82,7 @@ function TaskSlotItem({
       }
     }
   }, [taskSlotRef.current, type]);
+
   return (
     <div>
       <button
@@ -103,7 +106,7 @@ function TaskSlotItem({
           {shouldDisplayTaskContent &&
             !isContentVisible && ( // taskSlotContent
               <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
-                <p className={generateClassNameWithType(styles, 'title', type)}>{defaultValue}</p>
+                <p className={generateClassNameWithType(styles, 'title', type)}>{taskOption.defaultValue}</p>
               </div>
             )}
         </div>
