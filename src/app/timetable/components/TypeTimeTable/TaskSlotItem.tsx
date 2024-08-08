@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType } from '../../utils';
-import { useFloatingInReference } from '../../hooks';
+import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType, getPopoverEvent } from '../../utils';
+import { useHoverFloatingInReference, useClickFloatingInReference } from '../../hooks';
 import { Task } from '../Timetable.type';
-import TypeContext from '../../TypeContext';
+import { TypeContext, PopoverTypeContext } from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
 
 interface TaskSlotItemProps {
@@ -21,8 +21,12 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
   const [isContentVisible, setIsContentVisible] = useState(false);
   const defaultValue = '...'; // 이 부분이 이후에 Props로 전달 받아서 표현 될 내용이다.
   const type = useContext(TypeContext);
-  const { isFloatingTargetVisible, refs, floatingStyles, getFloatingProps, getReferenceProps, fixFloatingTargetPosition } =
-    useFloatingInReference();
+  const popoverType = useContext(PopoverTypeContext);
+  const hoverObject = useHoverFloatingInReference();
+  const clickObject = useClickFloatingInReference();
+  const { refs, fixFloatingTargetPosition, floatingStyles, getFloatingProps, getReferenceProps, isFloatingTargetVisible } =
+    getPopoverEvent(hoverObject, clickObject, popoverType);
+
   const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
     slotStartTime,
     slotEndTime,
