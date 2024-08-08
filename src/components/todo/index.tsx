@@ -13,31 +13,25 @@ import {
   useUpdateTodoTime,
 } from '@/app/apiTest/hooks/todoQueries';
 import { SelectTodo } from '@/db/schema/todos';
+import { useQueryClient } from '@tanstack/react-query';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 
 export default function Todo() {
-  const [todos, setTodos] = useState<SelectTodo[]>([]);
   const [todoId, setTodoId] = useState<string>();
   const [modalTodo, setModalTodo] = useState<SelectTodo | null>(null);
   const { value: isModalOpen, setTrue: setIsModalOpenTrue, setFalse: setIsModalOpenFalse } = useBooleanState();
+  const queryClient = useQueryClient();
   // TSQuery 사용
-  const { data: todoListData, refetch: refetchAllTodos } = useGetAllTodos('1');
+  const { data: todoListData } = useGetAllTodos('1');
   const { data: todoData, isSuccess: isTodoDataSuccess } = useGetOneTodo(todoId ?? '');
   const { mutate: updateTodo } = useUpdateTodo();
   const { mutate: createTodo } = useCreateTodo();
   const { mutate: deleteTodo } = useDeleteTodo();
   const { mutate: updateTodoTime } = useUpdateTodoTime();
 
-  // todoList 초기 로드
-  useEffect(() => {
-    if (todoListData) {
-      setTodos(todoListData);
-    }
-  }, [todoListData]);
-  // todoId가 변경될 때마다 modalTodo 설정
   useEffect(() => {
     if (isTodoDataSuccess && todoData) {
       setModalTodo(todoData);
@@ -63,9 +57,8 @@ export default function Todo() {
       updateTodo(
         { todoId: modalTodo.todoId.toString(), title, content, startTime, endTime, color },
         {
-          onSuccess: (updatedTodo) => {
-            setTodos((prevTodos) => prevTodos.map((todo) => (todo.todoId === updatedTodo.todoId ? updatedTodo : todo)));
-            refetchAllTodos();
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
             handleCloseModal();
           },
           onError: (error) => {
@@ -77,9 +70,8 @@ export default function Todo() {
       createTodo(
         { userId: '1', title, content, startTime, endTime, color },
         {
-          onSuccess: (createdTodo) => {
-            setTodos((prevTodos) => [...prevTodos, createdTodo]);
-            refetchAllTodos();
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
             handleCloseModal();
           },
           onError: (error) => {
@@ -94,11 +86,11 @@ export default function Todo() {
     if (modalTodo) {
       deleteTodo(modalTodo.todoId.toString(), {
         onSuccess: () => {
-          refetchAllTodos();
+          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
           handleCloseModal();
         },
         onError: (error) => {
-          refetchAllTodos();
+          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
           alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
         },
       });
@@ -112,9 +104,8 @@ export default function Todo() {
     updateTodoTime(
       { todoId: id.toString(), startTime, endTime },
       {
-        onSuccess: (updatedTodo) => {
-          setTodos((prevTodos) => prevTodos.map((todo) => (todo.todoId === updatedTodo.todoId ? updatedTodo : todo)));
-          refetchAllTodos();
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
           handleCloseModal();
         },
         onError: (error) => {
@@ -131,9 +122,8 @@ export default function Todo() {
     updateTodoTime(
       { todoId: id.toString(), startTime, endTime },
       {
-        onSuccess: (updatedTodo) => {
-          setTodos((prevTodos) => prevTodos.map((todo) => (todo.todoId === updatedTodo.todoId ? updatedTodo : todo)));
-          refetchAllTodos();
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
           handleCloseModal();
         },
         onError: (error) => {
@@ -144,34 +134,36 @@ export default function Todo() {
   };
 
   return (
-    <S.TodoSection>
-      <S.TodoComponentsSection>
-        <Text $fontSize="xl" $fontWeight="bold" $color="black">
-          2024년 8월 1일 목요일
-        </Text>
-        {todos.map((todo) => (
-          <TodoComponent
-            key={todo.todoId}
-            todoId={todo.todoId}
-            title={todo.title}
-            handleOpenModal={() => handleOpenModal(todo)}
-            handleStart={() => handleStart(todo.todoId)}
-            handleEnd={() => handleEnd(todo.todoId)}
-          />
-        ))}
-      </S.TodoComponentsSection>
-      <S.FloatingButton>
-        <Fab color="primary" size="small" aria-label="add" onClick={() => handleOpenModal()}>
-          <AddIcon />
-        </Fab>
-      </S.FloatingButton>
-      <TodoModal
-        open={isModalOpen}
-        handleClose={handleCloseModal}
-        currentTodo={modalTodo}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-      />
-    </S.TodoSection>
+    todoListData && (
+      <S.TodoSection>
+        <S.TodoComponentsSection>
+          <Text $fontSize="xl" $fontWeight="bold" $color="black">
+            2024년 8월 1일 목요일
+          </Text>
+          {todoListData.map((todo) => (
+            <TodoComponent
+              key={todo.todoId}
+              todoId={todo.todoId}
+              title={todo.title}
+              handleOpenModal={() => handleOpenModal(todo)}
+              handleStart={() => handleStart(todo.todoId)}
+              handleEnd={() => handleEnd(todo.todoId)}
+            />
+          ))}
+        </S.TodoComponentsSection>
+        <S.FloatingButton>
+          <Fab color="primary" size="small" aria-label="add" onClick={() => handleOpenModal()}>
+            <AddIcon />
+          </Fab>
+        </S.FloatingButton>
+        <TodoModal
+          open={isModalOpen}
+          handleClose={handleCloseModal}
+          currentTodo={modalTodo}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+        />
+      </S.TodoSection>
+    )
   );
 }
