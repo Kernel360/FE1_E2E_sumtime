@@ -1,0 +1,22 @@
+import styled from '@emotion/styled';
+import { Flex } from '../common';
+
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 65px;
+  margin: 0 auto;
+  padding: 10px;
+  border-bottom: 1px solid #dadce0;
+`;
+
+export const Logo = styled.img`
+  height: 100%;
+`;
+
+export const ProfileDiv = styled(Flex)`
+  height: 100%;
+`;
