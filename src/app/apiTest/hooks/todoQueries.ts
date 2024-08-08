@@ -2,8 +2,8 @@ import { useMutation, UseMutationResult, useQuery, UseQueryResult } from '@tanst
 import {
   createTodo,
   deleteTodo,
-  getAllByUserId,
-  getOneByTodoId,
+  getAllTodosByUserId,
+  getOneTodoByTodoId,
   updateTodo,
   updateTodoTime,
 } from '@/app/apiTest/calls/todoCalls';
@@ -20,10 +20,10 @@ export const useCreateTodo = (): UseMutationResult<
   });
 
 export const useGetAllTodos = (userId: string): UseQueryResult<SelectTodo[], Error> =>
-  useQuery({ queryKey: ['todos', userId], queryFn: () => getAllByUserId(userId), enabled: !!userId });
+  useQuery({ queryKey: ['todos', userId], queryFn: () => getAllTodosByUserId(userId), enabled: !!userId });
 
 export const useGetOneTodo = (todoId: string): UseQueryResult<SelectTodo, Error> =>
-  useQuery({ queryKey: ['todo', todoId], queryFn: () => getOneByTodoId(todoId), enabled: !!todoId });
+  useQuery({ queryKey: ['todo', todoId], queryFn: () => getOneTodoByTodoId(todoId), enabled: !!todoId });
 
 export const useUpdateTodo = (): UseMutationResult<
   SelectTodo,

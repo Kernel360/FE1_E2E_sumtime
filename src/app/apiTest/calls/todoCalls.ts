@@ -20,7 +20,7 @@ export const createTodo = async (
   }
 };
 
-export const getAllByUserId = async (userId: string): Promise<SelectTodo[]> => {
+export const getAllTodosByUserId = async (userId: string): Promise<SelectTodo[]> => {
   try {
     const { data } = await axios.post('/api/todo/getAllByUserId', { userId });
     return data.todos;
@@ -32,7 +32,7 @@ export const getAllByUserId = async (userId: string): Promise<SelectTodo[]> => {
   }
 };
 
-export const getOneByTodoId = async (todoId: string): Promise<SelectTodo> => {
+export const getOneTodoByTodoId = async (todoId: string): Promise<SelectTodo> => {
   try {
     const { data } = await axios.post('/api/todo/getOneByTodoId', { todoId });
     return data.todo;
