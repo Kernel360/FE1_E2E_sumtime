@@ -98,7 +98,8 @@ Drizzle
 
 ### 회원가입 페이지
 
-<img width="708" alt="signup page" src="https://github.com/user-attachments/assets/900ec6e9-d12b-462f-9b8e-fea44e0ecd0f">
+<img width="708" alt="signup page" src="https://github.com/user-attachments/assets/dda03ffc-1853-4c04-8ca7-584c2ae27fc7">
+
 
 
 ### 로그인 페이지
