@@ -21,7 +21,7 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
   const [isContentVisible, setIsContentVisible] = useState(false);
   const defaultValue = '...'; // 이 부분이 이후에 Props로 전달 받아서 표현 될 내용이다.
   const type = useContext(TypeContext);
-  const { isFloatingTargetVisible, refs, floatingStyles, getFloatingProps, getReferenceProps, onFloating } =
+  const { isFloatingTargetVisible, refs, floatingStyles, getFloatingProps, getReferenceProps, fixFloatingTargetPosition } =
     useFloatingInReference();
   const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
     slotStartTime,
@@ -62,7 +62,7 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
           ...positionStyles,
           backgroundColor: `${taskSlotColor}`,
         }}
-        onClick={onFloating}
+        onClick={fixFloatingTargetPosition}
       >
         <div ref={taskSlotRef} className={generateClassNameWithType(styles, 'taskSlotBackground', type)}>
           {shouldDisplayTaskContent &&

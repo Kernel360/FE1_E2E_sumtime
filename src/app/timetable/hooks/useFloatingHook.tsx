@@ -3,9 +3,9 @@ import { useFloating, offset, useDismiss, useInteractions, useHover } from '@flo
 import { useEffect, useState, useCallback } from 'react';
 
 function useFloatingInReference() {
-  const [isFloatingTargetVisible, setIsTooltipVisible] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
-  const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
+  const [isFloatingTargetVisible, setIsFloatingTargetVisible] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [clickPosition, setClickPosition] = useState<{ x: number; y: number } | null>(null);
 
   const { refs, floatingStyles, context } = useFloating({
     placement: 'bottom-start',
@@ -13,52 +13,44 @@ function useFloatingInReference() {
     middleware: [
       offset(
         ({ rects }) => {
-          const { x, y } = clickPosition;
+          if (clickPosition) {
+            const { x, y } = clickPosition;
+            const { height } = rects.reference;
+            const referenceClientRect = refs.reference.current?.getBoundingClientRect();
+            const refY: number = referenceClientRect?.y ?? 0;
+            const refX: number = referenceClientRect?.x ?? 0;
+
+            return {
+              mainAxis: y - height - refY + 10,
+              crossAxis: x - refX + 10,
+            };
+          }
+
+          const { x, y } = mousePosition;
           const { height } = rects.reference;
           const referenceClientRect = refs.reference.current?.getBoundingClientRect();
           const refY: number = referenceClientRect?.y ?? 0;
           const refX: number = referenceClientRect?.x ?? 0;
 
           return {
-            mainAxis: y - height - refY,
-            crossAxis: x - refX,
+            mainAxis: y - height - refY + 10,
+            crossAxis: x - refX + 10,
           };
         },
-        [clickPosition.x, clickPosition.y],
+        [mousePosition.x, mousePosition.y],
       ),
     ],
     open: isFloatingTargetVisible,
-    onOpenChange(open, event, reason) {
-      console.log('isClickedin onOpenChange', isClicked);
-
-      if (isClicked && reason === 'hover') {
-        return;
-      }
-
-      setIsTooltipVisible(open);
-    },
+    onOpenChange: setIsFloatingTargetVisible,
   });
 
   const dismiss = useDismiss(context, { outsidePress: true });
   const hover = useHover(context);
   const { getReferenceProps, getFloatingProps } = useInteractions([dismiss, hover]);
 
-  const onFloating = (event: React.MouseEvent) => {
+  const fixFloatingTargetPosition = (event: React.MouseEvent) => {
     const { clientX, clientY } = event;
     setClickPosition({ x: clientX, y: clientY });
-    setIsTooltipVisible(true);
-    setIsClicked(true);
-  };
-
-  const handleMouseMove = (event: MouseEvent) => {
-    const { clientX, clientY } = event;
-
-    if (!isClicked) {
-      console.log('isClicked', isClicked);
-
-      setIsTooltipVisible(true);
-      setClickPosition({ x: clientX + 10, y: clientY + 10 });
-    }
   };
 
   useEffect(() => {
@@ -67,6 +59,12 @@ function useFloatingInReference() {
     if (!refElement) {
       return;
     }
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const { clientX, clientY } = event;
+
+      setMousePosition({ x: clientX + 10, y: clientY + 10 });
+    };
 
     if (refElement) {
       refElement.addEventListener('mousemove', handleMouseMove)!;
@@ -77,7 +75,14 @@ function useFloatingInReference() {
     }
   }, []);
 
-  return { refs, floatingStyles, getReferenceProps, getFloatingProps, onFloating, isFloatingTargetVisible };
+  return {
+    refs,
+    floatingStyles,
+    getReferenceProps,
+    getFloatingProps,
+    fixFloatingTargetPosition,
+    isFloatingTargetVisible,
+  };
 }
 
 export { useFloatingInReference };
