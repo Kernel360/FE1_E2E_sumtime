@@ -1,11 +1,11 @@
 /* eslint-disable consistent-return */
+import { useEffect, useState } from 'react';
 import { useFloating, offset, useDismiss, useInteractions, useHover } from '@floating-ui/react';
-import { useEffect, useState, useCallback } from 'react';
+import { useRequestAnimationFrame } from './useRequestAnimationFrame';
 
-function useFloatingInReference() {
+function useHoverFloatingInReference() {
   const [isFloatingTargetVisible, setIsFloatingTargetVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [clickPosition, setClickPosition] = useState<{ x: number; y: number } | null>(null);
 
   const { refs, floatingStyles, context } = useFloating({
     placement: 'bottom-start',
@@ -13,19 +13,6 @@ function useFloatingInReference() {
     middleware: [
       offset(
         ({ rects }) => {
-          if (clickPosition) {
-            const { x, y } = clickPosition;
-            const { height } = rects.reference;
-            const referenceClientRect = refs.reference.current?.getBoundingClientRect();
-            const refY: number = referenceClientRect?.y ?? 0;
-            const refX: number = referenceClientRect?.x ?? 0;
-
-            return {
-              mainAxis: y - height - refY + 10,
-              crossAxis: x - refX + 10,
-            };
-          }
-
           const { x, y } = mousePosition;
           const { height } = rects.reference;
           const referenceClientRect = refs.reference.current?.getBoundingClientRect();
@@ -33,8 +20,8 @@ function useFloatingInReference() {
           const refX: number = referenceClientRect?.x ?? 0;
 
           return {
-            mainAxis: y - height - refY + 10,
-            crossAxis: x - refX + 10,
+            mainAxis: y - height - refY,
+            crossAxis: x - refX,
           };
         },
         [mousePosition.x, mousePosition.y],
@@ -48,10 +35,10 @@ function useFloatingInReference() {
   const hover = useHover(context);
   const { getReferenceProps, getFloatingProps } = useInteractions([dismiss, hover]);
 
-  const fixFloatingTargetPosition = (event: React.MouseEvent) => {
+  const handleMouseMove = useRequestAnimationFrame((event: MouseEvent) => {
     const { clientX, clientY } = event;
-    setClickPosition({ x: clientX, y: clientY });
-  };
+    setMousePosition({ x: clientX + 5, y: clientY + 5 });
+  });
 
   useEffect(() => {
     const refElement = refs.reference?.current as HTMLElement | null;
@@ -59,12 +46,6 @@ function useFloatingInReference() {
     if (!refElement) {
       return;
     }
-
-    const handleMouseMove = (event: MouseEvent) => {
-      const { clientX, clientY } = event;
-
-      setMousePosition({ x: clientX + 10, y: clientY + 10 });
-    };
 
     if (refElement) {
       refElement.addEventListener('mousemove', handleMouseMove)!;
@@ -80,9 +61,8 @@ function useFloatingInReference() {
     floatingStyles,
     getReferenceProps,
     getFloatingProps,
-    fixFloatingTargetPosition,
     isFloatingTargetVisible,
   };
 }
 
-export { useFloatingInReference };
+export { useHoverFloatingInReference };
