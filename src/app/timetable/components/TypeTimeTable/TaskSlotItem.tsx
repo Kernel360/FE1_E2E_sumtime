@@ -13,19 +13,9 @@ interface TaskSlotItemProps {
   slotStartTime: Date;
   slotEndTime: Date;
   slotTime: number;
-  isOpen: boolean;
-  onOpenChange: (isOpen: boolean) => void;
 }
 
-function TaskSlotItem({
-  taskItem,
-  shouldDisplayTaskContent,
-  slotStartTime,
-  slotEndTime,
-  slotTime,
-  isOpen,
-  onOpenChange,
-}: TaskSlotItemProps) {
+function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotEndTime, slotTime }: TaskSlotItemProps) {
   const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
