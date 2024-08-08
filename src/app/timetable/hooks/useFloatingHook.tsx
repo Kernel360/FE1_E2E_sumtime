@@ -1,7 +1,7 @@
 import { useFloating, offset, useDismiss, useInteractions } from '@floating-ui/react';
 import { useState } from 'react';
 
-function useFloatingHook() {
+function useFloatingInReference() {
   const [isFloatingTargetVisible, setIsTooltipVisible] = useState(false);
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
 
@@ -12,7 +12,10 @@ function useFloatingHook() {
       offset(
         ({ rects }) => {
           const { x, y } = clickPosition;
-          const { height, y: refY, x: refX } = rects.reference;
+          const { height } = rects.reference;
+          const referenceClientRect = refs.reference.current?.getBoundingClientRect();
+          const refY: number = referenceClientRect?.y ?? 0;
+          const refX: number = referenceClientRect?.x ?? 0;
 
           return {
             mainAxis: y - height - refY,
@@ -38,4 +41,4 @@ function useFloatingHook() {
   return { refs, floatingStyles, getReferenceProps, getFloatingProps, onFloating, isFloatingTargetVisible };
 }
 
-export { useFloatingHook };
+export { useFloatingInReference };

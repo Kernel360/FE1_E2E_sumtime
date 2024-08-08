@@ -1,1 +1,1 @@
-export { useFloatingHook } from './useFloatingHook';
+export { useFloatingInReference } from './useFloatingHook';
