@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { and, eq } from 'drizzle-orm';
-import { db, schema } from '../../../../db';
+import { db, schema } from '@/db';
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
@@ -14,6 +14,8 @@ export async function POST(req: NextRequest) {
     const user = await db
       .select({
         userId: schema.usersTable.userId,
+        email: schema.usersTable.email,
+        nickname: schema.usersTable.nickname,
       })
       .from(schema.usersTable)
       .where(and(eq(schema.usersTable.email, email), eq(schema.usersTable.password, password)))
@@ -22,7 +24,7 @@ export async function POST(req: NextRequest) {
     console.log('Query result:', user);
 
     if (user) {
-      return NextResponse.json({ isValid: true });
+      return NextResponse.json({ user });
     }
     return NextResponse.json({ isValid: false });
   } catch (error) {

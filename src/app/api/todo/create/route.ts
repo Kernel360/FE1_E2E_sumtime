@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db, schema } from '../../../../db';
+import { db, schema } from '@/db';
 
 export async function POST(req: NextRequest) {
   const { userId, title, content, startTime, endTime, color } = await req.json();
@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
         userId,
       })
       .returning({
+        todoId: schema.todosTable.todoId,
         title: schema.todosTable.title,
         content: schema.todosTable.content,
         startTime: schema.todosTable.startTime,
