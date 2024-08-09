@@ -1,6 +1,6 @@
 'use client';
 
-import Header from '@/components/Header/Index';
+import Header from '@/components/WebHeader';
 import { useSession } from 'next-auth/react';
 
 export default function Page() {
