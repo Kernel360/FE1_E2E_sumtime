@@ -20,3 +20,19 @@ export const Logo = styled.img`
 export const ProfileDiv = styled(Flex)`
   height: 100%;
 `;
+
+export const UserP = styled.p`
+  height: 100%;
+  line-height: 3;
+`;
+
+export const UserName = styled(UserP)`
+  font-weight: 700;
+`;
+
+export const SignOutBtn = styled(Flex)`
+  background-color: white;
+  width: 20px;
+  margin: 0 10px;
+  cursor: pointer;
+`;

@@ -1,7 +1,6 @@
 'use client';
 
 import Header from '@/components/Header/Index';
-import { SignOutButton } from '@/components/SignIn/SignOutButton';
 import { useSession } from 'next-auth/react';
 
 export default function Page() {
@@ -16,7 +15,6 @@ export default function Page() {
           <p>{session.user?.name}</p>
         </>
       )}
-      <SignOutButton />
     </>
   );
 }
