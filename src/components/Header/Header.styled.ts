@@ -15,6 +15,7 @@ export const Container = styled.div`
 
 export const Logo = styled.img`
   height: 100%;
+  cursor: pointer;
 `;
 
 export const ProfileDiv = styled(Flex)`
