@@ -109,6 +109,10 @@ const filterTaskListByTimeSlot = (taskListInput: Task[], slotStartHour: number, 
     const taskEndHour = task.endTime.getHours();
     const taskEndMinute = task.endTime.getMinutes();
 
+    if (!task.startTime || !task.endTime) {
+      return false;
+    }
+
     return (
       taskStartHour <= slotStartHour &&
       taskEndHour >= slotStartHour &&
