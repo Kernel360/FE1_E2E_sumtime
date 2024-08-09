@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import { parseSize, distributeSize, checkTimeOverlapFromTaskList } from '../utils';
 import { PopoverType, Task, TimetableType } from './Timetable.type';
@@ -19,6 +19,9 @@ interface TimetableProps {
   timeTableStyle?: React.CSSProperties;
   timeSlotStyle?: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
+
+  defaultValue: string;
+  currentTimeLineStyle?: string;
 }
 
 function Timetable({
@@ -33,6 +36,9 @@ function Timetable({
   timeTableStyle = { backgroundColor: 'white' },
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },
+
+  defaultValue,
+  currentTimeLineStyle,
 }: TimetableProps) {
   const checkOverlapFromTaskList = useCallback(
     (currentTaskList: Task[]) => checkTimeOverlapFromTaskList(currentTaskList),
@@ -50,8 +56,16 @@ function Timetable({
     },
     { step: slotTime },
   );
+
   const { value, format } = parseSize(timeTableSize);
   const slotSize = distributeSize(value, timeSlots.length, format);
+
+  const contextValue = useMemo(
+    () => ({
+      defaultValue,
+    }),
+    [defaultValue],
+  );
 
   return (
     <TypeContext.Provider value={timetableType}>
@@ -68,6 +82,7 @@ function Timetable({
           size={timeTableSize}
           startTime={startTime}
           endTime={endTime}
+          currentTimeLineStyle={currentTimeLineStyle}
         />
       </PopoverTypeContext.Provider>
     </TypeContext.Provider>

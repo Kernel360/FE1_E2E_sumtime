@@ -15,6 +15,8 @@ function TimeTable() {
         timeTableSize="2000px"
         timetableType="COLUMN"
         displayCurrentTime
+        defaultValue="+"
+        currentTimeLineStyle="dashed 1px red"
       />
     </S.TimeTableSection>
   );
