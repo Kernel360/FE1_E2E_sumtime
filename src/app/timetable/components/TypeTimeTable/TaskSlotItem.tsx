@@ -3,7 +3,7 @@ import React, { useContext, useRef, useEffect, useState } from 'react';
 import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType, getPopoverEvent } from '../../utils';
 import { useHoverFloatingInReference, useClickFloatingInReference } from '../../hooks';
 import { Task } from '../Timetable.type';
-import { TypeContext, PopoverTypeContext } from '../../TypeContext';
+import { TypeContext, PopoverTypeContext, TaskSlotContext } from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
 
 interface TaskSlotItemProps {
@@ -19,8 +19,8 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
   const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
-  const defaultValue = '...'; // 이 부분이 이후에 Props로 전달 받아서 표현 될 내용이다.
   const type = useContext(TypeContext);
+  const taskOption = useContext(TaskSlotContext);
   const popoverType = useContext(PopoverTypeContext);
   const hoverObject = useHoverFloatingInReference();
   const clickObject = useClickFloatingInReference();
@@ -73,13 +73,12 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
             isContentVisible && ( // taskSlotContent
               <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
                 <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
-                <p className={generateClassNameWithType(styles, 'description', type)}>{subTitle}</p>
               </div>
             )}
           {shouldDisplayTaskContent &&
             !isContentVisible && ( // taskSlotContent
               <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
-                <p className={generateClassNameWithType(styles, 'title', type)}>{defaultValue}</p>
+                <p className={generateClassNameWithType(styles, 'title', type)}>{taskOption.defaultValue}</p>
               </div>
             )}
         </div>

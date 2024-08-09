@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import { parseSize, distributeSize, checkTimeOverlapFromTaskList } from '../utils';
 import { PopoverType, Task, TimetableType } from './Timetable.type';
-import { TypeContext, PopoverTypeContext } from '../TypeContext';
+import { TypeContext, PopoverTypeContext, TaskSlotContext } from '../TypeContext';
 import TypeTimeTable from './TypeTimeTable';
 
 interface TimetableProps {
@@ -69,22 +69,24 @@ function Timetable({
 
   return (
     <TypeContext.Provider value={timetableType}>
-      <PopoverTypeContext.Provider value={popoverType}>
-        <TypeTimeTable
-          timeSlots={timeSlots}
-          slotSize={slotSize}
-          taskList={taskList}
-          slotTime={slotTime}
-          displayCurrentTime={displayCurrentTime}
-          timeSlotStyle={timeSlotStyle}
-          taskSlotStyle={taskSlotStyle}
-          timeTableStyle={timeTableStyle}
-          size={timeTableSize}
-          startTime={startTime}
-          endTime={endTime}
-          currentTimeLineStyle={currentTimeLineStyle}
-        />
-      </PopoverTypeContext.Provider>
+      <TaskSlotContext.Provider value={contextValue}>
+        <PopoverTypeContext.Provider value={popoverType}>
+          <TypeTimeTable
+            timeSlots={timeSlots}
+            slotSize={slotSize}
+            taskList={taskList}
+            slotTime={slotTime}
+            displayCurrentTime={displayCurrentTime}
+            timeSlotStyle={timeSlotStyle}
+            taskSlotStyle={taskSlotStyle}
+            timeTableStyle={timeTableStyle}
+            size={timeTableSize}
+            startTime={startTime}
+            endTime={endTime}
+            currentTimeLineStyle={currentTimeLineStyle}
+          />
+        </PopoverTypeContext.Provider>
+      </TaskSlotContext.Provider>
     </TypeContext.Provider>
   );
 }

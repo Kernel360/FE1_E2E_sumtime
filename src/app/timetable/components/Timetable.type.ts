@@ -6,7 +6,10 @@ interface Task {
   startTime: Date;
   endTime: Date;
 }
+interface TaskSlotContextProps {
+  defaultValue: string;
+}
 type TimetableType = 'CIRCLE' | 'ROW' | 'COLUMN';
 type PopoverType = 'Click' | 'Hover';
 
-export type { Task, TimetableType, PopoverType };
+export type { Task, TimetableType, PopoverType, TaskSlotContextProps };
