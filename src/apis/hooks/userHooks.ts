@@ -33,7 +33,7 @@ export const useLogin = (email: string, password: string): UseQueryResult<User, 
     enabled: !!email && !!password,
   });
 
-export const useDeleteUser = (): UseMutationResult<string, Error, string> =>
+export const useDeleteUser = (): UseMutationResult<string, Error, number, unknown> =>
   useMutation({
-    mutationFn: (userId: string) => deleteUser(userId),
+    mutationFn: (userId: number) => deleteUser(userId),
   });

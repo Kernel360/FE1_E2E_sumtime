@@ -12,13 +12,13 @@ import { TodoModalStyle } from './Todo.styled';
 
 interface TodoModalProps {
   open: boolean;
-  todoId: string;
+  todoId: number;
   isModalOpenedByFAB: boolean;
   setIsModalOpenFalse: () => void;
 }
 
 export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModalOpenFalse }: TodoModalProps) {
-  const { data: todoData } = useGetOneTodo(todoId ?? '');
+  const { data: todoData } = useGetOneTodo(todoId ?? 0);
   const [title, setTitle] = React.useState('');
   const [content, setContent] = React.useState('');
   const [startTime, setStartTime] = React.useState('');
@@ -58,7 +58,7 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
-          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
+          queryClient.invalidateQueries({ queryKey: ['todos', 1] });
           handleCloseModal();
         },
         onError: (error) => {
@@ -70,10 +70,10 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
 
   const handleCreateTodo = () => {
     createTodo(
-      { userId: '1', title, content, startTime, endTime, color },
+      { userId: 1, title, content, startTime, endTime, color },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
+          queryClient.invalidateQueries({ queryKey: ['todos', 1] });
           handleCloseModal();
         },
         onError: (error) => {
@@ -84,13 +84,13 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   };
 
   const handleDelete = () => {
-    deleteTodo(todoId.toString(), {
+    deleteTodo(todoId, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
+        queryClient.invalidateQueries({ queryKey: ['todos', 1] });
         handleCloseModal();
       },
       onError: (error) => {
-        queryClient.invalidateQueries({ queryKey: ['todos', '1'] });
+        queryClient.invalidateQueries({ queryKey: ['todos', 1] });
         alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
       },
     });
