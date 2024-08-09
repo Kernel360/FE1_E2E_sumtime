@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { TimetableType, PopoverType, TaskSlotContextProps } from './components/Timetable.type';
 
 const TypeContext = createContext<TimetableType>('COLUMN');
-const PopoverTypeContext = createContext<PopoverType>('Click');
+const PopoverTypeContext = createContext<PopoverType>('CLICK');
 const defaultContext: TaskSlotContextProps = {
   defaultValue: '',
 };

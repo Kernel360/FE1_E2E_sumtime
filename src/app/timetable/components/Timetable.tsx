@@ -32,7 +32,7 @@ function Timetable({
   timetableType,
   displayCurrentTime = false,
   taskList,
-  popoverType = 'Click',
+  popoverType = 'CLICK',
   timeTableStyle = { backgroundColor: 'white' },
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },

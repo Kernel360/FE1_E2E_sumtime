@@ -34,7 +34,7 @@ const getPopoverEvent = (
   clickTypeObject: ClickFloatingType,
   curPopoverType: PopoverType,
 ): ClickFloatingType => {
-  if (curPopoverType === 'Hover') {
+  if (curPopoverType === 'HOVER') {
     return {
       ...hoverTypeObject,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

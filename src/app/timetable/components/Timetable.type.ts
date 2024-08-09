@@ -10,6 +10,6 @@ interface TaskSlotContextProps {
   defaultValue: string;
 }
 type TimetableType = 'CIRCLE' | 'ROW' | 'COLUMN';
-type PopoverType = 'Click' | 'Hover';
+type PopoverType = 'CLICK' | 'HOVER';
 
 export type { Task, TimetableType, PopoverType, TaskSlotContextProps };

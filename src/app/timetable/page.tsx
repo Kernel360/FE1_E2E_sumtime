@@ -18,7 +18,7 @@ export default function TimetablePage() {
           timeTableStyle={{ backgroundColor: 'white' }}
           timeSlotStyle={{ color: 'black' }}
           taskSlotStyle={{ color: 'black' }}
-          popoverType="Hover"
+          popoverType="HOVER"
           defaultValue="..."
         />
       </div>
