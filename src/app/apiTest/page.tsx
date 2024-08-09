@@ -1,10 +1,10 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
-import { createUser } from '@/app/apiTest/calls/userAxios';
-import { createTodo, deleteTodo, updateTodo } from '@/app/apiTest/calls/todoAxios';
-import { useEmailValidation, useLogin, useGetUserId } from '@/app/apiTest/hooks/userHooks';
-import { useGetAllTodos, useGetOneTodo } from '@/app/apiTest/hooks/todoHooks';
+import { createUser } from '@/apis/axios/userAxios';
+import { createTodo, deleteTodo, updateTodo } from '@/apis/axios/todoAxios';
+import { useEmailValidation, useLogin, useGetUserId } from '@/apis/hooks/userHooks';
+import { useGetAllTodos, useGetOneTodo } from '@/apis/hooks/todoHooks';
 
 export default function Login() {
   const [email, setEmail] = useState('');

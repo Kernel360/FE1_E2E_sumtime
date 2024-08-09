@@ -7,7 +7,7 @@ import Modal from '@mui/material/Modal';
 import { TextField, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/app/apiTest/hooks/todoHooks';
+import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/apis/hooks/todoHooks';
 import { TodoModalStyle } from './Todo.styled';
 
 interface TodoModalProps {

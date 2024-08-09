@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useUpdateTodoTime } from '@/app/apiTest/hooks/todoHooks';
+import { useUpdateTodoTime } from '@/apis/hooks/todoHooks';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 
