@@ -1,10 +1,10 @@
 /* eslint-disable consistent-return */
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useFloating, offset, useDismiss, useInteractions } from '@floating-ui/react';
 
 function useClickFloatingInReference() {
   const [isFloatingTargetVisible, setIsTooltipVisible] = useState(false);
-  const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
+  const refClickPosition = useRef({ x: 0, y: 0 });
 
   const { refs, floatingStyles, context } = useFloating({
     placement: 'bottom-start',
@@ -12,7 +12,7 @@ function useClickFloatingInReference() {
     middleware: [
       offset(
         ({ rects }) => {
-          const { x, y } = clickPosition;
+          const { x, y } = refClickPosition.current;
           const { height } = rects.reference;
           const referenceClientRect = refs.reference.current?.getBoundingClientRect();
           const refY: number = referenceClientRect?.y ?? 0;
@@ -23,7 +23,7 @@ function useClickFloatingInReference() {
             crossAxis: x - refX,
           };
         },
-        [clickPosition.x, clickPosition.y],
+        [refClickPosition.current.x, refClickPosition.current.y],
       ),
     ],
     open: isFloatingTargetVisible,
@@ -35,7 +35,7 @@ function useClickFloatingInReference() {
 
   const fixFloatingTargetPosition = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { clientX, clientY } = event;
-    setClickPosition({ x: clientX, y: clientY });
+    refClickPosition.current = { x: clientX, y: clientY };
     setIsTooltipVisible(true);
   };
 
