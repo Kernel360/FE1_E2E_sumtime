@@ -1,7 +1,7 @@
 interface Task {
   id: number;
   title: string;
-  subTitle: string;
+  content: string;
   taskColor?: string;
   startTime: Date;
   endTime: Date;

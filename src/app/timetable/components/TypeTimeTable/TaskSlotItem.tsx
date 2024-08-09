@@ -16,7 +16,7 @@ interface TaskSlotItemProps {
 }
 
 function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotEndTime, slotTime }: TaskSlotItemProps) {
-  const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
+  const { startTime, endTime, taskColor, title, content, id } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
   const type = useContext(TypeContext);
@@ -96,7 +96,7 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
           }}
         >
           {title}
-          {subTitle}
+          {content}
         </div>
       )}
     </div>
