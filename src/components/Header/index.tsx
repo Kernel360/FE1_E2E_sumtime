@@ -1,6 +1,6 @@
 'use client';
 
-import * as S from '@/components/WebHeader/Header.styled';
+import * as S from '@/components/Header/Header.styled';
 import logo from '@/assets/images/sumtimeRowLogo.png';
 import { useSession, signOut } from 'next-auth/react';
 import signOutIcon from '@/assets/icons/signOut.svg';
