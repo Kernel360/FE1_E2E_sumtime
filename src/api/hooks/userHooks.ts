@@ -1,5 +1,5 @@
 import { useMutation, UseMutationResult, useQuery, UseQueryResult } from '@tanstack/react-query';
-import { createUser, deleteUser, emailValidation, getUserIdByEmail, login } from '@/apis/axios/userAxios';
+import { createUser, deleteUser, emailValidation, getUserIdByEmail, login } from '@/api/queryFn/userQueryFn';
 
 interface User {
   userId: number;

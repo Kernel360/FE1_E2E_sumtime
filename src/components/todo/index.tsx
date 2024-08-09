@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useGetAllTodos } from '@/apis/hooks/todoHooks';
+import { useGetAllTodos } from '@/api/hooks/todoHooks';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';

@@ -6,7 +6,7 @@ import {
   getOneTodoByTodoId,
   updateTodo,
   updateTodoTime,
-} from '@/apis/axios/todoAxios';
+} from '@/api/queryFn/todoQueryFn';
 import { SelectTodo } from '@/db/schema/todos';
 
 export const useCreateTodo = (): UseMutationResult<
