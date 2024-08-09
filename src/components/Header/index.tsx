@@ -17,9 +17,9 @@ function Header() {
       <S.ProfileDiv $align="center">
         <S.UserName>{session?.user.name}</S.UserName>
         <S.UserP>님의 하루를 더해보세요!</S.UserP>
-        <S.SignOutBtn onClick={() => signOut({ callbackUrl: '/' })}>
+        <S.SignOutButton onClick={() => signOut({ callbackUrl: '/' })}>
           <img src={signOutIcon.src} alt="로그아웃" />
-        </S.SignOutBtn>
+        </S.SignOutButton>
       </S.ProfileDiv>
     </S.Container>
   );

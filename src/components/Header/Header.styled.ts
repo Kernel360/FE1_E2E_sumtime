@@ -31,7 +31,7 @@ export const UserName = styled(UserP)`
   font-weight: 700;
 `;
 
-export const SignOutBtn = styled(Flex)`
+export const SignOutButton = styled(Flex)`
   background-color: white;
   width: 20px;
   margin: 0 10px;
