@@ -44,7 +44,7 @@ export const useUpdateTodoTime = (): UseMutationResult<
     mutationFn: ({ todoId, startTime, endTime }) => updateTodoTime(todoId, startTime, endTime),
   });
 
-export const useDeleteTodo = (): UseMutationResult<string, Error, number, unknown> =>
+export const useDeleteTodo = (): UseMutationResult<string, Error, number> =>
   useMutation({
     mutationFn: (todoId: number) => deleteTodo(todoId),
   });

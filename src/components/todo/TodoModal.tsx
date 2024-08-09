@@ -18,7 +18,7 @@ interface TodoModalProps {
 }
 
 export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModalOpenFalse }: TodoModalProps) {
-  const { data: todoData } = useGetOneTodo(todoId ?? 0);
+  const { data: todoData } = useGetOneTodo(todoId);
   const [title, setTitle] = React.useState('');
   const [content, setContent] = React.useState('');
   const [startTime, setStartTime] = React.useState('');

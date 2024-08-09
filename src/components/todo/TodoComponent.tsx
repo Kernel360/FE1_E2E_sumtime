@@ -7,7 +7,7 @@ import { Text } from '../common';
 interface TodoComponentProps {
   todoId: number;
   title: string;
-  setTodoId: (s: number) => void;
+  setTodoId: (todoId: number) => void;
 
   setIsModalOpenTrue: () => void;
   setIsModalOpenedByFABFalse: () => void;
