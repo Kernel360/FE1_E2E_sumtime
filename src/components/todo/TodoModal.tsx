@@ -52,8 +52,8 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
     setIsModalOpenFalse();
   };
 
-  const handleUpdateTodo = () => {
-    updateTodo(
+  const handleUpdateTodo = async () => {
+    await updateTodo(
       { todoId, title, content, startTime, endTime, color },
       {
         onSuccess: () => {
@@ -68,8 +68,8 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
     );
   };
 
-  const handleCreateTodo = () => {
-    createTodo(
+  const handleCreateTodo = async () => {
+    await createTodo(
       { userId: 1, title, content, startTime, endTime, color },
       {
         onSuccess: () => {
@@ -83,14 +83,14 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
     );
   };
 
-  const handleDelete = () => {
-    deleteTodo(todoId, {
+  const handleDelete = async () => {
+    await deleteTodo(todoId, {
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
         queryClient.invalidateQueries({ queryKey: ['todos', 1] });
         handleCloseModal();
       },
       onError: (error) => {
-        queryClient.invalidateQueries({ queryKey: ['todos', 1] });
         alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
       },
     });
