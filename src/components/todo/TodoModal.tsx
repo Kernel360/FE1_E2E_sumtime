@@ -21,7 +21,7 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   const { data: todoData } = useGetOneTodo(todoId ?? '');
   const [title, setTitle] = React.useState('');
   const [content, setContent] = React.useState('');
-  const [startTime, setStartTime] = React.useState('');
+  const [startTime, setStartTime] = React.useState<string | null>('');
   const [endTime, setEndTime] = React.useState('');
   const [color, setColor] = React.useState('');
 

@@ -2,12 +2,12 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
 import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType, getPopoverEvent } from '../../utils';
 import { useHoverFloatingInReference, useClickFloatingInReference } from '../../hooks';
-import { Task } from '../Timetable.type';
+import { BaseTask } from '../Timetable.type';
 import { TypeContext, PopoverTypeContext, TaskSlotContext } from '../../TypeContext';
 import styles from './TypeTimeTable.module.scss';
 
-interface TaskSlotItemProps {
-  taskItem: Task;
+interface TaskSlotItemProps<T extends BaseTask> {
+  taskItem: T;
   index: number;
   shouldDisplayTaskContent: boolean;
   slotStartTime: Date;
@@ -15,7 +15,13 @@ interface TaskSlotItemProps {
   slotTime: number;
 }
 
-function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotEndTime, slotTime }: TaskSlotItemProps) {
+function TaskSlotItem<T extends BaseTask>({
+  taskItem,
+  shouldDisplayTaskContent,
+  slotStartTime,
+  slotEndTime,
+  slotTime,
+}: TaskSlotItemProps<T>) {
   const { startTime, endTime, taskColor, title, content, id } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
@@ -27,6 +33,9 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
   const { refs, fixFloatingTargetPosition, floatingStyles, getFloatingProps, getReferenceProps, isFloatingTargetVisible } =
     getPopoverEvent(hoverObject, clickObject, popoverType);
 
+  if (!startTime || !endTime) {
+    return null;
+  }
   const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
     slotStartTime,
     slotEndTime,
@@ -34,7 +43,15 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
     endTime,
     slotTime,
   );
-  const taskSlotColor = taskColor ?? getColor(id);
+
+  // const taskSlotColor = taskColor ?? getColor(id);
+
+  const taskSlotColor = () => {
+    if (taskColor === '' || taskColor === null) {
+      return getColor(id);
+    }
+    return taskColor;
+  };
   const positionStyles =
     type === 'ROW'
       ? { top: '0', left: `${offsetPercent}%`, width: `${heightPercent}%` }
@@ -64,7 +81,7 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
         className={generateClassNameWithType(styles, 'buttonInherit', type)}
         style={{
           ...positionStyles,
-          backgroundColor: `${taskSlotColor}`,
+          backgroundColor: `${taskSlotColor()}`,
         }}
         onClick={fixFloatingTargetPosition}
       >
@@ -95,8 +112,10 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
             zIndex: 100,
           }}
         >
-          {title}
-          {content}
+          {/* {title} */}
+          {/* {content} */}
+          <div>{title}</div>
+          {content && <div>{content}</div>}
         </div>
       )}
     </div>
