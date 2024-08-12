@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useRef, useEffect, useState } from 'react';
+import { format } from 'date-fns';
 import {
   calculateTaskOffsetAndHeightPercent,
   generateClassNameWithType,
@@ -11,6 +12,8 @@ import { useHoverFloatingInReference, useClickFloatingInReference } from '../../
 import { BaseTask } from '../Timetable.type';
 import { TypeContext, PopoverTypeContext, TaskSlotContext, TaskThemeContext } from '../../contexts';
 import styles from './TypeTimeTable.module.scss';
+import closeImage from '../../assets/close.png';
+import scheduleImage from '../../assets/schedule.png';
 
 interface TaskSlotItemProps<T extends BaseTask> {
   taskItem: T;
@@ -20,6 +23,9 @@ interface TaskSlotItemProps<T extends BaseTask> {
   slotEndTime: Date;
   slotTime: number;
 }
+
+const text =
+  '국가유공자·상이군경 및 전몰군경의 유가족은 법률이 정하는 바에 의하여 우선적으로 근로의 기회를 부여받는다. 모든 국민은 신속한 재판을 받을 권리를 가진다. 형사피고인은 상당한 이유가 없는 한 지체없이 공개재판을 받을 권리를 가진다.이 헌법은 1988년 2월 25일부터 시행한다. 다만, 이 헌법을 시행하기 위하여 필요한 법률의 제정·개정과 이 헌법에 의한 대통령 및 국회의원의 선거 기타 이 헌법시행에 관한 준비는 이 헌법시행 전에 할 수 있다.';
 
 function TaskSlotItem<T extends BaseTask>({
   taskItem,
@@ -106,14 +112,22 @@ function TaskSlotItem<T extends BaseTask>({
           ref={refs.setFloating}
           style={{
             ...floatingStyles,
-            background: 'white',
-            border: '1px solid black',
-            padding: 30,
-            zIndex: 100,
           }}
+          className={styles.popoverLayout}
         >
-          <div>{title}</div>
-          {content && <div>{content}</div>}
+          <div className={styles.buttonLayout}>
+            <button type="button" className={styles.closeButton}>
+              <img src={closeImage.src} alt="close button" />
+            </button>
+          </div>
+          <div className={styles.popoverTitle}>{title}</div>
+          <div className={styles.scheduleLayout}>
+            <img src={scheduleImage.src} alt="close button" className={styles.scheduleIcon} />
+            <p className={styles.scheduleContent}>
+              {format(startTime, "hh':'mm")} - {format(endTime, "hh':'mm")}
+            </p>
+          </div>
+          {content && <div style={{ marginTop: '10px', fontSize: '14px' }}>{text}</div>}
         </div>
       )}
     </div>
