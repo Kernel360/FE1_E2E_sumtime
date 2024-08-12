@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { calculateTaskOffsetAndHeightPercent, getColor, generateClassNameWithType, getPopoverEvent } from '../../utils';
+import { calculateTaskOffsetAndHeightPercent, generateClassNameWithType, getPopoverEvent, getRandomColor } from '../../utils';
 import { useHoverFloatingInReference, useClickFloatingInReference } from '../../hooks';
 import { Task } from '../Timetable.type';
-import { TypeContext, PopoverTypeContext, TaskSlotContext } from '../../TypeContext';
+import { TypeContext, PopoverTypeContext, TaskSlotContext, TaskThemeContext } from '../../contexts';
 import styles from './TypeTimeTable.module.scss';
 
 interface TaskSlotItemProps {
@@ -16,12 +16,13 @@ interface TaskSlotItemProps {
 }
 
 function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotEndTime, slotTime }: TaskSlotItemProps) {
-  const { startTime, endTime, taskColor, title, subTitle, id } = taskItem;
+  const { startTime, endTime, taskColor, title, subTitle } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
   const type = useContext(TypeContext);
   const taskOption = useContext(TaskSlotContext);
   const popoverType = useContext(PopoverTypeContext);
+  const taskColorTheme = useContext(TaskThemeContext);
   const hoverObject = useHoverFloatingInReference();
   const clickObject = useClickFloatingInReference();
   const { refs, fixFloatingTargetPosition, floatingStyles, getFloatingProps, getReferenceProps, isFloatingTargetVisible } =
@@ -34,7 +35,7 @@ function TaskSlotItem({ taskItem, shouldDisplayTaskContent, slotStartTime, slotE
     endTime,
     slotTime,
   );
-  const taskSlotColor = taskColor ?? getColor(id);
+  const taskSlotColor = taskColor ?? getRandomColor(taskItem, taskColorTheme);
   const positionStyles =
     type === 'ROW'
       ? { top: '0', left: `${offsetPercent}%`, width: `${heightPercent}%` }
