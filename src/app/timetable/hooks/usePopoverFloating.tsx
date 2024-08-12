@@ -61,6 +61,10 @@ function usePopoverFloating(popoverType: PopoverType) {
     return undefined;
   }, [popoverType]);
 
+  const hidePopover = () => {
+    setIsFloatingTargetVisible(false);
+  };
+
   return {
     refs,
     floatingStyles,
@@ -68,6 +72,7 @@ function usePopoverFloating(popoverType: PopoverType) {
     getFloatingProps,
     isFloatingTargetVisible,
     fixFloatingTargetPosition: popoverType === 'CLICK' ? handleClick : undefined,
+    hidePopover,
   };
 }
 
