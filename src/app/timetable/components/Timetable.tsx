@@ -5,7 +5,6 @@ import { eachMinuteOfInterval } from 'date-fns';
 import { parseSize, distributeSize, checkTimeOverlapFromTaskList } from '../utils';
 import { PopoverType, BaseTask, TimetableType, TaskThemeType } from './Timetable.type';
 import { ContextProvider } from '../contexts';
-
 import TypeTimeTable from './TypeTimeTable';
 
 interface TimetableProps<T extends BaseTask> {
