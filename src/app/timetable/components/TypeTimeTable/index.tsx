@@ -38,7 +38,6 @@ function TypeTimeTable<T extends BaseTask>({
   const type = useContext(TypeContext);
   const uniqueTaskIdMap = new Map();
 
-  console.log('TypeTimeTable render', timeSlots);
   const isCurrentTimeVisible = displayCurrentTime && isDateInRange(timeSlots[0], new Date(), timeSlots[timeSlots.length - 1]);
 
   return (

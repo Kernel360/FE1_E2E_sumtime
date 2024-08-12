@@ -44,14 +44,13 @@ function TaskSlotItem<T extends BaseTask>({
     slotTime,
   );
 
-  // const taskSlotColor = taskColor ?? getColor(id);
-
   const taskSlotColor = () => {
     if (taskColor === '' || taskColor === null) {
       return getColor(id);
     }
     return taskColor;
   };
+
   const positionStyles =
     type === 'ROW'
       ? { top: '0', left: `${offsetPercent}%`, width: `${heightPercent}%` }
@@ -86,18 +85,16 @@ function TaskSlotItem<T extends BaseTask>({
         onClick={fixFloatingTargetPosition}
       >
         <div ref={taskSlotRef} className={generateClassNameWithType(styles, 'taskSlotBackground', type)}>
-          {shouldDisplayTaskContent &&
-            isContentVisible && ( // taskSlotContent
-              <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
-                <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
-              </div>
-            )}
-          {shouldDisplayTaskContent &&
-            !isContentVisible && ( // taskSlotContent
-              <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
-                <p className={generateClassNameWithType(styles, 'title', type)}>{taskOption.defaultValue}</p>
-              </div>
-            )}
+          {shouldDisplayTaskContent && isContentVisible && (
+            <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
+              <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
+            </div>
+          )}
+          {shouldDisplayTaskContent && !isContentVisible && (
+            <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
+              <p className={generateClassNameWithType(styles, 'title', type)}>{taskOption.defaultValue}</p>
+            </div>
+          )}
         </div>
       </button>
       {isFloatingTargetVisible && (
