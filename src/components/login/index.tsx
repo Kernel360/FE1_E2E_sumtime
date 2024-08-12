@@ -1,23 +1,67 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import logo from '@/assets/images/sumtimeLogo.png';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { EMAIL_REG_EXP } from '@/constants';
 import * as S from './Login.styled';
 
 function LoginSection() {
+  const router = useRouter();
+
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
+  const handleEmailBlur = () => {
+    if (!emailInputRef.current?.value || !EMAIL_REG_EXP.test(emailInputRef.current.value)) {
+      setEmailError('유효한 이메일 주소를 입력해주세요');
+    } else {
+      setEmailError(null);
+    }
+  };
+
+  const handlePasswordBlur = () => {
+    if (!passwordInputRef.current?.value) {
+      setPasswordError('비밀번호를 입력해주세요');
+    } else {
+      setPasswordError(null);
+    }
+  };
+
   const handleSignIn = async () => {
-    await signIn('credentials', {
-      email: emailInputRef.current?.value,
-      password: passwordInputRef.current?.value,
-      redirect: true,
-      callbackUrl: '/todo',
-    });
+    let check = true;
+
+    if (!emailInputRef.current?.value || !EMAIL_REG_EXP.test(emailInputRef.current?.value)) {
+      check = false;
+      alert('유효한 이메일 주소를 입력해주세요');
+      return;
+    }
+    if (!passwordInputRef.current?.value) {
+      check = false;
+      alert('비밀번호를 입력해주세요');
+      return;
+    }
+
+    if (check) {
+      try {
+        const signInData = await signIn('credentials', {
+          email: emailInputRef.current?.value,
+          password: passwordInputRef.current?.value,
+          redirect: false,
+        });
+        if (signInData?.status === 200) {
+          router.push('/todo');
+        } else alert('다시 시도해주세요');
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
   return (
     <S.LoginSection>
@@ -25,26 +69,28 @@ function LoginSection() {
 
       <S.LoginInputDiv>
         <TextField
-          // error={!validation}
           fullWidth
           id="outlined-error-helper-text"
           label="email"
-          // helperText={validation ? '' : '올바른 형식의 이메일을 입력해주세요'}
           variant="standard"
           type="email"
           inputRef={emailInputRef}
+          onBlur={handleEmailBlur}
+          error={!!emailError}
+          helperText={emailError}
         />
       </S.LoginInputDiv>
       <S.LoginInputDiv>
         <TextField
-          // error={!validation}
           fullWidth
           id="outlined-error-helper-text"
           label="비밀번호"
-          // helperText={validation ? '' : '올바른 형식의 비밀번호를 입력해주세요'}
           variant="standard"
           type="password"
           inputRef={passwordInputRef}
+          onBlur={handlePasswordBlur}
+          error={!!passwordError}
+          helperText={passwordError}
         />
       </S.LoginInputDiv>
 
