@@ -1,12 +1,12 @@
 'use client';
 
 import Timetable from '@/app/timetable/components/Timetable';
-import { useGetAllTodosForTimetable } from '@/app/apiTest/hooks/todoQueries';
+import { useGetAllTodosForTimetable } from '@/api/hooks/todoHooks';
 import * as S from './TimeTable.styled';
 import { startTime, endTime } from '../../app/timetable/mocks/timetableMockData';
 
 function TimeTable() {
-  const { data: getForTimetable } = useGetAllTodosForTimetable('1');
+  const { data: getForTimetable } = useGetAllTodosForTimetable(1);
 
   return (
     <S.TimeTableSection>
