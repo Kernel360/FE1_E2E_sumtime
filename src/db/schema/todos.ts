@@ -15,15 +15,7 @@ export const todosTable = sqliteTable('todos', {
 
 export type InsertTodo = typeof todosTable.$inferInsert;
 export type SelectTodo = typeof todosTable.$inferSelect;
-// type SelectTodo = {
-//   startTime: string | null;
-//   endTime: string | null;
-//   color: string | null;
-//   content: string | null;
-//   todoId: number;
-//   title: string;
-//   userId: number;
-// };
+
 export interface TodoForTimetable {
   startTime: Date | null;
   endTime: Date | null;
