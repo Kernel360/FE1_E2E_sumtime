@@ -1,10 +1,10 @@
-interface Task {
+interface BaseTask {
   id: number;
   title: string;
-  subTitle: string;
-  taskColor?: string;
-  startTime: Date;
-  endTime: Date;
+  content: string | null;
+  taskColor: string | null;
+  startTime: Date | null;
+  endTime: Date | null;
   seed?: Seed;
 }
 
@@ -17,4 +17,4 @@ interface TaskSlotContextProps {
 type TimetableType = 'CIRCLE' | 'ROW' | 'COLUMN';
 type PopoverType = 'CLICK' | 'HOVER';
 
-export type { Task, TimetableType, PopoverType, TaskSlotContextProps, TaskThemeType, Seed };
+export type { BaseTask, TimetableType, PopoverType, TaskSlotContextProps, TaskThemeType };
