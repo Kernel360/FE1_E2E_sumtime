@@ -1,13 +1,23 @@
 'use client';
 
 import randomColors from 'randomcolor';
-import { Task, TaskThemeType } from '../components/Timetable.type';
+import { BaseTask, TaskThemeType } from '../components/Timetable.type';
 
-const getRandomColor = (task: Task, theme?: TaskThemeType) => {
+const getRandomColor = (task: BaseTask, theme?: TaskThemeType) => {
   const { id, seed: taskSeed } = task;
   const seed = taskSeed ?? id;
 
   return randomColors({ seed, hue: theme });
 };
 
-export { getRandomColor };
+const getTaskColor = (task: BaseTask) => {
+  const { taskColor } = task;
+
+  if (!taskColor || taskColor === '') {
+    return null;
+  }
+
+  return taskColor;
+};
+
+export { getRandomColor, getTaskColor };
