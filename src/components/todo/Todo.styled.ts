@@ -71,19 +71,20 @@ export const TodoContainer = styled(Flex)`
 
 export const FloatingButton = styled.div`
   position: absolute;
-  top: 400px;
-  right: 50px;
+  top: 85%;
+  right: 5%;
   z-index: 1500;
 `;
 
 // mui TodoModal에만 쓰이는 Style
 export const TodoModalStyle = {
+  outline: 'none',
   position: 'absolute' as const,
-  top: '50%',
+  top: 'calc(50% - 300px)',
   left: '50%',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  borderRadius: 2,
+  p: 3.7,
 };

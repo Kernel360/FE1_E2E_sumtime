@@ -8,6 +8,7 @@ import { TextField, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
+import { red } from '@mui/material/colors';
 import { TodoModalStyle } from './Todo.styled';
 
 interface TodoModalProps {
@@ -107,27 +108,31 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
             </Typography>
             {!isModalOpenedByFAB && (
               <IconButton onClick={handleDelete} color="secondary">
-                <DeleteIcon />
+                <DeleteIcon sx={{ color: red[400], fontSize: 25 }} />
               </IconButton>
             )}
           </Box>
-          <TextField fullWidth margin="normal" label="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
-          <TextField fullWidth margin="normal" label="설명" value={content} onChange={(e) => setContent(e.target.value)} />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="시작 시간"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-          />
-          <TextField fullWidth margin="normal" label="종료 시간" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-          <TextField fullWidth margin="normal" label="색" value={color} onChange={(e) => setColor(e.target.value)} />
-          <Button onClick={isModalOpenedByFAB ? handleCreateTodo : handleUpdateTodo} variant="contained" color="primary">
-            저장
-          </Button>
-          <Button onClick={handleCloseModal} variant="outlined" color="secondary" sx={{ ml: 2 }}>
-            취소
-          </Button>
+          <Box m={1}>
+            <TextField fullWidth margin="normal" label="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <TextField fullWidth margin="normal" label="설명" value={content} onChange={(e) => setContent(e.target.value)} />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="시작 시간"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+            />
+            <TextField fullWidth margin="normal" label="종료 시간" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+            <TextField fullWidth margin="normal" label="색" value={color} onChange={(e) => setColor(e.target.value)} />
+          </Box>
+          <Box display="flex" gap={1} m={1} justifyContent="flex-end">
+            <Button onClick={handleCloseModal} variant="text" size="medium" color="error" sx={{ border: '1px solid pink' }}>
+              취소
+            </Button>
+            <Button onClick={isModalOpenedByFAB ? handleCreateTodo : handleUpdateTodo} variant="contained" color="primary">
+              저장
+            </Button>
+          </Box>
         </Box>
       </Modal>
     )
