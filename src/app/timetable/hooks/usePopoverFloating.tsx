@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useFloating, offset, useDismiss, useInteractions, useHover } from '@floating-ui/react';
+import { useFloating, offset, useDismiss, useInteractions, useHover, shift } from '@floating-ui/react';
 import { useRequestAnimationFrame } from './useRequestAnimationFrame';
 import { PopoverType } from '../components/Timetable.type';
 
@@ -26,6 +26,7 @@ function usePopoverFloating(popoverType: PopoverType) {
         },
         [position.x, position.y],
       ),
+      shift({ crossAxis: true }),
     ],
     open: isFloatingTargetVisible,
     onOpenChange: setIsFloatingTargetVisible,
