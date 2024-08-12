@@ -18,33 +18,27 @@ function LoginSection() {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
-  let checkLoginForm = false;
-
   const handleEmailValidation = () => {
     if (!emailInputRef.current?.value || !EMAIL_REG_EXP.test(emailInputRef.current.value)) {
       setEmailError('유효한 이메일 주소를 입력해주세요');
-      checkLoginForm = false;
     } else {
       setEmailError(null);
-      checkLoginForm = true;
     }
   };
 
   const handlePasswordValidation = () => {
     if (!passwordInputRef.current?.value) {
       setPasswordError('비밀번호를 입력해주세요');
-      checkLoginForm = false;
     } else {
       setPasswordError(null);
-      checkLoginForm = true;
     }
   };
 
   const handleSignIn = async () => {
-    handleEmailValidation(); // 추가: 이메일 검증
-    handlePasswordValidation(); // 추가: 비밀번호 검증
+    handleEmailValidation();
+    handlePasswordValidation();
 
-    if (checkLoginForm) {
+    if (!emailError && !passwordError) {
       try {
         const signInData = await signIn('credentials', {
           email: emailInputRef.current?.value,
@@ -57,6 +51,8 @@ function LoginSection() {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      alert('유효한 이메일 주소와 비밀번호를 입력해주세요');
     }
   };
 
