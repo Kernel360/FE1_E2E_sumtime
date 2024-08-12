@@ -18,37 +18,33 @@ function LoginSection() {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
-  const handleEmailBlur = () => {
+  let checkLoginForm = false;
+
+  const handleEmailValidation = () => {
     if (!emailInputRef.current?.value || !EMAIL_REG_EXP.test(emailInputRef.current.value)) {
       setEmailError('유효한 이메일 주소를 입력해주세요');
+      checkLoginForm = false;
     } else {
       setEmailError(null);
+      checkLoginForm = true;
     }
   };
 
-  const handlePasswordBlur = () => {
+  const handlePasswordValidation = () => {
     if (!passwordInputRef.current?.value) {
       setPasswordError('비밀번호를 입력해주세요');
+      checkLoginForm = false;
     } else {
       setPasswordError(null);
+      checkLoginForm = true;
     }
   };
 
   const handleSignIn = async () => {
-    let check = true;
+    handleEmailValidation(); // 추가: 이메일 검증
+    handlePasswordValidation(); // 추가: 비밀번호 검증
 
-    if (!emailInputRef.current?.value || !EMAIL_REG_EXP.test(emailInputRef.current?.value)) {
-      check = false;
-      alert('유효한 이메일 주소를 입력해주세요');
-      return;
-    }
-    if (!passwordInputRef.current?.value) {
-      check = false;
-      alert('비밀번호를 입력해주세요');
-      return;
-    }
-
-    if (check) {
+    if (checkLoginForm) {
       try {
         const signInData = await signIn('credentials', {
           email: emailInputRef.current?.value,
@@ -57,12 +53,13 @@ function LoginSection() {
         });
         if (signInData?.status === 200) {
           router.push('/todo');
-        } else alert('다시 시도해주세요');
+        } else alert('일치하는 이메일, 비밀번호가 없습니다');
       } catch (error) {
         console.log(error);
       }
     }
   };
+
   return (
     <S.LoginSection>
       <S.LoginLogo src={logo.src} alt="logo" />
@@ -75,7 +72,7 @@ function LoginSection() {
           variant="standard"
           type="email"
           inputRef={emailInputRef}
-          onBlur={handleEmailBlur}
+          onBlur={handleEmailValidation}
           error={!!emailError}
           helperText={emailError}
         />
@@ -88,7 +85,7 @@ function LoginSection() {
           variant="standard"
           type="password"
           inputRef={passwordInputRef}
-          onBlur={handlePasswordBlur}
+          onBlur={handlePasswordValidation}
           error={!!passwordError}
           helperText={passwordError}
         />
