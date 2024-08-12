@@ -8,8 +8,8 @@ interface BaseTask {
   seed?: Seed;
 }
 
-type TaskThemeType = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'purple' | 'pink' | 'random' | `#${string}` | undefined; // HEX
-type Seed = string | number | 'no-seed'; // no seed면 taskId이용
+type TaskThemeType = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'purple' | 'pink' | 'random' | `#${string}` | undefined;
+type Seed = string | number;
 
 interface TaskSlotContextProps {
   defaultValue: string;
