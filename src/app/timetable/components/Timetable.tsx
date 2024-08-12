@@ -3,28 +3,28 @@
 import { useCallback, useMemo } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import { parseSize, distributeSize, checkTimeOverlapFromTaskList } from '../utils';
-import { PopoverType, Task, TimetableType } from './Timetable.type';
-import { TypeContext, PopoverTypeContext, TaskSlotContext } from '../TypeContext';
+import { PopoverType, BaseTask, TimetableType, TaskThemeType } from './Timetable.type';
+import { ContextProvider } from '../contexts';
 import TypeTimeTable from './TypeTimeTable';
 
-interface TimetableProps {
+interface TimetableProps<T extends BaseTask> {
   startTime: Date;
   endTime: Date;
   slotTime: number;
   timeTableSize: string;
   timetableType: TimetableType;
+  taskList: T[];
   displayCurrentTime?: boolean;
-  taskList: Task[];
+  defaultValue: string;
+  currentTimeLineStyle?: string;
   popoverType?: PopoverType;
   timeTableStyle?: React.CSSProperties;
   timeSlotStyle?: React.CSSProperties;
   taskSlotStyle?: React.CSSProperties;
-
-  defaultValue: string;
-  currentTimeLineStyle?: string;
+  taskTheme?: TaskThemeType;
 }
 
-function Timetable({
+function Timetable<T extends BaseTask>({
   startTime,
   endTime,
   slotTime,
@@ -36,12 +36,12 @@ function Timetable({
   timeTableStyle = { backgroundColor: 'white' },
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },
-
   defaultValue,
   currentTimeLineStyle,
-}: TimetableProps) {
+  taskTheme,
+}: TimetableProps<T>) {
   const checkOverlapFromTaskList = useCallback(
-    (currentTaskList: Task[]) => checkTimeOverlapFromTaskList(currentTaskList),
+    (currentTaskList: T[]) => checkTimeOverlapFromTaskList(currentTaskList),
     [taskList],
   );
 
@@ -68,26 +68,22 @@ function Timetable({
   );
 
   return (
-    <TypeContext.Provider value={timetableType}>
-      <TaskSlotContext.Provider value={contextValue}>
-        <PopoverTypeContext.Provider value={popoverType}>
-          <TypeTimeTable
-            timeSlots={timeSlots}
-            slotSize={slotSize}
-            taskList={taskList}
-            slotTime={slotTime}
-            displayCurrentTime={displayCurrentTime}
-            timeSlotStyle={timeSlotStyle}
-            taskSlotStyle={taskSlotStyle}
-            timeTableStyle={timeTableStyle}
-            size={timeTableSize}
-            startTime={startTime}
-            endTime={endTime}
-            currentTimeLineStyle={currentTimeLineStyle}
-          />
-        </PopoverTypeContext.Provider>
-      </TaskSlotContext.Provider>
-    </TypeContext.Provider>
+    <ContextProvider timetableType={timetableType} popoverType={popoverType} contextValue={contextValue} taskTheme={taskTheme}>
+      <TypeTimeTable
+        timeSlots={timeSlots}
+        slotSize={slotSize}
+        taskList={taskList}
+        slotTime={slotTime}
+        displayCurrentTime={displayCurrentTime}
+        timeSlotStyle={timeSlotStyle}
+        taskSlotStyle={taskSlotStyle}
+        timeTableStyle={timeTableStyle}
+        size={timeTableSize}
+        startTime={startTime}
+        endTime={endTime}
+        currentTimeLineStyle={currentTimeLineStyle}
+      />
+    </ContextProvider>
   );
 }
 
