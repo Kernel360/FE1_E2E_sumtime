@@ -1,6 +1,4 @@
 import { useContext } from 'react';
-// import TimeSlot from './TypeTimeTable/TimeSlot';
-// import TaskSlot from './TypeTimeTable/TaskSlot';
 import { generateClassNameWithType } from '../utils';
 import { BaseTask } from './Timetable.type';
 import { TypeContext } from '../contexts';
