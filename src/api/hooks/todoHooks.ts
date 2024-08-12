@@ -6,23 +6,23 @@ import {
   getOneTodoByTodoId,
   updateTodo,
   updateTodoTime,
-} from '@/app/apiTest/calls/todoCalls';
+} from '@/api/queryFn/todoQueryFn';
 import { SelectTodo, TodoForTimetable } from '@/db/schema/todos';
-// TodoForTimetable
+
 export const useCreateTodo = (): UseMutationResult<
   SelectTodo,
   Error,
-  { userId: string; title: string; content: string; startTime: string | null; endTime: string; color: string }
+  { userId: number; title: string; content: string; startTime: string | null; endTime: string | null; color: string }
 > =>
   useMutation({
     mutationFn: ({ userId, title, content, startTime, endTime, color }) =>
-      createTodo(userId.toString(), title, content, startTime, endTime, color),
+      createTodo(userId, title, content, startTime, endTime, color),
   });
 
-export const useGetAllTodos = (userId: string): UseQueryResult<SelectTodo[], Error> =>
+export const useGetAllTodos = (userId: number): UseQueryResult<SelectTodo[], Error> =>
   useQuery({ queryKey: ['todos', userId], queryFn: () => getAllTodosByUserId(userId), enabled: !!userId });
 
-export const useGetAllTodosForTimetable = (userId: string): UseQueryResult<TodoForTimetable[], Error> =>
+export const useGetAllTodosForTimetable = (userId: number): UseQueryResult<TodoForTimetable[], Error> =>
   useQuery({
     queryKey: ['todos', userId],
     queryFn: () => getAllTodosByUserId(userId),
@@ -37,13 +37,13 @@ export const useGetAllTodosForTimetable = (userId: string): UseQueryResult<TodoF
       })),
   });
 
-export const useGetOneTodo = (todoId: string): UseQueryResult<SelectTodo, Error> =>
+export const useGetOneTodo = (todoId: number): UseQueryResult<SelectTodo, Error> =>
   useQuery({ queryKey: ['todo', todoId], queryFn: () => getOneTodoByTodoId(todoId), enabled: !!todoId });
 
 export const useUpdateTodo = (): UseMutationResult<
   SelectTodo,
   Error,
-  { todoId: string; title: string; content: string; startTime: string | null; endTime: string; color: string }
+  { todoId: number; title: string; content: string; startTime: string | null; endTime: string | null; color: string }
 > =>
   useMutation({
     mutationFn: ({ todoId, title, content, startTime, endTime, color }) =>
@@ -53,13 +53,13 @@ export const useUpdateTodo = (): UseMutationResult<
 export const useUpdateTodoTime = (): UseMutationResult<
   SelectTodo,
   Error,
-  { todoId: string; startTime: string | null; endTime: string | null }
+  { todoId: number; startTime: string | null; endTime: string | null }
 > =>
   useMutation({
     mutationFn: ({ todoId, startTime, endTime }) => updateTodoTime(todoId, startTime, endTime),
   });
 
-export const useDeleteTodo = (): UseMutationResult<string, Error, string> =>
+export const useDeleteTodo = (): UseMutationResult<string, Error, number> =>
   useMutation({
-    mutationFn: (todoId: string) => deleteTodo(todoId),
+    mutationFn: (todoId: number) => deleteTodo(todoId),
   });
