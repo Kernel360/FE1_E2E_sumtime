@@ -8,7 +8,7 @@ import {
   updateTodo,
   updateTodoTime,
 } from '@/api/queryFn/todoQueryFn';
-import { SelectTodo } from '@/db/schema/todos';
+import { SelectTodo, TodoForTimetable } from '@/db/schema/todos';
 
 export const useCreateTodo = (): UseMutationResult<
   SelectTodo,
@@ -32,6 +32,21 @@ export const useGetAllTodos = (userId: number): UseQueryResult<SelectTodo[], Err
   useQuery({ queryKey: ['todos', userId], queryFn: () => getAllTodosByUserId(userId), enabled: !!userId });
 export const useGetTodosMatchingDate = (userId: number, createdAt: Date): UseQueryResult<SelectTodo[], Error> =>
   useQuery({ queryKey: ['todos', userId], queryFn: () => getTodosMatchingDate(userId, createdAt), enabled: !!userId });
+
+export const useGetAllTodosForTimetable = (userId: number): UseQueryResult<TodoForTimetable[], Error> =>
+  useQuery({
+    queryKey: ['todos', userId],
+    queryFn: () => getAllTodosByUserId(userId),
+    enabled: !!userId,
+    select: (data) =>
+      data.map((todo) => ({
+        ...todo,
+        startTime: todo.startTime ? new Date(todo.startTime) : null,
+        endTime: todo.endTime ? new Date(todo.endTime) : null,
+        id: todo.todoId,
+        taskColor: todo.color,
+      })),
+  });
 
 export const useGetOneTodo = (todoId: number): UseQueryResult<SelectTodo, Error> =>
   useQuery({ queryKey: ['todo', todoId], queryFn: () => getOneTodoByTodoId(todoId), enabled: !!todoId });
