@@ -12,7 +12,7 @@ import { SelectTodo, TodoForTimetable } from '@/db/schema/todos';
 export const useCreateTodo = (): UseMutationResult<
   SelectTodo,
   Error,
-  { userId: number; title: string; content: string; startTime: string | null; endTime: string | null; color: string }
+  { userId: number; title: string; content: string; startTime: string | null; endTime: string | null; color: string | null }
 > =>
   useMutation({
     mutationFn: ({ userId, title, content, startTime, endTime, color }) =>
@@ -43,7 +43,7 @@ export const useGetOneTodo = (todoId: number): UseQueryResult<SelectTodo, Error>
 export const useUpdateTodo = (): UseMutationResult<
   SelectTodo,
   Error,
-  { todoId: number; title: string; content: string; startTime: string | null; endTime: string | null; color: string }
+  { todoId: number; title: string; content: string; startTime: string | null; endTime: string | null; color: string | null }
 > =>
   useMutation({
     mutationFn: ({ todoId, title, content, startTime, endTime, color }) =>
