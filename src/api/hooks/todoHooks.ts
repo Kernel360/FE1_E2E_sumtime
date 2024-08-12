@@ -36,7 +36,7 @@ export const useGetTodosMatchingDate = (userId: number, createdAt: Date): UseQue
 export const useGetAllTodosForTimetable = (userId: number): UseQueryResult<TodoForTimetable[], Error> =>
   useQuery({
     queryKey: ['todos', userId],
-    queryFn: () => getAllTodosByUserId(userId),
+    queryFn: () => getTodosMatchingDate(userId, new Date()),
     enabled: !!userId,
     select: (data) =>
       data.map((todo) => ({
