@@ -9,7 +9,7 @@ import CurrentTimeLine from '../CurrentTimeLine';
 interface TypeTimeTableProps<T extends BaseTask> {
   timeSlots: Date[];
   slotSize: string;
-  taskList: T[]; // Task[];
+  taskList: T[];
   slotTime: number;
   size: string;
   startTime: Date;

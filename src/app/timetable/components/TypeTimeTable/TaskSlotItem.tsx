@@ -109,8 +109,6 @@ function TaskSlotItem<T extends BaseTask>({
             zIndex: 100,
           }}
         >
-          {/* {title} */}
-          {/* {content} */}
           <div>{title}</div>
           {content && <div>{content}</div>}
         </div>

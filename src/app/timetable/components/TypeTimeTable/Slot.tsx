@@ -10,7 +10,7 @@ interface SlotProps<T extends BaseTask> {
   headerDate: Date;
   size: string;
   slotTime: number;
-  taskItemList: T[]; // Task[];
+  taskItemList: T[];
   shouldDisplayTaskContentList: boolean[];
   timeSlotStyle: React.CSSProperties;
   taskSlotStyle: React.CSSProperties;
