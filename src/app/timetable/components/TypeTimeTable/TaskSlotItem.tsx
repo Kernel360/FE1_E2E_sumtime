@@ -1,14 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useRef, useEffect, useState } from 'react';
 import { format } from 'date-fns';
-import {
-  calculateTaskOffsetAndHeightPercent,
-  generateClassNameWithType,
-  getPopoverEvent,
-  getRandomColor,
-  getTaskColor,
-} from '../../utils';
-import { useHoverFloatingInReference, useClickFloatingInReference } from '../../hooks';
+import usePopoverFloating from '../../hooks/usePopoverFloating';
+import { calculateTaskOffsetAndHeightPercent, generateClassNameWithType, getRandomColor, getTaskColor } from '../../utils';
 import { BaseTask } from '../Timetable.type';
 import { TypeContext, PopoverTypeContext, TaskSlotContext, TaskThemeContext } from '../../contexts';
 import styles from './TypeTimeTable.module.scss';
@@ -41,10 +35,16 @@ function TaskSlotItem<T extends BaseTask>({
   const taskOption = useContext(TaskSlotContext);
   const popoverType = useContext(PopoverTypeContext);
   const taskColorTheme = useContext(TaskThemeContext);
-  const hoverObject = useHoverFloatingInReference();
-  const clickObject = useClickFloatingInReference();
-  const { refs, fixFloatingTargetPosition, floatingStyles, getFloatingProps, getReferenceProps, isFloatingTargetVisible } =
-    getPopoverEvent(hoverObject, clickObject, popoverType);
+
+  const {
+    refs,
+    fixFloatingTargetPosition,
+    floatingStyles,
+    getFloatingProps,
+    getReferenceProps,
+    isFloatingTargetVisible,
+    hidePopover,
+  } = usePopoverFloating(popoverType);
 
   if (!startTime || !endTime) {
     return null;
@@ -116,7 +116,7 @@ function TaskSlotItem<T extends BaseTask>({
           className={styles.popoverLayout}
         >
           <div className={styles.buttonLayout}>
-            <button type="button" className={styles.closeButton}>
+            <button type="button" onClick={hidePopover} className={styles.closeButton}>
               <img src={closeImage.src} alt="close button" />
             </button>
           </div>
