@@ -33,9 +33,9 @@ export const getAllTodosByUserId = async (userId: number): Promise<SelectTodo[]>
   }
 };
 
-export const getTodosMatchingDate = async (userId: number, createdAt: Date): Promise<SelectTodo[]> => {
+export const getTodosByDate = async (userId: number, createdAt: Date): Promise<SelectTodo[]> => {
   try {
-    const { data } = await axios.post('/api/todo/getMatchingDate', { userId, createdAt });
+    const { data } = await axios.post('/api/todo/getByDate', { userId, createdAt });
     return data.todos;
   } catch (error) {
     if (error instanceof AxiosError) {
