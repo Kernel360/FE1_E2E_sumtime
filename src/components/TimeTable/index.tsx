@@ -6,16 +6,16 @@ import * as S from './TimeTable.styled';
 import { startTime, endTime } from '../../app/timetable/mocks/timetableMockData';
 
 function TimeTable() {
-  const { data: getForTimetable } = useGetAllTodosForTimetable(1);
+  const { data: allTodosForTimetable } = useGetAllTodosForTimetable(1);
 
   return (
     <S.TimeTableSection>
-      {getForTimetable && (
+      {allTodosForTimetable && (
         <Timetable
           startTime={startTime}
           endTime={endTime}
           slotTime={60}
-          taskList={getForTimetable}
+          taskList={allTodosForTimetable}
           timeTableSize="2000px"
           timetableType="COLUMN"
           displayCurrentTime
