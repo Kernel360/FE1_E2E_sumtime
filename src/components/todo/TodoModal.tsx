@@ -44,7 +44,6 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
         setStartTime(todoData?.startTime || '');
         setEndTime(todoData?.endTime || '');
         setColor(todoData?.color || '');
-        alert(JSON.stringify(todoData));
       }
     }
   }, [open, isModalOpenedByFAB, todoData]);

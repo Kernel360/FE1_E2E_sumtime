@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
   const { userId, title, createdAt, content, startTime, endTime, color } = await req.json();
 
   try {
-    const strCreatedAt = new Date(createdAt).toISOString();
+    const strCreatedAt = new Date(createdAt).toDateString();
     const result = await db
       .insert(schema.todosTable)
       .values({

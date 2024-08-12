@@ -4,7 +4,8 @@ import { db, schema } from '@/db';
 
 export async function POST(req: NextRequest) {
   const { userId, createdAt } = await req.json();
-
+  const formattedCreatedAt = new Date(createdAt).toDateString();
+  console.log(formattedCreatedAt);
   if (!userId) {
     return NextResponse.json({ error: 'UserID query parameter is required' }, { status: 400 });
   }
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
     const todos = await db
       .select()
       .from(schema.todosTable)
-      .where(and(eq(schema.todosTable.userId, userId), eq(schema.todosTable.createdAt, createdAt.toISOString())))
+      .where(and(eq(schema.todosTable.userId, userId), eq(schema.todosTable.createdAt, formattedCreatedAt)))
       .all();
 
     if (todos.length > 0) {
