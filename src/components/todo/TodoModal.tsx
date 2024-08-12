@@ -44,6 +44,7 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
         setStartTime(todoData?.startTime || '');
         setEndTime(todoData?.endTime || '');
         setColor(todoData?.color || '');
+        alert(JSON.stringify(todoData));
       }
     }
   }, [open, isModalOpenedByFAB, todoData]);
@@ -69,8 +70,9 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   };
 
   const handleCreateTodo = async () => {
+    const createdAt = new Date();
     await createTodo(
-      { userId: 1, title, content, startTime, endTime, color },
+      { userId: 1, title, createdAt, content, startTime, endTime, color },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['todos', 1] });
