@@ -5,7 +5,6 @@ import { db, schema } from '@/db';
 export async function POST(req: NextRequest) {
   const { userId, createdAt } = await req.json();
   const formattedCreatedAt = new Date(createdAt).toDateString();
-  console.log(formattedCreatedAt);
   if (!userId) {
     return NextResponse.json({ error: 'UserID query parameter is required' }, { status: 400 });
   }
