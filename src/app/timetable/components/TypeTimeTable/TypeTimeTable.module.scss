@@ -108,12 +108,14 @@
   background: #ffffff;
   padding: 20px;
   z-index: 100;
-  min-width: 150px;
   width: 300px;
-  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3);
+  max-height: 500px;
   border-radius: 10px;
-  font-family: Arial, sans-serif;
+  border: none;
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3);
   color: #333;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .buttonLayout {
@@ -123,8 +125,8 @@
 }
 
 .closeButton {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background-color: inherit;
   border: 0;
   cursor: pointer;
@@ -139,6 +141,7 @@
 .scheduleIcon {
   height: 20px;
   width: 20px;
+  max-width: 100%;
 }
 
 .scheduleContent {
@@ -149,6 +152,12 @@
 .popoverTitle {
   font-size: 24px;
   margin-bottom: 8px;
+  word-break: break-all;
+}
+
+.popoverDescription {
+  margin-top: 10px;
+  font-size: 14px;
 }
 
 .title {
