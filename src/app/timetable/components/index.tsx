@@ -92,7 +92,7 @@ function Timetable<T extends BaseTask>({
         {timeSlots.map((time, index) => {
           const key = `${time.toDateString()}${index}`;
           const taskItemList = selectTaskListByTimeRange(taskList, time.getHours(), slotRange);
-          const isFirstTaskUnitCheckList = checkFirstTaskUnit(taskItemList, uniqueTaskIdMap);
+          const isFirstTaskUnitList = checkFirstTaskUnit(taskItemList, uniqueTaskIdMap);
 
           return (
             <Slot
@@ -101,7 +101,7 @@ function Timetable<T extends BaseTask>({
               slotSize={slotSize}
               slotRange={slotRange}
               timeSlotStyle={timeSlotStyle}
-              isFirstTaskUnitCheckList={isFirstTaskUnitCheckList}
+              isFirstTaskUnitList={isFirstTaskUnitList}
               taskItemList={taskItemList}
               taskSlotStyle={taskSlotStyle}
               slotStyle={slotStyle}

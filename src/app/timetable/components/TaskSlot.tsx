@@ -10,7 +10,7 @@ interface TaskSlotProps<T extends BaseTask> {
   slotStartTime: Date;
   slotRange: number;
   taskItemList: T[];
-  isFirstTaskUnitCheckList: boolean[];
+  isFirstTaskUnitList: boolean[];
   taskSlotStyle: React.CSSProperties;
 }
 
@@ -18,7 +18,7 @@ function TaskSlot<T extends BaseTask>({
   slotStartTime,
   slotRange,
   taskItemList,
-  isFirstTaskUnitCheckList,
+  isFirstTaskUnitList,
   taskSlotStyle = {},
 }: TaskSlotProps<T>) {
   const type = useContext(TypeContext);
@@ -32,7 +32,7 @@ function TaskSlot<T extends BaseTask>({
   return (
     <div className={getClassNameByType(styles, 'taskSlotLayout', type)} style={taskSlotStyle}>
       {taskItemList.map((taskItem, index) => {
-        const isFirstTaskUnit = isFirstTaskUnitCheckList[index];
+        const isFirstTaskUnit = isFirstTaskUnitList[index];
         if (!taskItem.startTime || !taskItem.endTime) {
           return null;
         }

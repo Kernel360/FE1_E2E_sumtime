@@ -11,7 +11,7 @@ interface SlotProps<T extends BaseTask> {
   slotSize: string;
   slotRange: number;
   taskItemList: T[];
-  isFirstTaskUnitCheckList: boolean[];
+  isFirstTaskUnitList: boolean[];
   timeSlotStyle: React.CSSProperties;
   taskSlotStyle: React.CSSProperties;
   slotStyle: React.CSSProperties;
@@ -23,7 +23,7 @@ function Slot<T extends BaseTask>({
   slotSize, // slot이 dom에 그려질 사이즈 ex) 300px
   slotStyle,
   taskItemList,
-  isFirstTaskUnitCheckList = [],
+  isFirstTaskUnitList = [],
   timeSlotStyle,
   taskSlotStyle,
 }: SlotProps<T>) {
@@ -37,7 +37,7 @@ function Slot<T extends BaseTask>({
         slotStartTime={slotStartTime}
         slotRange={slotRange}
         taskItemList={taskItemList}
-        isFirstTaskUnitCheckList={isFirstTaskUnitCheckList}
+        isFirstTaskUnitList={isFirstTaskUnitList}
         taskSlotStyle={taskSlotStyle}
       />
     </div>
