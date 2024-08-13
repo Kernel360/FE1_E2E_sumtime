@@ -7,18 +7,18 @@ import styles from './Timetable.module.scss';
 import TaskSlotItem from './TaskSlotItem';
 
 interface TaskSlotProps<T extends BaseTask> {
-  headerDate: Date;
-  slotTime: number;
+  slotStartTime: Date;
+  slotRange: number;
   taskItemList: T[];
-  shouldDisplayTaskContentList: boolean[];
+  contentVisibleList: boolean[];
   taskSlotStyle: React.CSSProperties;
 }
 
 function TaskSlot<T extends BaseTask>({
-  headerDate,
-  slotTime,
+  slotStartTime,
+  slotRange,
   taskItemList,
-  shouldDisplayTaskContentList,
+  contentVisibleList,
   taskSlotStyle = {},
 }: TaskSlotProps<T>) {
   const type = useContext(TypeContext);
@@ -27,13 +27,12 @@ function TaskSlot<T extends BaseTask>({
     return <div className={getClassNameByType(styles, 'taskSlotLayout', type)} />;
   }
 
-  const slotStartTime = headerDate;
-  const slotEndTime = add(headerDate, { minutes: slotTime });
+  const slotEndTime = add(slotStartTime, { minutes: slotRange });
 
   return (
     <div className={getClassNameByType(styles, 'taskSlotLayout', type)} style={taskSlotStyle}>
       {taskItemList.map((taskItem, index) => {
-        const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
+        const contentVisible = contentVisibleList[index];
         if (!taskItem.startTime || !taskItem.endTime) {
           return null;
         }
@@ -44,8 +43,7 @@ function TaskSlot<T extends BaseTask>({
             index={index}
             slotStartTime={slotStartTime}
             slotEndTime={slotEndTime}
-            // slotTime={slotTime}
-            shouldDisplayTaskContent={shouldDisplayTaskContent}
+            contentVisible={contentVisible}
           />
         );
       })}

@@ -10,7 +10,7 @@ import PopoverContent from './PopoverContent';
 interface TaskSlotItemProps<T extends BaseTask> {
   taskItem: T;
   index: number;
-  shouldDisplayTaskContent: boolean;
+  contentVisible: boolean;
   slotStartTime: Date;
   slotEndTime: Date;
   // slotTime: number;
@@ -18,7 +18,7 @@ interface TaskSlotItemProps<T extends BaseTask> {
 
 function TaskSlotItem<T extends BaseTask>({
   taskItem,
-  shouldDisplayTaskContent,
+  contentVisible,
   slotStartTime,
   slotEndTime,
   // slotTime,
@@ -90,12 +90,12 @@ function TaskSlotItem<T extends BaseTask>({
         onClick={fixFloatingTargetPosition}
       >
         <div ref={taskSlotRef} className={getClassNameByType(styles, 'taskSlotBackground', type)}>
-          {shouldDisplayTaskContent && isContentVisible && (
+          {contentVisible && isContentVisible && (
             <div className={getClassNameByType(styles, 'taskSlotContent', type)}>
               <p className={getClassNameByType(styles, 'title', type)}>{title}</p>
             </div>
           )}
-          {shouldDisplayTaskContent && !isContentVisible && (
+          {contentVisible && !isContentVisible && (
             <div className={getClassNameByType(styles, 'taskSlotContent', type)}>
               <p className={getClassNameByType(styles, 'title', type)}>{taskOption.ellipsisText}</p>
             </div>
