@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
 import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import { getTodayDateKr } from '@/utils/timeUtils';
+import Box from '@mui/material/Box';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
@@ -36,20 +37,22 @@ export default function Todo() {
   return (
     <S.TodoSection>
       <S.TodoComponentsSection>
-        <Text $fontSize="xxl" $fontWeight="bold" $color="primary">
+        <Text $fontSize="xxl" $fontWeight="bold" $color="primary" $margin="8px">
           {getTodayDateKr()}
         </Text>
-        {todoListData &&
-          todoListData.map((todo) => (
-            <TodoComponent
-              key={todo.todoId}
-              todoId={todo.todoId}
-              title={todo.title}
-              setTodoId={handleOpenTodo}
-              setIsModalOpenTrue={setIsModalOpenTrue}
-              setIsModalOpenedByFABFalse={setIsModalOpenedByFABFalse}
-            />
-          ))}
+        <Box marginTop={2}>
+          {todoListData &&
+            todoListData.map((todo) => (
+              <TodoComponent
+                key={todo.todoId}
+                todoId={todo.todoId}
+                title={todo.title}
+                setTodoId={handleOpenTodo}
+                setIsModalOpenTrue={setIsModalOpenTrue}
+                setIsModalOpenedByFABFalse={setIsModalOpenedByFABFalse}
+              />
+            ))}
+        </Box>
         <S.FloatingButton>
           <Fab color="primary" size="small" aria-label="add" onClick={handleOpenFAB}>
             <AddIcon />
