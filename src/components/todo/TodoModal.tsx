@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-
 import * as React from 'react';
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
@@ -12,7 +10,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
 import { TodoModalStyle } from './Todo.styled';
 import { TodoModalMode } from '../../types/todo';
-
 
 interface TodoModalProps {
   open: boolean;
