@@ -19,7 +19,7 @@ function TimeTable() {
           timeTableSize="2000px"
           timetableDirection="COLUMN"
           displayCurrentTime
-          defaultValue="+"
+          ellipsisText="+"
           currentTimeLineStyle="dashed 1px red"
         />
       )}
