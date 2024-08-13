@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { UseFloatingReturn, ReferenceType, UseInteractionsReturn } from '@floating-ui/react';
 import { format } from 'date-fns';
-import styles from './TypeTimeTable.module.scss';
-import closeImage from '../../assets/close.png';
-import scheduleImage from '../../assets/schedule.png';
-import { BaseTask } from '../Timetable.type';
+import styles from './Timetable.module.scss';
+import closeImage from '../assets/close.png';
+import scheduleImage from '../assets/schedule.png';
+import { BaseTask } from './Timetable.type';
 
 interface PopoverContentProps<T extends BaseTask> {
   getFloatingProps: UseInteractionsReturn['getFloatingProps'];
