@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+
 import * as React from 'react';
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
@@ -9,13 +11,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
 import { TodoModalStyle } from './Todo.styled';
+import { TodoModalMode } from './index';
 
 interface TodoModalProps {
   open: boolean;
   todoId: number;
   isModalOpenedByFAB: boolean;
   setIsModalOpenFalse: () => void;
-  mode: 'create' | 'update' | '';
+  mode: TodoModalMode;
 }
 
 export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModalOpenFalse, mode }: TodoModalProps) {

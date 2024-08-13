@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable import/no-cycle */
+
 import React, { useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -11,7 +13,7 @@ import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 
-type TodoModalMode = 'create' | 'update' | '';
+export type TodoModalMode = 'create' | 'update' | '';
 
 export default function Todo() {
   const [todoId, setTodoId] = useState<number>(0);
