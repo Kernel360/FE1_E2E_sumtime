@@ -8,7 +8,6 @@ import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import Box from '@mui/material/Box';
 import { IconButton, Pagination } from '@mui/material';
 import { getCurrentDate, getFormattedDateKr } from '@/utils/timeUtils';
-import { Text } from '@/components/common';
 import { theme } from '@/themes';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import TodoComponent from './TodoComponent';
@@ -83,12 +82,7 @@ export default function Todo() {
           <Box>
             {todoListData &&
               todoListData.map((todo) => (
-                <TodoComponent
-                  key={todo.todoId}
-                  todoId={todo.todoId}
-                  title={todo.title}
-                  setTodoId={handleOpenModalByTodo}
-                />
+                <TodoComponent key={todo.todoId} todoId={todo.todoId} title={todo.title} setTodoId={handleOpenModalByTodo} />
               ))}
           </Box>
         </S.TodoComponentsSection>

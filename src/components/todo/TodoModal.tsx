@@ -24,8 +24,8 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   const { data: todoData, isSuccess: isSuccessGetOneTodo } = useGetOneTodo(todoId);
   const [title, setTitle] = React.useState('');
   const [content, setContent] = React.useState<string | null>('');
-  const [startTime, setStartTime] = React.useState<string | null>('');
-  const [endTime, setEndTime] = React.useState<string | null>('');
+  const [startTime, setStartTime] = React.useState<string | null>(null);
+  const [endTime, setEndTime] = React.useState<string | null>(null);
   const [color, setColor] = React.useState<string | null>('');
 
   const queryClient = useQueryClient();
@@ -37,14 +37,14 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
     if (open && mode === 'create') {
       setTitle('');
       setContent('');
-      setStartTime('');
-      setEndTime('');
+      setStartTime(null);
+      setEndTime(null);
       setColor('');
     } else if (open && mode === 'update') {
       setTitle(todoData?.title || '');
       setContent(todoData?.content || '');
-      setStartTime(todoData?.startTime || '');
-      setEndTime(todoData?.endTime || '');
+      setStartTime(todoData?.startTime || null);
+      setEndTime(todoData?.endTime || null);
       setColor(todoData?.color || '');
     }
   }, [open, mode, todoData]);
@@ -115,6 +115,8 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
           <Box m={1}>
             <TextField fullWidth margin="normal" label="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
             <TextField fullWidth margin="normal" label="설명" value={content} onChange={(e) => setContent(e.target.value)} />
+            {/* <TimePicker label="시작 시간" value={startTime} /> */}
+            {/* <TimePicker label="종료 시간" value={endTime} /> */}
             <TextField
               fullWidth
               margin="normal"
