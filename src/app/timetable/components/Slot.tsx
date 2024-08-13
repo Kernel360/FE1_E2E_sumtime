@@ -7,37 +7,37 @@ import TaskSlot from './TaskSlot';
 import TimeSlot from './TimeSlot';
 
 interface SlotProps<T extends BaseTask> {
-  headerDate: Date;
+  slotStartTime: Date;
   slotSize: string;
-  slotTime: number;
+  slotRange: number;
   taskItemList: T[];
-  shouldDisplayTaskContentList: boolean[];
+  contentVisibleList: boolean[];
   timeSlotStyle: React.CSSProperties;
   taskSlotStyle: React.CSSProperties;
   slotStyle: React.CSSProperties;
 }
 
 function Slot<T extends BaseTask>({
-  headerDate,
-  slotTime,
+  slotStartTime,
+  slotRange, // slot의 범위 ex) 1:00 - 2:00 까지라면 60
+  slotSize, // slot이 dom에 그려질 사이즈 ex) 300px
+  slotStyle,
   taskItemList,
-  slotSize,
-  shouldDisplayTaskContentList = [],
+  contentVisibleList = [],
   timeSlotStyle,
   taskSlotStyle,
-  slotStyle,
 }: SlotProps<T>) {
   const type = useContext(TypeContext);
   const style = type === 'ROW' ? { width: slotSize } : { height: slotSize };
 
   return (
     <div className={getClassNameByType(styles, 'slot', type)} style={{ ...slotStyle, ...style }}>
-      <TimeSlot headerDate={headerDate} timeSlotStyle={timeSlotStyle} />
+      <TimeSlot headerDate={slotStartTime} timeSlotStyle={timeSlotStyle} />
       <TaskSlot
-        headerDate={headerDate}
-        slotTime={slotTime}
+        headerDate={slotStartTime}
+        slotTime={slotRange}
         taskItemList={taskItemList}
-        shouldDisplayTaskContentList={shouldDisplayTaskContentList}
+        shouldDisplayTaskContentList={contentVisibleList}
         taskSlotStyle={taskSlotStyle}
       />
     </div>

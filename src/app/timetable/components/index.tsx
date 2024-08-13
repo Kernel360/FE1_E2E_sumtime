@@ -92,16 +92,16 @@ function Timetable<T extends BaseTask>({
         {timeSlots.map((time, index) => {
           const key = `${time.toDateString()}${index}`;
           const taskItemList = selectTaskListByTimeRange(taskList, time.getHours(), slotRange);
-          const shouldDisplayTaskContentList = checkContentVisibleList(taskItemList, uniqueTaskIdMap);
+          const contentVisibleList = checkContentVisibleList(taskItemList, uniqueTaskIdMap);
 
           return (
             <Slot
               key={key}
-              headerDate={time}
+              slotStartTime={time}
               slotSize={slotSize}
+              slotRange={slotRange}
               timeSlotStyle={timeSlotStyle}
-              shouldDisplayTaskContentList={shouldDisplayTaskContentList}
-              slotTime={slotRange}
+              contentVisibleList={contentVisibleList}
               taskItemList={taskItemList}
               taskSlotStyle={taskSlotStyle}
               slotStyle={slotStyle}
