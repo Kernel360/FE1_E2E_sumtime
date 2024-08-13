@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 import styled from './CurrentTimeLine.module.scss';
-import { calculateCurrentTimeOffset, parseSize, generateClassNameWithType } from '../../utils';
+import { calculateCurrentTimePosition, parseSize, generateClassNameWithType } from '../../utils';
 import { TypeContext } from '../../contexts/TypeContext';
 
 interface CurrentTimeLineProps {
@@ -26,8 +26,8 @@ function CurrentTimeLine({ startTime, endTime, timeTableSize, currentTimeLineSty
     return () => clearInterval(intervalId);
   }, []);
 
-  const { offsetPercent } = calculateCurrentTimeOffset(currentTime, startTime, endTime);
-  const currentTimeLinePosition = `${(offsetPercent * value) / 100}${format}`;
+  const { currentTimePosition } = calculateCurrentTimePosition(currentTime, startTime, endTime);
+  const currentTimeLinePosition = `${(currentTimePosition * value) / 100}${format}`;
   const dynamicStyle: React.CSSProperties = type === 'ROW' ? { left: currentTimeLinePosition } : { top: currentTimeLinePosition };
 
   const mergedStyle: React.CSSProperties = { ...dynamicStyle, ...{ border: currentTimeLineStyle } };

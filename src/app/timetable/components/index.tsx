@@ -5,11 +5,11 @@ import { eachMinuteOfInterval } from 'date-fns';
 import {
   parseSize,
   distributeSize,
-  checkTimeOverlapFromTaskList,
+  checkTaskListOverlap,
   generateClassNameWithType,
-  filterTaskListByTimeSlot,
+  selectTaskListByTimeRange,
   getShouldDisplayTaskContentList,
-  isDateInRange,
+  checkDateInRange,
 } from '../utils';
 import { PopoverType, BaseTask, TimetableType, TaskThemeType } from './Timetable.type';
 import { ContextProvider } from '../contexts';
@@ -64,7 +64,7 @@ function Timetable<T extends BaseTask>({
 
   const slotSize = distributeSize(value, timeSlots.length, format);
   const uniqueTaskIdMap = new Map();
-  const isCurrentTimeVisible = displayCurrentTime && isDateInRange(timeSlots[0], new Date(), timeSlots[timeSlots.length - 1]);
+  const isCurrentTimeVisible = displayCurrentTime && checkDateInRange(timeSlots[0], new Date(), timeSlots[timeSlots.length - 1]);
 
   const contextValue = useMemo(
     () => ({
@@ -73,10 +73,7 @@ function Timetable<T extends BaseTask>({
     [defaultValue],
   );
 
-  const checkOverlapFromTaskList = useCallback(
-    (currentTaskList: T[]) => checkTimeOverlapFromTaskList(currentTaskList),
-    [taskList],
-  );
+  const checkOverlapFromTaskList = useCallback((currentTaskList: T[]) => checkTaskListOverlap(currentTaskList), [taskList]);
 
   if (checkOverlapFromTaskList(taskList)) {
     throw new Error('task time is overlap. please check your taskList');
@@ -95,7 +92,7 @@ function Timetable<T extends BaseTask>({
         )}
         {timeSlots.map((time, index) => {
           const key = `${time.toDateString()}${index}`;
-          const taskItemList = filterTaskListByTimeSlot(taskList, time.getHours(), slotTime);
+          const taskItemList = selectTaskListByTimeRange(taskList, time.getHours(), slotTime);
           const shouldDisplayTaskContentList = getShouldDisplayTaskContentList(taskItemList, uniqueTaskIdMap);
           return (
             <Slot

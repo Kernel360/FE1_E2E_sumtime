@@ -44,7 +44,7 @@ function TaskSlot<T extends BaseTask>({
             index={index}
             slotStartTime={slotStartTime}
             slotEndTime={slotEndTime}
-            slotTime={slotTime}
+            // slotTime={slotTime}
             shouldDisplayTaskContent={shouldDisplayTaskContent}
           />
         );

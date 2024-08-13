@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { calculateTaskOffsetAndHeightPercent, generateClassNameWithType, getRandomColor, getTaskColor } from '../utils';
+import { calculateTargetPosition, generateClassNameWithType, getRandomColor, getTaskColor } from '../utils';
 import { BaseTask } from './Timetable.type';
 import { TypeContext, PopoverTypeContext, TaskSlotContext, TaskThemeContext } from '../contexts';
 import styles from './Timetable.module.scss';
@@ -13,7 +13,7 @@ interface TaskSlotItemProps<T extends BaseTask> {
   shouldDisplayTaskContent: boolean;
   slotStartTime: Date;
   slotEndTime: Date;
-  slotTime: number;
+  // slotTime: number;
 }
 
 function TaskSlotItem<T extends BaseTask>({
@@ -21,7 +21,7 @@ function TaskSlotItem<T extends BaseTask>({
   shouldDisplayTaskContent,
   slotStartTime,
   slotEndTime,
-  slotTime,
+  // slotTime,
 }: TaskSlotItemProps<T>) {
   const { startTime, endTime, title } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
@@ -45,20 +45,19 @@ function TaskSlotItem<T extends BaseTask>({
     return null;
   }
 
-  const { offsetPercent, heightPercent } = calculateTaskOffsetAndHeightPercent(
-    slotStartTime,
-    slotEndTime,
-    startTime,
-    endTime,
-    slotTime,
+  const { startPercent, endPercent } = calculateTargetPosition(
+    slotStartTime, // totalStartTime
+    slotEndTime, // totalEndTime
+    startTime, // targetStartTime
+    endTime, // targetEndTime
   );
 
   const taskSlotColor = getTaskColor(taskItem) ?? getRandomColor(taskItem, taskColorTheme);
 
   const positionStyles =
     type === 'ROW'
-      ? { top: '0', left: `${offsetPercent}%`, width: `${heightPercent}%` }
-      : { top: `${offsetPercent}%`, left: '0', height: `${heightPercent}%` };
+      ? { top: '0', left: `${startPercent}%`, width: `${endPercent}%` }
+      : { top: `${startPercent}%`, left: '0', height: `${endPercent}%` };
 
   useEffect(() => {
     if (type === 'ROW') {

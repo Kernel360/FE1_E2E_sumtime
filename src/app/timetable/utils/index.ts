@@ -1,6 +1,7 @@
 import { BaseTask } from '../components/Timetable.type';
 
-const getHourAndMinutesFormat = (data: Date) => {
+const formatHourAndMinutes = (data: Date) => {
+  // format하는 함수
   const hours = data.getHours();
   const minutes = data.getMinutes();
   const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
@@ -10,9 +11,9 @@ const getHourAndMinutesFormat = (data: Date) => {
 };
 
 // 시간을 분단위로 바꿔버리고 더해주는 함수
-const sumHoursAndMinutes = (date: Date) => date.getHours() * 60 + date.getMinutes();
 
-const TimeToMilliseconds = (date: Date) => {
+const convertToMilliseconds = (date: Date) => {
+  // 변환
   const hourToMilliseconds = date.getHours() * 60 * 60 * 1000;
   const minutesToMilliseconds = date.getMinutes() * 60 * 1000;
   const secondsToMilliseconds = date.getSeconds() * 1000;
@@ -20,37 +21,33 @@ const TimeToMilliseconds = (date: Date) => {
   return hourToMilliseconds + minutesToMilliseconds + secondsToMilliseconds;
 };
 
-const calculateTaskOffsetAndHeightPercent = (
-  slotStartTime: Date,
-  slotEndTime: Date,
-  taskStartTime: Date,
-  taskEndTime: Date,
-  slotTime: number,
-) => {
-  const slotStartMinutes = sumHoursAndMinutes(slotStartTime);
-  const slotEndMinutes = sumHoursAndMinutes(slotEndTime);
-  const taskStartMinutes = sumHoursAndMinutes(taskStartTime);
-  const taskEndMinutes = sumHoursAndMinutes(taskEndTime);
+const calculateTargetPosition = (totalStartTime: Date, totalEndTime: Date, targetStartTime: Date, targetEndTime: Date) => {
+  // 계산.
+  const totalStartMilliseconds = convertToMilliseconds(totalStartTime);
+  const totalEndMilliseconds = convertToMilliseconds(totalEndTime);
+  const targetStartMilliseconds = convertToMilliseconds(targetStartTime);
+  const targetEndMilliseconds = convertToMilliseconds(targetEndTime);
+  const slotTime = totalEndMilliseconds - totalStartMilliseconds;
+  let startPercent = 0;
+  let totalEndPercent = 100;
 
-  let offsetPercent = 0;
-  let endPercent = 100;
-
-  if (slotStartMinutes < taskStartMinutes) {
+  if (totalStartMilliseconds < targetStartMilliseconds) {
     // 슬롯의 시작시간보다 task의 시작 시간이 늦었다면(즉 slot 도중에 시작했다면)
-    offsetPercent = ((taskStartMinutes - slotStartMinutes) / slotTime) * 100;
+    startPercent = ((targetStartMilliseconds - totalStartMilliseconds) / slotTime) * 100;
   }
 
-  if (taskEndMinutes < slotEndMinutes) {
+  if (targetEndMilliseconds < totalEndMilliseconds) {
     // task의 끝나는 시간이 slot의 종료 시간보다 늦다면(즉 slot 도중에 끝난다면)
-    endPercent = ((taskEndMinutes - slotStartMinutes) / slotTime) * 100;
+    totalEndPercent = ((targetEndMilliseconds - totalStartMilliseconds) / slotTime) * 100;
   }
 
-  const heightPercent = endPercent - offsetPercent;
+  const endPercent = totalEndPercent - startPercent;
 
-  return { offsetPercent, heightPercent };
+  return { startPercent, endPercent };
 };
 
-const isTimeOverlap = (
+const checkTimeOverlap = (
+  // 계산
   startTime1: Date | null,
   endTime1: Date | null,
   startTime2: Date | null,
@@ -59,15 +56,16 @@ const isTimeOverlap = (
   if (!startTime1 || !endTime1 || !startTime2 || !endTime2) {
     return false;
   }
-  const startTime1Minutes = sumHoursAndMinutes(startTime1);
-  const endTime1Minutes = sumHoursAndMinutes(endTime1);
-  const startTime2Minutes = sumHoursAndMinutes(startTime2);
-  const endTime2Minutes = sumHoursAndMinutes(endTime2);
+  const startTime1Milliseconds = convertToMilliseconds(startTime1);
+  const endTime1Milliseconds = convertToMilliseconds(endTime1);
+  const startTime2Milliseconds = convertToMilliseconds(startTime2);
+  const endTime2Milliseconds = convertToMilliseconds(endTime2);
 
-  return startTime1Minutes < endTime2Minutes && startTime2Minutes < endTime1Minutes;
+  return startTime1Milliseconds < endTime2Milliseconds && startTime2Milliseconds < endTime1Milliseconds;
 };
 
 const getDateFromTime = (hours: number, minutes: number, second: number) => {
+  // mock data용으로 배포시 삭제 될 예정.
   const now = new Date();
   const year = now.getFullYear();
   const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
@@ -81,12 +79,13 @@ const getDateFromTime = (hours: number, minutes: number, second: number) => {
   return new Date(`${yearMonthDay}T${hourFormat}:${minutesFormat}:${secondeFormat}`);
 };
 
-const checkTimeOverlapFromTaskList = <T extends BaseTask>(taskList: T[]) => {
+const checkTaskListOverlap = <T extends BaseTask>(taskList: T[]) => {
+  // 계산
   let isOverlap = false;
 
   for (let i = 0; i < taskList.length; i += 1) {
     for (let j = i + 1; j < taskList.length; j += 1) {
-      if (isTimeOverlap(taskList[i].startTime, taskList[i].endTime, taskList[j].startTime, taskList[j].endTime)) {
+      if (checkTimeOverlap(taskList[i].startTime, taskList[i].endTime, taskList[j].startTime, taskList[j].endTime)) {
         isOverlap = true;
         return isOverlap;
       }
@@ -96,23 +95,25 @@ const checkTimeOverlapFromTaskList = <T extends BaseTask>(taskList: T[]) => {
   return false;
 };
 
-const calculateCurrentTimeOffset = (currentTime: Date | null, startTime: Date, endTime: Date) => {
-  let offsetPercent = 0;
+const calculateCurrentTimePosition = (currentTime: Date | null, startTime: Date, endTime: Date) => {
+  // 계산
+  let currentTimePosition = 0;
 
   if (!currentTime) {
-    return { offsetPercent };
+    return { currentTimePosition };
   }
 
-  const currentMinutes = TimeToMilliseconds(currentTime); // 현재 시간
-  const startMinutes = TimeToMilliseconds(startTime); // 슬롯의 시작 시간
-  const endMinutes = TimeToMilliseconds(endTime); // 슬롯의 종료 시간
-  offsetPercent = ((currentMinutes - startMinutes) / (endMinutes - startMinutes)) * 100;
+  const currentMilliseconds = convertToMilliseconds(currentTime); // 현재 시간
+  const startMilliseconds = convertToMilliseconds(startTime); // 슬롯의 시작 시간
+  const endMilliseconds = convertToMilliseconds(endTime); // 슬롯의 종료 시간
+  currentTimePosition = ((currentMilliseconds - startMilliseconds) / (endMilliseconds - startMilliseconds)) * 100;
 
-  return { offsetPercent };
+  return { currentTimePosition };
 };
 
-const filterTaskListByTimeSlot = <T extends BaseTask>(taskListInput: T[], slotStartHour: number, slotMinutes: number): T[] =>
-  taskListInput.filter((task: T) => {
+const selectTaskListByTimeRange = <T extends BaseTask>(taskList: T[], startHour: number, timeRangeByMinutes: number): T[] =>
+  // 계산
+  taskList.filter((task: T) => {
     if (!task.startTime || !task.endTime) {
       return false;
     }
@@ -122,15 +123,17 @@ const filterTaskListByTimeSlot = <T extends BaseTask>(taskListInput: T[], slotSt
     const taskEndMinute = task.endTime.getMinutes();
 
     return (
-      taskStartHour <= slotStartHour &&
-      taskEndHour >= slotStartHour &&
-      !(taskEndHour === slotStartHour && taskEndMinute === slotMinutes % 60)
+      taskStartHour <= startHour &&
+      taskEndHour >= startHour &&
+      !(taskEndHour === startHour && taskEndMinute === timeRangeByMinutes % 60)
     );
   });
 
-const isDateInRange = (startDate: Date, date: Date, endDate: Date) => startDate <= date && date <= endDate;
+const checkDateInRange = (startDate: Date, date: Date, endDate: Date) => startDate <= date && date <= endDate;
+// 계산
 
 const getShouldDisplayTaskContentList = <T extends BaseTask>(
+  // 여기서부터 다시 해야함 here todo
   taskItemList: T[],
   uniqueTaskIdMap: Map<unknown, unknown>,
 ): boolean[] =>
@@ -143,15 +146,14 @@ const getShouldDisplayTaskContentList = <T extends BaseTask>(
   });
 
 export {
-  getHourAndMinutesFormat,
-  sumHoursAndMinutes,
-  calculateTaskOffsetAndHeightPercent,
-  isTimeOverlap,
+  formatHourAndMinutes,
+  calculateTargetPosition,
+  checkTimeOverlap,
   getDateFromTime,
-  checkTimeOverlapFromTaskList,
-  calculateCurrentTimeOffset,
-  filterTaskListByTimeSlot,
-  isDateInRange,
+  checkTaskListOverlap,
+  calculateCurrentTimePosition,
+  selectTaskListByTimeRange,
+  checkDateInRange,
   getShouldDisplayTaskContentList,
 };
 
