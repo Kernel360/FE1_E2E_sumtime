@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useFloating, offset, useDismiss, useInteractions, useHover, shift } from '@floating-ui/react';
+import { useFloating, offset, useDismiss, useInteractions, useHover, shift, safePolygon } from '@floating-ui/react';
 import { useRequestAnimationFrame } from './useRequestAnimationFrame';
 import { PopoverType } from '../components/Timetable.type';
 
@@ -33,7 +33,12 @@ function usePopoverFloating(popoverType: PopoverType) {
   });
 
   const dismiss = useDismiss(context, { outsidePress: true });
-  const interactions = popoverType === 'HOVER' ? [dismiss, useHover(context)] : [dismiss];
+  const hover = useHover(context, {
+    enabled: popoverType === 'HOVER',
+    handleClose: safePolygon(),
+  });
+
+  const interactions = [dismiss, hover];
   const { getReferenceProps, getFloatingProps } = useInteractions(interactions);
 
   const handleMouseMove = useRequestAnimationFrame((event: MouseEvent) => {
