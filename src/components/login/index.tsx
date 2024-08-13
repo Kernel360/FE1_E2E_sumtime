@@ -40,7 +40,7 @@ function LoginSection() {
           redirect: false,
         });
         if (signInData?.status === 200) {
-          router.push('/todo');
+          router.push('/');
         } else alert('일치하는 이메일, 비밀번호가 없습니다');
       } catch (error) {
         console.log(error);
@@ -81,10 +81,6 @@ function LoginSection() {
 
       <Button variant="outlined" onClick={() => handleSignIn()}>
         로그인
-      </Button>
-
-      <Button variant="outlined" onClick={() => signIn('google', { redirect: true, callbackUrl: '/todo' })} type="button">
-        구글 로그인
       </Button>
     </S.LoginSection>
   );
