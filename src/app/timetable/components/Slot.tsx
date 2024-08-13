@@ -32,7 +32,7 @@ function Slot<T extends BaseTask>({
 
   return (
     <div className={getClassNameByType(styles, 'slot', type)} style={{ ...slotStyle, ...style }}>
-      <TimeSlot headerDate={slotStartTime} timeSlotStyle={timeSlotStyle} />
+      <TimeSlot slotStartTime={slotStartTime} timeSlotStyle={timeSlotStyle} />
       <TaskSlot
         headerDate={slotStartTime}
         slotTime={slotRange}

@@ -4,13 +4,13 @@ import { getClassNameByType, formatHourAndMinutes } from '../utils';
 import { TypeContext } from '../contexts';
 
 interface TimeSlotProps {
-  headerDate: Date;
+  slotStartTime: Date;
   timeSlotStyle: React.CSSProperties;
 }
 
-function TimeSlot({ headerDate, timeSlotStyle }: TimeSlotProps) {
+function TimeSlot({ slotStartTime, timeSlotStyle }: TimeSlotProps) {
   const type = useContext(TypeContext);
-  const currentTime = formatHourAndMinutes(headerDate);
+  const currentTime = formatHourAndMinutes(slotStartTime);
   const timeSlotLayout = getClassNameByType(styles, 'timeSlotLayout', type);
   const title = getClassNameByType(styles, 'title', type);
 
