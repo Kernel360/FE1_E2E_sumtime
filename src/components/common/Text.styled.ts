@@ -16,6 +16,7 @@ interface TextProps {
   $decorationLine?: string;
   $textAlign?: string;
   $margin?: string;
+  $marginLeft?: string;
   theme?: {
     fontSize: {
       sm: string;
@@ -49,7 +50,8 @@ const Text = styled.span<TextProps>`
   text-align: ${(props) => (props?.$textAlign ? props.$textAlign : 'left')};
   color: ${(props) => (props?.$color ? props.$color : props.theme?.color?.fontColor)};
   text-decoration-line: ${(props) => (props?.$decorationLine ? props.$decorationLine : 'none')};
-  margin: ${(props) => (props?.$margin ? props.$margin : '0')}; // margin 속성 추가
+  margin: ${(props) => (props?.$margin ? props.$margin : '0')};
+  margin-left: ${(props) => (props?.$marginLeft ? props.$marginLeft : '0')};
 `;
 
 export { Text };
