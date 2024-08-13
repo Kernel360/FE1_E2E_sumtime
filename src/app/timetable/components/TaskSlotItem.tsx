@@ -9,12 +9,12 @@ import PopoverContent from './PopoverContent';
 
 interface TaskSlotItemProps<T extends BaseTask> {
   taskItem: T;
-  contentVisible: boolean;
+  isFirstTaskUnit: boolean;
   slotStartTime: Date;
   slotEndTime: Date;
 }
 
-function TaskSlotItem<T extends BaseTask>({ taskItem, contentVisible, slotStartTime, slotEndTime }: TaskSlotItemProps<T>) {
+function TaskSlotItem<T extends BaseTask>({ taskItem, isFirstTaskUnit, slotStartTime, slotEndTime }: TaskSlotItemProps<T>) {
   const { startTime, endTime, title } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
@@ -73,14 +73,9 @@ function TaskSlotItem<T extends BaseTask>({ taskItem, contentVisible, slotStartT
         onClick={fixFloatingTargetPosition}
       >
         <div ref={taskSlotRef} className={getClassNameByType(styles, 'taskSlotBackground', type)}>
-          {contentVisible && isContentVisible && (
+          {isFirstTaskUnit && (
             <div className={getClassNameByType(styles, 'taskSlotContent', type)}>
-              <p className={getClassNameByType(styles, 'title', type)}>{title}</p>
-            </div>
-          )}
-          {contentVisible && !isContentVisible && (
-            <div className={getClassNameByType(styles, 'taskSlotContent', type)}>
-              <p className={getClassNameByType(styles, 'title', type)}>{taskOption.ellipsisText}</p>
+              <p className={getClassNameByType(styles, 'title', type)}>{isContentVisible ? title : taskOption.ellipsisText}</p>
             </div>
           )}
         </div>

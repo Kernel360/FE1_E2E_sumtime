@@ -17,7 +17,7 @@ const selectTaskListByTimeRange = <T extends BaseTask>(taskList: T[], startHour:
     );
   });
 
-const checkContentVisibleList = <T extends BaseTask>(taskItemList: T[], uniqueTaskIdMap: Map<unknown, unknown>): boolean[] =>
+const checkFirstTaskUnit = <T extends BaseTask>(taskItemList: T[], uniqueTaskIdMap: Map<unknown, unknown>): boolean[] =>
   taskItemList.map((taskItem) => {
     const shouldDisplayTaskContent = !!(taskItem?.id && !uniqueTaskIdMap.has(taskItem.id));
 
@@ -28,4 +28,4 @@ const checkContentVisibleList = <T extends BaseTask>(taskItemList: T[], uniqueTa
     return shouldDisplayTaskContent;
   });
 
-export { checkContentVisibleList, selectTaskListByTimeRange };
+export { checkFirstTaskUnit, selectTaskListByTimeRange };

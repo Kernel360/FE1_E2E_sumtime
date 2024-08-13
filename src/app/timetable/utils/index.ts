@@ -7,7 +7,7 @@ export {
   checkTimeOverlap,
   getDateFromTime,
 } from './date/calculation';
-export { checkContentVisibleList, selectTaskListByTimeRange } from './date/filter';
+export { checkFirstTaskUnit, selectTaskListByTimeRange } from './date/filter';
 export { hasKey, insertKey } from './map';
 export { distributeSize, isFormatString, parseSize, parseSizeFormat, parseSizeValue } from './size';
 export { getRandomColor, getTaskColor } from './color';

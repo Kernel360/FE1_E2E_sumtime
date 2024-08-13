@@ -8,7 +8,7 @@ import {
   checkTaskListOverlap,
   getClassNameByType,
   selectTaskListByTimeRange,
-  checkContentVisibleList,
+  checkFirstTaskUnit,
   checkDateInRange,
 } from '../utils';
 import { PopoverType, BaseTask, TimetableDirectionType, TaskThemeType } from './Timetable.type';
@@ -92,7 +92,7 @@ function Timetable<T extends BaseTask>({
         {timeSlots.map((time, index) => {
           const key = `${time.toDateString()}${index}`;
           const taskItemList = selectTaskListByTimeRange(taskList, time.getHours(), slotRange);
-          const contentVisibleList = checkContentVisibleList(taskItemList, uniqueTaskIdMap);
+          const isFirstTaskUnitCheckList = checkFirstTaskUnit(taskItemList, uniqueTaskIdMap);
 
           return (
             <Slot
@@ -101,7 +101,7 @@ function Timetable<T extends BaseTask>({
               slotSize={slotSize}
               slotRange={slotRange}
               timeSlotStyle={timeSlotStyle}
-              contentVisibleList={contentVisibleList}
+              isFirstTaskUnitCheckList={isFirstTaskUnitCheckList}
               taskItemList={taskItemList}
               taskSlotStyle={taskSlotStyle}
               slotStyle={slotStyle}
