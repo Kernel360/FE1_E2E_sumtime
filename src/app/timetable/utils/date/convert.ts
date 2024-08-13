@@ -1,3 +1,5 @@
+import { hoursToMilliseconds, minutesToMilliseconds, secondsToMilliseconds } from 'date-fns';
+
 const formatHourAndMinutes = (data: Date) => {
   const hours = data.getHours();
   const minutes = data.getMinutes();
@@ -8,11 +10,11 @@ const formatHourAndMinutes = (data: Date) => {
 };
 
 const convertToMilliseconds = (date: Date) => {
-  const hourToMilliseconds = date.getHours() * 60 * 60 * 1000;
-  const minutesToMilliseconds = date.getMinutes() * 60 * 1000;
-  const secondsToMilliseconds = date.getSeconds() * 1000;
+  const hourMilliseconds = hoursToMilliseconds(date.getHours());
+  const minutesMilliseconds = minutesToMilliseconds(date.getMinutes());
+  const secondsMilliseconds = secondsToMilliseconds(date.getSeconds());
 
-  return hourToMilliseconds + minutesToMilliseconds + secondsToMilliseconds;
+  return hourMilliseconds + minutesMilliseconds + secondsMilliseconds;
 };
 
 export { formatHourAndMinutes, convertToMilliseconds };
