@@ -9,6 +9,6 @@ export {
 } from './date/calculation';
 export { checkContentVisibleList, selectTaskListByTimeRange } from './date/filter';
 export { hasKey, insertKey } from './map';
-export { distributeSize, isFormatString, parseSize, parseSizeFormat, parseSizeValue } from './height';
+export { distributeSize, isFormatString, parseSize, parseSizeFormat, parseSizeValue } from './size';
 export { getRandomColor, getTaskColor } from './color';
 export { getClassNameByType } from './css';
