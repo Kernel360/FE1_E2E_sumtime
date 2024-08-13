@@ -48,7 +48,11 @@ function PopoverContent<T extends BaseTask>({
           {format(startTime, "hh':'mm")} - {format(endTime, "hh':'mm")}
         </p>
       </div>
-      {content && <div className={styles.popoverDescription}>{content}</div>}
+      {content && (
+        <div className={styles.popoverDescription}>
+          <p>{content}</p>
+        </div>
+      )}
     </div>
   );
 }
