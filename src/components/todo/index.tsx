@@ -14,8 +14,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
-
-export type TodoModalMode = 'create' | 'update' | '';
+import { Text } from '../common';
+import { TodoModalMode } from '../../types/todo';
 
 export default function Todo() {
   const [todoId, setTodoId] = useState<number>(0);

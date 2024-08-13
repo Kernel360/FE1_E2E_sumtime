@@ -10,7 +10,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
 import { red } from '@mui/material/colors';
 import { TodoModalStyle } from './Todo.styled';
-import { TodoModalMode } from './index';
+import { TodoModalMode } from '../../types/todo';
 
 interface TodoModalProps {
   open: boolean;
