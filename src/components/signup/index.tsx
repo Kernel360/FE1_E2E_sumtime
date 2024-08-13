@@ -24,7 +24,8 @@ function SignupSection() {
     confirmPassword: null,
     nickname: null,
   });
-  const [isEmailDisabled, setIsEmailDisabled] = useState<boolean | null>(null);
+
+  const [isEmailChecked, setIsEmailChecked] = useState<boolean | null>(null);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -67,7 +68,7 @@ function SignupSection() {
       return false;
     }
     setFieldErrors((prev) => ({ ...prev, password: null }));
-    handleConfirmPasswordValidation(); // 비밀번호 확인 검증 호출
+    handleConfirmPasswordValidation();
 
     return true;
   };
@@ -87,34 +88,36 @@ function SignupSection() {
   };
 
   const checkEmailDuplication = async () => {
-    if (!fieldErrors.email) {
-      const email = emailInputRef.current?.value || '';
+    const email = emailInputRef.current?.value || '';
+    if (handleEmailValidation()) {
       try {
         const isEmailAvailable = await emailValidation(email);
         if (isEmailAvailable) {
-          setIsEmailDisabled(true);
+          setIsEmailChecked(true);
           return true;
         }
-        setIsEmailDisabled(false);
+        setIsEmailChecked(false);
         return false;
       } catch (error) {
         console.error(error);
         return false;
       }
-    } else {
-      alert('잘못된 이메일 형식입니다 ');
-      return false;
     }
+    return false;
   };
 
   const getEmailValidationMessage = () => {
-    if (isEmailDisabled === null) return <S.SignupValidationSpan>email 중복 여부를 확인해주세요</S.SignupValidationSpan>;
-    if (isEmailDisabled) return <S.SignupValidationSpan>사용 가능한 이메일입니다.</S.SignupValidationSpan>;
-    return <S.SignupValidationSpan $color="red">이미 가입된 이메일 입니다.</S.SignupValidationSpan>;
+    if (isEmailChecked === null) {
+      return <S.SignupValidationSpan>이메일 중복 여부를 확인해주세요</S.SignupValidationSpan>;
+    }
+    if (isEmailChecked) {
+      return <S.SignupValidationSpan>사용 가능한 이메일입니다.</S.SignupValidationSpan>;
+    }
+    return <S.SignupValidationSpan $color="red">이미 가입된 이메일입니다.</S.SignupValidationSpan>;
   };
 
   const handleDuplicateValidation = () => {
-    if (isEmailDisabled) {
+    if (isEmailChecked) {
       return true;
     }
     return false;
@@ -156,6 +159,10 @@ function SignupSection() {
     }
   };
 
+  const handleEmailChange = () => {
+    setIsEmailChecked(null); // 이메일이 변경되면 중복 확인 상태를 초기화
+  };
+
   return (
     <S.SignupSection>
       <S.SignupLogo src={logo.src} alt="logo" />
@@ -171,15 +178,14 @@ function SignupSection() {
           error={!!fieldErrors.email}
           helperText={fieldErrors.email}
           onBlur={handleEmailValidation}
-          disabled={isEmailDisabled === true}
+          onChange={handleEmailChange}
         />
         <S.SignupValidationDiv $align="center" $justify="space-between">
           {getEmailValidationMessage()}
-          {isEmailDisabled !== true && (
-            <Button size="small" onClick={checkEmailDuplication}>
-              중복검사
-            </Button>
-          )}
+
+          <Button size="small" onClick={checkEmailDuplication}>
+            중복검사
+          </Button>
         </S.SignupValidationDiv>
       </S.SignupInputDiv>
 
