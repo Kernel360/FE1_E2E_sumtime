@@ -10,12 +10,21 @@ import { EMAIL_REG_EXP, NICKNAME_REG_EXP } from '@/constants/regExp'; // 이메�
 import { useCreateUser } from '@/api/hooks/userHooks';
 import * as S from './Signup.styled';
 
+type FieldErrorsType = {
+  email: string | null;
+  password: string | null;
+  confirmPassword: string | null;
+  nickname: string | null;
+};
+
 function SignupSection() {
-  const [emailError, setEmailError] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [nicknameError, setNicknameError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrorsType>({
+    email: null,
+    password: null,
+    confirmPassword: null,
+    nickname: null,
+  });
   const [isEmailDisabled, setIsEmailDisabled] = useState<boolean | null>(null);
-  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -29,14 +38,14 @@ function SignupSection() {
   const handleEmailValidation = () => {
     const email = emailInputRef.current?.value || '';
     if (!email) {
-      setEmailError('이메일을 입력해주세요');
+      setFieldErrors((prev) => ({ ...prev, email: '이메일을 입력해주세요' }));
       return false;
     }
     if (!EMAIL_REG_EXP.test(email)) {
-      setEmailError('유효한 이메일 주소를 입력해주세요');
+      setFieldErrors((prev) => ({ ...prev, email: '유효한 이메일 주소를 입력해주세요' }));
       return false;
     }
-    setEmailError(null);
+    setFieldErrors((prev) => ({ ...prev, email: null }));
     return true;
   };
 
@@ -44,21 +53,20 @@ function SignupSection() {
     const password = passwordInputRef.current?.value || '';
     const confirmPassword = confirmPasswordInputRef.current?.value || '';
     if (password !== confirmPassword) {
-      setConfirmPasswordError('비밀번호가 일치하지 않습니다');
+      setFieldErrors((prev) => ({ ...prev, confirmPassword: '비밀번호가 일치하지 않습니다' }));
       return false;
     }
-    setConfirmPasswordError(null);
+    setFieldErrors((prev) => ({ ...prev, confirmPassword: null }));
     return true;
   };
 
   const handlePasswordValidation = () => {
     const password = passwordInputRef.current?.value || '';
     if (password.length < 8 || password.length > 15) {
-      setPasswordError('비밀번호는 8자 이상 15자 이하여야 합니다');
-
+      setFieldErrors((prev) => ({ ...prev, password: '비밀번호는 8자 이상 15자 이하여야 합니다' }));
       return false;
     }
-    setPasswordError(null);
+    setFieldErrors((prev) => ({ ...prev, password: null }));
     handleConfirmPasswordValidation(); // 비밀번호 확인 검증 호출
 
     return true;
@@ -67,19 +75,19 @@ function SignupSection() {
   const handleNicknameValidation = () => {
     const nickname = nicknameInputRef.current?.value || '';
     if (!nickname) {
-      setNicknameError('닉네임을 입력해주세요');
+      setFieldErrors((prev) => ({ ...prev, nickname: '닉네임을 입력해주세요' }));
       return false;
     }
     if (!NICKNAME_REG_EXP.test(nickname)) {
-      setNicknameError('닉네임은 1~20자의 한글, 알파벳, 숫자만 사용 가능합니다');
+      setFieldErrors((prev) => ({ ...prev, nickname: '닉네임은 1~20자의 한글, 알파벳, 숫자만 사용 가능합니다' }));
       return false;
     }
-    setNicknameError(null);
+    setFieldErrors((prev) => ({ ...prev, nickname: null }));
     return true;
   };
 
   const checkEmailDuplication = async () => {
-    if (!emailError) {
+    if (!fieldErrors.email) {
       const email = emailInputRef.current?.value || '';
       try {
         const isEmailAvailable = await emailValidation(email);
@@ -160,8 +168,8 @@ function SignupSection() {
           variant="standard"
           type="email"
           inputRef={emailInputRef}
-          error={!!emailError}
-          helperText={emailError}
+          error={!!fieldErrors.email}
+          helperText={fieldErrors.email}
           onBlur={handleEmailValidation}
           disabled={isEmailDisabled === true}
         />
@@ -183,8 +191,8 @@ function SignupSection() {
           variant="standard"
           type="password"
           inputRef={passwordInputRef}
-          error={!!passwordError}
-          helperText={passwordError}
+          error={!!fieldErrors.password}
+          helperText={fieldErrors.password}
           onBlur={handlePasswordValidation}
         />
       </S.SignupInputDiv>
@@ -197,8 +205,8 @@ function SignupSection() {
           variant="standard"
           type="password"
           inputRef={confirmPasswordInputRef}
-          error={!!confirmPasswordError}
-          helperText={confirmPasswordError}
+          error={!!fieldErrors.confirmPassword}
+          helperText={fieldErrors.confirmPassword}
           onBlur={handleConfirmPasswordValidation}
         />
       </S.SignupInputDiv>
@@ -211,8 +219,8 @@ function SignupSection() {
           variant="standard"
           type="text"
           inputRef={nicknameInputRef}
-          error={!!nicknameError}
-          helperText={nicknameError}
+          error={!!fieldErrors.nickname}
+          helperText={fieldErrors.nickname}
           onBlur={handleNicknameValidation}
         />
       </S.SignupInputDiv>
