@@ -10,15 +10,17 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
 import { red } from '@mui/material/colors';
 import { TodoModalStyle } from './Todo.styled';
+import { TodoModalMode } from './index';
 
 interface TodoModalProps {
   open: boolean;
   todoId: number;
   isModalOpenedByFAB: boolean;
   setIsModalOpenFalse: () => void;
+  mode: TodoModalMode;
 }
 
-export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModalOpenFalse }: TodoModalProps) {
+export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModalOpenFalse, mode }: TodoModalProps) {
   const { data: todoData, isSuccess: isSuccessGetOneTodo } = useGetOneTodo(todoId);
   const [title, setTitle] = React.useState('');
   const [content, setContent] = React.useState<string | null>('');
@@ -32,22 +34,20 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   const { mutate: deleteTodo } = useDeleteTodo();
 
   useEffect(() => {
-    if (open) {
-      if (isModalOpenedByFAB) {
-        setTitle('');
-        setContent('');
-        setStartTime('');
-        setEndTime('');
-        setColor('');
-      } else {
-        setTitle(todoData?.title || '');
-        setContent(todoData?.content || '');
-        setStartTime(todoData?.startTime || '');
-        setEndTime(todoData?.endTime || '');
-        setColor(todoData?.color || '');
-      }
+    if (open && mode === 'create') {
+      setTitle('');
+      setContent('');
+      setStartTime('');
+      setEndTime('');
+      setColor('');
+    } else if (open && mode === 'update') {
+      setTitle(todoData?.title || '');
+      setContent(todoData?.content || '');
+      setStartTime(todoData?.startTime || '');
+      setEndTime(todoData?.endTime || '');
+      setColor(todoData?.color || '');
     }
-  }, [open, isModalOpenedByFAB, todoData]);
+  }, [open, mode, todoData]);
 
   const handleCloseModal = () => {
     setIsModalOpenFalse();
@@ -104,9 +104,9 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
         <Box sx={TodoModalStyle}>
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography id="modal-title" variant="h6" component="h2">
-              {isModalOpenedByFAB ? 'Todo 생성' : 'Todo 수정'}
+              {mode === 'create' ? 'Todo 생성' : 'Todo 수정'}
             </Typography>
-            {!isModalOpenedByFAB && (
+            {mode === 'update' && (
               <IconButton onClick={handleDelete} color="secondary">
                 <DeleteIcon sx={{ color: red[400], fontSize: 25 }} />
               </IconButton>
@@ -129,7 +129,7 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
             <Button onClick={handleCloseModal} variant="text" size="medium" color="error" sx={{ border: '1px solid pink' }}>
               취소
             </Button>
-            <Button onClick={isModalOpenedByFAB ? handleCreateTodo : handleUpdateTodo} variant="contained" color="primary">
+            <Button onClick={mode === 'create' ? handleCreateTodo : handleUpdateTodo} variant="contained" color="primary">
               저장
             </Button>
           </Box>
