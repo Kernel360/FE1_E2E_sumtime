@@ -1,23 +1,23 @@
 import { BaseTask } from '../../components/Timetable.type';
 import { convertToMilliseconds } from './convert';
 
-const calculateTargetPosition = (totalStartTime: Date, totalEndTime: Date, targetStartTime: Date, targetEndTime: Date) => {
-  const totalStartMilliseconds = convertToMilliseconds(totalStartTime);
-  const totalEndMilliseconds = convertToMilliseconds(totalEndTime);
+const calculateTargetPosition = (startTime: Date, endTime: Date, targetStartTime: Date, targetEndTime: Date) => {
+  const startMilliseconds = convertToMilliseconds(startTime);
+  const endMilliseconds = convertToMilliseconds(endTime);
   const targetStartMilliseconds = convertToMilliseconds(targetStartTime);
   const targetEndMilliseconds = convertToMilliseconds(targetEndTime);
-  const slotTime = totalEndMilliseconds - totalStartMilliseconds;
+  const slotTime = endMilliseconds - startMilliseconds;
   let startPercent = 0;
   let totalEndPercent = 100;
 
-  if (totalStartMilliseconds < targetStartMilliseconds) {
+  if (startMilliseconds < targetStartMilliseconds) {
     // 슬롯의 시작시간보다 task의 시작 시간이 늦었다면(즉 slot 도중에 시작했다면)
-    startPercent = ((targetStartMilliseconds - totalStartMilliseconds) / slotTime) * 100;
+    startPercent = ((targetStartMilliseconds - startMilliseconds) / slotTime) * 100;
   }
 
-  if (targetEndMilliseconds < totalEndMilliseconds) {
+  if (targetEndMilliseconds < endMilliseconds) {
     // task의 끝나는 시간이 slot의 종료 시간보다 늦다면(즉 slot 도중에 끝난다면)
-    totalEndPercent = ((targetEndMilliseconds - totalStartMilliseconds) / slotTime) * 100;
+    totalEndPercent = ((targetEndMilliseconds - startMilliseconds) / slotTime) * 100;
   }
 
   const endPercent = totalEndPercent - startPercent;

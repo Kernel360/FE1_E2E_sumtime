@@ -9,20 +9,12 @@ import PopoverContent from './PopoverContent';
 
 interface TaskSlotItemProps<T extends BaseTask> {
   taskItem: T;
-  index: number;
   contentVisible: boolean;
   slotStartTime: Date;
   slotEndTime: Date;
-  // slotTime: number;
 }
 
-function TaskSlotItem<T extends BaseTask>({
-  taskItem,
-  contentVisible,
-  slotStartTime,
-  slotEndTime,
-  // slotTime,
-}: TaskSlotItemProps<T>) {
+function TaskSlotItem<T extends BaseTask>({ taskItem, contentVisible, slotStartTime, slotEndTime }: TaskSlotItemProps<T>) {
   const { startTime, endTime, title } = taskItem;
   const taskSlotRef = useRef<HTMLDivElement>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
@@ -30,8 +22,6 @@ function TaskSlotItem<T extends BaseTask>({
   const taskOption = useContext(TaskSlotContext);
   const popoverType = useContext(PopoverTypeContext);
   const taskColorTheme = useContext(TaskThemeContext);
-
-  console.log('taskOption', taskOption);
 
   const {
     refs,
@@ -47,15 +37,8 @@ function TaskSlotItem<T extends BaseTask>({
     return null;
   }
 
-  const { startPercent, endPercent } = calculateTargetPosition(
-    slotStartTime, // totalStartTime
-    slotEndTime, // totalEndTime
-    startTime, // targetStartTime
-    endTime, // targetEndTime
-  );
-
+  const { startPercent, endPercent } = calculateTargetPosition(slotStartTime, slotEndTime, startTime, endTime);
   const taskSlotColor = getTaskColor(taskItem) ?? getRandomColor(taskItem, taskColorTheme);
-
   const positionStyles =
     type === 'ROW'
       ? { top: '0', left: `${startPercent}%`, width: `${endPercent}%` }

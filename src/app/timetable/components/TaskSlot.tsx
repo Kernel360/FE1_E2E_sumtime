@@ -40,7 +40,6 @@ function TaskSlot<T extends BaseTask>({
           <TaskSlotItem
             key={taskItem.id}
             taskItem={taskItem}
-            index={index}
             slotStartTime={slotStartTime}
             slotEndTime={slotEndTime}
             contentVisible={contentVisible}
