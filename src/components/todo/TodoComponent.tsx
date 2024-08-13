@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUpdateTodoTime } from '@/api/hooks/todoHooks';
-import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
-import StopOutlinedIcon from '@mui/icons-material/StopOutlined';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import { IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as S from './Todo.styled';
@@ -80,7 +80,7 @@ function TodoComponent({ todoId, title, setTodoId, setIsModalOpenTrue, setIsModa
               handleStart(todoId);
             }}
           >
-            <PlayArrowOutlinedIcon color="primary" />
+            <PlayCircleFilledWhiteOutlinedIcon color="action" />
           </IconButton>
           <IconButton
             sx={{ padding: '0' }}
@@ -89,7 +89,7 @@ function TodoComponent({ todoId, title, setTodoId, setIsModalOpenTrue, setIsModa
               handleEnd(todoId);
             }}
           >
-            <StopOutlinedIcon color="error" />
+            <CheckCircleOutlinedIcon color="action" />
           </IconButton>
         </Box>
       </S.TodoContainer>

@@ -6,16 +6,17 @@ export const TodoSection = styled(Flex)`
   justify-content: start;
   width: 50%;
   height: 100%;
-  background-color: #d0c2b5;
+  background-color: #ffffff;
   position: relative;
   padding: 20px;
+  border-left: 2px solid whitesmoke;
 `;
 
 export const TodoComponentsSection = styled(Container)`
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
-  background-color: rgb(236, 229, 221);
+  background-color: white;
   width: 100%;
   min-height: 50%;
   max-height: 50%;
@@ -24,20 +25,20 @@ export const TodoComponentsSection = styled(Container)`
   padding: 10px;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 1px 1px 10px #a2a2a2;
+  box-shadow: 1px 1px 10px lightgrey;
 `;
 
 export const ATodoComponentContainer = styled(Container)`
   margin: 10px;
   height: auto;
-  background-color: #eeeae4;
+  background-color: #ffffff;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   padding: 5px;
   box-sizing: border-box;
-  box-shadow: 1px 1px 5px #bdbdbd;
+  box-shadow: 1px 1px 5px lightgrey;
 `;
 
 export const TodoContainer = styled(Flex)`
