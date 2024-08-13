@@ -31,6 +31,8 @@ function TaskSlotItem<T extends BaseTask>({
   const popoverType = useContext(PopoverTypeContext);
   const taskColorTheme = useContext(TaskThemeContext);
 
+  console.log('taskOption', taskOption);
+
   const {
     refs,
     fixFloatingTargetPosition,
@@ -95,7 +97,7 @@ function TaskSlotItem<T extends BaseTask>({
           )}
           {shouldDisplayTaskContent && !isContentVisible && (
             <div className={getClassNameByType(styles, 'taskSlotContent', type)}>
-              <p className={getClassNameByType(styles, 'title', type)}>{taskOption.defaultValue}</p>
+              <p className={getClassNameByType(styles, 'title', type)}>{taskOption.ellipsisText}</p>
             </div>
           )}
         </div>

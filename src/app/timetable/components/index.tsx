@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { eachMinuteOfInterval } from 'date-fns';
 import {
   parseSize,
@@ -11,21 +11,21 @@ import {
   checkContentVisibleList,
   checkDateInRange,
 } from '../utils';
-import { PopoverType, BaseTask, TimetableType, TaskThemeType } from './Timetable.type';
+import { PopoverType, BaseTask, TimetableDirectionType, TaskThemeType } from './Timetable.type';
 import { ContextProvider } from '../contexts';
 import CurrentTimeLine from './CurrentTimeLine';
 import Slot from './Slot';
 import styles from './Timetable.module.scss';
 
 interface TimetableProps<T extends BaseTask> {
-  startTime: Date;
-  endTime: Date;
-  slotTime: number;
+  totalStartTime: Date;
+  totalEndTime: Date;
+  slotRange: number;
   timeTableSize: string;
-  timetableType: TimetableType;
+  timetableDirection: TimetableDirectionType;
   taskList: T[];
+  ellipsisText?: string;
   displayCurrentTime?: boolean;
-  defaultValue: string;
   currentTimeLineStyle?: string;
   popoverType?: PopoverType;
   timeTableStyle?: React.CSSProperties;
@@ -36,43 +36,35 @@ interface TimetableProps<T extends BaseTask> {
 }
 
 function Timetable<T extends BaseTask>({
-  startTime,
-  endTime,
-  slotTime,
+  totalStartTime,
+  totalEndTime,
+  slotRange,
   timeTableSize,
-  timetableType,
-  displayCurrentTime = false,
+  timetableDirection,
   taskList,
+  ellipsisText = '...',
+  displayCurrentTime = false,
+  currentTimeLineStyle,
   popoverType = 'CLICK',
+  taskTheme,
   timeTableStyle = { backgroundColor: 'white' },
   timeSlotStyle = { color: 'black' },
   taskSlotStyle = { color: 'black' },
-  defaultValue,
-  currentTimeLineStyle,
-  taskTheme,
   slotStyle = {},
 }: TimetableProps<T>) {
   const { value, format } = parseSize(timeTableSize);
 
   const timeSlots = eachMinuteOfInterval(
     {
-      start: startTime,
-      end: endTime,
+      start: totalStartTime,
+      end: totalEndTime,
     },
-    { step: slotTime },
+    { step: slotRange },
   );
 
   const slotSize = distributeSize(value, timeSlots.length, format);
   const uniqueTaskIdMap = new Map();
   const isCurrentTimeVisible = displayCurrentTime && checkDateInRange(timeSlots[0], new Date(), timeSlots[timeSlots.length - 1]);
-
-  const contextValue = useMemo(
-    () => ({
-      defaultValue,
-    }),
-    [defaultValue],
-  );
-
   const checkOverlapFromTaskList = useCallback((currentTaskList: T[]) => checkTaskListOverlap(currentTaskList), [taskList]);
 
   if (checkOverlapFromTaskList(taskList)) {
@@ -80,19 +72,26 @@ function Timetable<T extends BaseTask>({
   }
 
   return (
-    <ContextProvider timetableType={timetableType} popoverType={popoverType} contextValue={contextValue} taskTheme={taskTheme}>
-      <div className={getClassNameByType(styles, 'container', timetableType)} style={timeTableStyle}>
+    <ContextProvider
+      TimetableDirection={timetableDirection}
+      popoverType={popoverType}
+      contextValue={{
+        ellipsisText,
+      }}
+      taskTheme={taskTheme}
+    >
+      <div className={getClassNameByType(styles, 'container', timetableDirection)} style={timeTableStyle}>
         {isCurrentTimeVisible && (
           <CurrentTimeLine
-            startTime={startTime}
-            endTime={endTime}
+            startTime={totalStartTime}
+            endTime={totalEndTime}
             timeTableSize={timeTableSize}
             currentTimeLineStyle={currentTimeLineStyle}
           />
         )}
         {timeSlots.map((time, index) => {
           const key = `${time.toDateString()}${index}`;
-          const taskItemList = selectTaskListByTimeRange(taskList, time.getHours(), slotTime);
+          const taskItemList = selectTaskListByTimeRange(taskList, time.getHours(), slotRange);
           const shouldDisplayTaskContentList = checkContentVisibleList(taskItemList, uniqueTaskIdMap);
 
           return (
@@ -102,7 +101,7 @@ function Timetable<T extends BaseTask>({
               slotSize={slotSize}
               timeSlotStyle={timeSlotStyle}
               shouldDisplayTaskContentList={shouldDisplayTaskContentList}
-              slotTime={slotTime}
+              slotTime={slotRange}
               taskItemList={taskItemList}
               taskSlotStyle={taskSlotStyle}
               slotStyle={slotStyle}
