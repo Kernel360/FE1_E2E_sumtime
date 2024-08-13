@@ -1,6 +1,10 @@
 import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUpdateTodoTime } from '@/api/hooks/todoHooks';
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+import StopOutlinedIcon from '@mui/icons-material/StopOutlined';
+import { IconButton } from '@mui/material';
+import Box from '@mui/material/Box';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 
@@ -68,24 +72,26 @@ function TodoComponent({ todoId, title, setTodoId, setIsModalOpenTrue, setIsModa
         <Text $width="90%" $fontSize="small" title-wrap="wrap">
           {title}
         </Text>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleStart(todoId);
-          }}
-        >
-          ▶
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleEnd(todoId);
-          }}
-        >
-          ❚❚
-        </button>
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <IconButton
+            sx={{ padding: '0' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleStart(todoId);
+            }}
+          >
+            <PlayArrowOutlinedIcon color="primary" />
+          </IconButton>
+          <IconButton
+            sx={{ padding: '0' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEnd(todoId);
+            }}
+          >
+            <StopOutlinedIcon color="error" />
+          </IconButton>
+        </Box>
       </S.TodoContainer>
     </S.ATodoComponentContainer>
   );

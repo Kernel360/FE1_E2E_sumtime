@@ -36,7 +36,7 @@ export default function Todo() {
   return (
     <S.TodoSection>
       <S.TodoComponentsSection>
-        <Text $fontSize="xl" $fontWeight="bold" $color="black">
+        <Text $fontSize="xxl" $fontWeight="bold" $color="primary">
           {getTodayDateKr()}
         </Text>
         {todoListData &&
@@ -50,12 +50,13 @@ export default function Todo() {
               setIsModalOpenedByFABFalse={setIsModalOpenedByFABFalse}
             />
           ))}
+        <S.FloatingButton>
+          <Fab color="primary" size="small" aria-label="add" onClick={handleOpenFAB}>
+            <AddIcon />
+          </Fab>
+        </S.FloatingButton>
       </S.TodoComponentsSection>
-      <S.FloatingButton>
-        <Fab color="primary" size="small" aria-label="add" onClick={handleOpenFAB}>
-          <AddIcon />
-        </Fab>
-      </S.FloatingButton>
+
       <TodoModal
         open={isModalOpen}
         setIsModalOpenFalse={setIsModalOpenFalse}
