@@ -44,7 +44,7 @@ function SignupSection() {
     const password = passwordInputRef.current?.value || '';
     const confirmPassword = confirmPasswordInputRef.current?.value || '';
     if (password !== confirmPassword) {
-      setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
+      setConfirmPasswordError('비밀번호가 일치하지 않습니다');
       return false;
     }
     setConfirmPasswordError(null);
@@ -71,7 +71,7 @@ function SignupSection() {
       return false;
     }
     if (!NICKNAME_REG_EXP.test(nickname)) {
-      setNicknameError('닉네임은 1~20자의 한글, 알파벳, 숫자만 사용 가능합니다.');
+      setNicknameError('닉네임은 1~20자의 한글, 알파벳, 숫자만 사용 가능합니다');
       return false;
     }
     setNicknameError(null);
@@ -94,7 +94,7 @@ function SignupSection() {
         return false;
       }
     } else {
-      alert('잘못된 이메일 형식입니다. ');
+      alert('잘못된 이메일 형식입니다 ');
       return false;
     }
   };
