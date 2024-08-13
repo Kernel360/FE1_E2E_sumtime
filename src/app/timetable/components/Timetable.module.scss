@@ -114,7 +114,6 @@
   border: none;
   box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3);
   color: #333;
-  overflow-y: auto;
   box-sizing: border-box;
 }
 
@@ -169,6 +168,7 @@
   word-break: break-all;
   min-height: 50px;
   overflow-y: auto;
+  height: 100px;
 }
 
 .title {
