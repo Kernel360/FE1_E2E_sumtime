@@ -36,29 +36,31 @@ export default function Todo() {
 
   return (
     <S.TodoSection>
-      <S.TodoComponentsSection>
-        <Text $fontSize="xxl" $fontWeight="bold" $color="primary" $margin="8px">
-          {getTodayDateKr()}
-        </Text>
-        <Box marginTop={2}>
-          {todoListData &&
-            todoListData.map((todo) => (
-              <TodoComponent
-                key={todo.todoId}
-                todoId={todo.todoId}
-                title={todo.title}
-                setTodoId={handleOpenTodo}
-                setIsModalOpenTrue={setIsModalOpenTrue}
-                setIsModalOpenedByFABFalse={setIsModalOpenedByFABFalse}
-              />
-            ))}
-        </Box>
+      <Box position="relative" width="100%" height="50%">
+        <S.TodoComponentsSection>
+          <Text $fontSize="xxl" $fontWeight="bold" $color="primary" $margin="8px">
+            {getTodayDateKr()}
+          </Text>
+          <Box marginTop={2}>
+            {todoListData &&
+              todoListData.map((todo) => (
+                <TodoComponent
+                  key={todo.todoId}
+                  todoId={todo.todoId}
+                  title={todo.title}
+                  setTodoId={handleOpenTodo}
+                  setIsModalOpenTrue={setIsModalOpenTrue}
+                  setIsModalOpenedByFABFalse={setIsModalOpenedByFABFalse}
+                />
+              ))}
+          </Box>
+        </S.TodoComponentsSection>
         <S.FloatingButton>
           <Fab color="primary" size="small" aria-label="add" onClick={handleOpenFAB}>
             <AddIcon />
           </Fab>
         </S.FloatingButton>
-      </S.TodoComponentsSection>
+      </Box>
 
       <TodoModal
         open={isModalOpen}
