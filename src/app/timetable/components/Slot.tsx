@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { generateClassNameWithType } from '../utils';
+import { getClassNameByType } from '../utils';
 import { BaseTask } from './Timetable.type';
 import { TypeContext } from '../contexts';
 import styles from './Timetable.module.scss';
@@ -31,7 +31,7 @@ function Slot<T extends BaseTask>({
   const style = type === 'ROW' ? { width: slotSize } : { height: slotSize };
 
   return (
-    <div className={generateClassNameWithType(styles, 'slot', type)} style={{ ...slotStyle, ...style }}>
+    <div className={getClassNameByType(styles, 'slot', type)} style={{ ...slotStyle, ...style }}>
       <TimeSlot headerDate={headerDate} timeSlotStyle={timeSlotStyle} />
       <TaskSlot
         headerDate={headerDate}

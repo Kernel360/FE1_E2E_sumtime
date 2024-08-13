@@ -2,7 +2,7 @@ import { add } from 'date-fns';
 import { useContext } from 'react';
 import { BaseTask } from './Timetable.type';
 import { TypeContext } from '../contexts';
-import { generateClassNameWithType } from '../utils';
+import { getClassNameByType } from '../utils';
 import styles from './Timetable.module.scss';
 import TaskSlotItem from './TaskSlotItem';
 
@@ -24,14 +24,14 @@ function TaskSlot<T extends BaseTask>({
   const type = useContext(TypeContext);
 
   if (taskItemList.length === 0) {
-    return <div className={generateClassNameWithType(styles, 'taskSlotLayout', type)} />;
+    return <div className={getClassNameByType(styles, 'taskSlotLayout', type)} />;
   }
 
   const slotStartTime = headerDate;
   const slotEndTime = add(headerDate, { minutes: slotTime });
 
   return (
-    <div className={generateClassNameWithType(styles, 'taskSlotLayout', type)} style={taskSlotStyle}>
+    <div className={getClassNameByType(styles, 'taskSlotLayout', type)} style={taskSlotStyle}>
       {taskItemList.map((taskItem, index) => {
         const shouldDisplayTaskContent = shouldDisplayTaskContentList[index];
         if (!taskItem.startTime || !taskItem.endTime) {

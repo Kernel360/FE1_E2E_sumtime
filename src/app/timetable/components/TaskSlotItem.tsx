@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { calculateTargetPosition, generateClassNameWithType, getRandomColor, getTaskColor } from '../utils';
+import { calculateTargetPosition, getClassNameByType, getRandomColor, getTaskColor } from '../utils';
 import { BaseTask } from './Timetable.type';
 import { TypeContext, PopoverTypeContext, TaskSlotContext, TaskThemeContext } from '../contexts';
 import styles from './Timetable.module.scss';
@@ -80,22 +80,22 @@ function TaskSlotItem<T extends BaseTask>({
         type="button"
         ref={refs.setReference}
         {...getReferenceProps}
-        className={generateClassNameWithType(styles, 'buttonInherit', type)}
+        className={getClassNameByType(styles, 'buttonInherit', type)}
         style={{
           ...positionStyles,
           backgroundColor: `${taskSlotColor}`,
         }}
         onClick={fixFloatingTargetPosition}
       >
-        <div ref={taskSlotRef} className={generateClassNameWithType(styles, 'taskSlotBackground', type)}>
+        <div ref={taskSlotRef} className={getClassNameByType(styles, 'taskSlotBackground', type)}>
           {shouldDisplayTaskContent && isContentVisible && (
-            <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
-              <p className={generateClassNameWithType(styles, 'title', type)}>{title}</p>
+            <div className={getClassNameByType(styles, 'taskSlotContent', type)}>
+              <p className={getClassNameByType(styles, 'title', type)}>{title}</p>
             </div>
           )}
           {shouldDisplayTaskContent && !isContentVisible && (
-            <div className={generateClassNameWithType(styles, 'taskSlotContent', type)}>
-              <p className={generateClassNameWithType(styles, 'title', type)}>{taskOption.defaultValue}</p>
+            <div className={getClassNameByType(styles, 'taskSlotContent', type)}>
+              <p className={getClassNameByType(styles, 'title', type)}>{taskOption.defaultValue}</p>
             </div>
           )}
         </div>

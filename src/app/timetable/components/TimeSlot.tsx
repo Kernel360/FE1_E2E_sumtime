@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import styles from './Timetable.module.scss';
-import { generateClassNameWithType, formatHourAndMinutes } from '../utils';
+import { getClassNameByType, formatHourAndMinutes } from '../utils';
 import { TypeContext } from '../contexts';
 
 interface TimeSlotProps {
@@ -11,12 +11,12 @@ interface TimeSlotProps {
 function TimeSlot({ headerDate, timeSlotStyle }: TimeSlotProps) {
   const type = useContext(TypeContext);
   const currentTime = formatHourAndMinutes(headerDate);
-  const timeSlotLayout = generateClassNameWithType(styles, 'timeSlotLayout', type);
-  const title = generateClassNameWithType(styles, 'title', type);
+  const timeSlotLayout = getClassNameByType(styles, 'timeSlotLayout', type);
+  const title = getClassNameByType(styles, 'title', type);
 
   return (
     <div className={`${timeSlotLayout} ${title}`} style={timeSlotStyle}>
-      <p className={generateClassNameWithType(styles, 'headerDate', type)}>{currentTime}</p>
+      <p className={getClassNameByType(styles, 'headerDate', type)}>{currentTime}</p>
     </div>
   );
 }

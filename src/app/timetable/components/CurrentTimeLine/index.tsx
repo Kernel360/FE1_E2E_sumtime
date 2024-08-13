@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 import styled from './CurrentTimeLine.module.scss';
-import { calculateCurrentTimePosition, parseSize, generateClassNameWithType } from '../../utils';
+import { calculateCurrentTimePosition, parseSize, getClassNameByType } from '../../utils';
 import { TypeContext } from '../../contexts/TypeContext';
 
 interface CurrentTimeLineProps {
@@ -32,7 +32,7 @@ function CurrentTimeLine({ startTime, endTime, timeTableSize, currentTimeLineSty
 
   const mergedStyle: React.CSSProperties = { ...dynamicStyle, ...{ border: currentTimeLineStyle } };
 
-  return <hr className={generateClassNameWithType(styled, 'line', type)} style={mergedStyle} />;
+  return <hr className={getClassNameByType(styled, 'line', type)} style={mergedStyle} />;
 }
 
 export default CurrentTimeLine;

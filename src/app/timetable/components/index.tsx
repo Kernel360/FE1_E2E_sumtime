@@ -6,7 +6,7 @@ import {
   parseSize,
   distributeSize,
   checkTaskListOverlap,
-  generateClassNameWithType,
+  getClassNameByType,
   selectTaskListByTimeRange,
   checkContentVisibleList,
   checkDateInRange,
@@ -81,7 +81,7 @@ function Timetable<T extends BaseTask>({
 
   return (
     <ContextProvider timetableType={timetableType} popoverType={popoverType} contextValue={contextValue} taskTheme={taskTheme}>
-      <div className={generateClassNameWithType(styles, 'container', timetableType)} style={timeTableStyle}>
+      <div className={getClassNameByType(styles, 'container', timetableType)} style={timeTableStyle}>
         {isCurrentTimeVisible && (
           <CurrentTimeLine
             startTime={startTime}
