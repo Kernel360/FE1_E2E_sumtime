@@ -72,6 +72,7 @@ export default function Todo() {
       >
         <DateCalendar
           defaultValue={new Date()}
+          value={displayingDate}
           onChange={(value) => {
             setDisplayingDate(value);
             toggleIsCalendarOpen();
