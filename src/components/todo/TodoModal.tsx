@@ -21,9 +21,17 @@ interface TodoModalProps {
   isModalOpenedByFAB: boolean;
   setIsModalOpenFalse: () => void;
   mode: TodoModalMode;
+  displayingDate: Date;
 }
 
-export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModalOpenFalse, mode }: TodoModalProps) {
+export default function TodoModal({
+  open,
+  todoId,
+  isModalOpenedByFAB,
+  setIsModalOpenFalse,
+  mode,
+  displayingDate,
+}: TodoModalProps) {
   const { data: session } = useSession();
   const sessionId = session?.user?.id; // session에서 받아온 id
   const { data: todoData, isSuccess: isSuccessGetOneTodo } = useGetOneTodo(todoId);
@@ -61,10 +69,17 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   const handleUpdateTodo = async () => {
     if (!sessionId) {
       alert('로그인이 필요합니다');
-    } else if (typeof sessionId === 'number') {
+    } else {
       // session 존재할 때만 실행
       await updateTodo(
-        { todoId, title, content, startTime, endTime, color },
+        {
+          todoId,
+          title,
+          content,
+          startTime,
+          endTime,
+          color,
+        },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
@@ -82,11 +97,19 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   const handleCreateTodo = async () => {
     if (!sessionId) {
       alert('로그인이 필요합니다');
-    } else if (typeof sessionId === 'number') {
+    } else {
       // session 존재할 때만 실행
-      const createdAt = new Date();
+      const createdAt = displayingDate;
       await createTodo(
-        { userId: sessionId, title, createdAt, content, startTime, endTime, color },
+        {
+          userId: sessionId,
+          title,
+          createdAt,
+          content,
+          startTime,
+          endTime,
+          color,
+        },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
@@ -97,8 +120,6 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
           },
         },
       );
-    } else {
-      alert('로그인이 필요합니다');
     }
   };
 

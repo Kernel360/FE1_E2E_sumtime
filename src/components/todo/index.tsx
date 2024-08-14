@@ -7,12 +7,12 @@ import useBooleanState from '@/hooks/utils/useBooleanState';
 import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import Box from '@mui/material/Box';
 import { IconButton, Pagination } from '@mui/material';
-import { theme } from '@/themes';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useSession } from 'next-auth/react';
 import { DateCalendar } from '@mui/x-date-pickers';
 import { format, getDaysInMonth } from 'date-fns';
 import { TodoModalMode } from '@/types/todo';
+import { ko } from 'date-fns/locale/ko';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
@@ -52,8 +52,8 @@ export default function Todo() {
   return (
     <S.TodoSection>
       <Box width="100%" height={56} borderRadius={2} display="flex" alignItems="center" boxShadow="1px 1px 10px lightgray">
-        <Text $fontSize={`${theme.fontSize.lg}px`} $fontWeight="700" $marginLeft="16px">
-          {format(displayingDate, 'yyyy년 MM월 dd일')}
+        <Text $fontSize="18px" $fontWeight="700" $marginLeft="16px">
+          {format(displayingDate, 'yyyy년 MM월 dd일 (EEE)', { locale: ko })}
         </Text>
         <Box marginTop={0.2}>
           <IconButton size="small" onClick={toggleIsCalendarOpen}>
@@ -131,6 +131,7 @@ export default function Todo() {
         todoId={todoId}
         isModalOpenedByFAB={isModalOpenedByFAB}
         mode={mode}
+        displayingDate={displayingDate}
       />
     </S.TodoSection>
   );
