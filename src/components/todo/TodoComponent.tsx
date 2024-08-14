@@ -24,7 +24,7 @@ function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
   };
 
   const handleStart = async (id: number) => {
-    const startTime = new Date().toTimeString();
+    const startTime = new Date().toISOString();
     const endTime = null;
 
     await updateTodoTime(
@@ -42,7 +42,7 @@ function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
 
   const handleEnd = async (id: number) => {
     const startTime = null;
-    const endTime = new Date().toTimeString();
+    const endTime = new Date().toISOString();
 
     await updateTodoTime(
       { todoId: id, startTime, endTime },
