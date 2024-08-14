@@ -56,7 +56,9 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   };
 
   const handleUpdateTodo = async () => {
-    if (typeof sessionId === 'number') {
+    if (!sessionId) {
+      alert('로그인이 필요합니다');
+    } else if (typeof sessionId === 'number') {
       // session 존재할 때만 실행
       await updateTodo(
         { todoId, title, content, startTime, endTime, color },
@@ -71,13 +73,13 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
           },
         },
       );
-    } else {
-      alert('로그인이 필요합니다');
     }
   };
 
   const handleCreateTodo = async () => {
-    if (typeof sessionId === 'number') {
+    if (!sessionId) {
+      alert('로그인이 필요합니다');
+    } else if (typeof sessionId === 'number') {
       // session 존재할 때만 실행
       const createdAt = new Date();
       await createTodo(
@@ -98,7 +100,9 @@ export default function TodoModal({ open, todoId, isModalOpenedByFAB, setIsModal
   };
 
   const handleDelete = async () => {
-    if (typeof sessionId === 'number') {
+    if (!sessionId) {
+      alert('로그인이 필요합니다');
+    } else if (typeof sessionId === 'number') {
       // session 존재할 때만 실행
       await deleteTodo(todoId, {
         onSuccess: () => {
