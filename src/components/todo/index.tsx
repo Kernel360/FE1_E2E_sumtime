@@ -7,10 +7,11 @@ import useBooleanState from '@/hooks/utils/useBooleanState';
 import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import Box from '@mui/material/Box';
 import { IconButton, Pagination } from '@mui/material';
-import { getCurrentDate, getFormattedDateKr } from '@/utils/timeUtils';
 import { theme } from '@/themes';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useSession } from 'next-auth/react';
+import { DateCalendar } from '@mui/x-date-pickers';
+import { format, getDaysInMonth } from 'date-fns';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
@@ -18,10 +19,12 @@ import { Text } from '../common';
 import { TodoModalMode } from '../../types/todo';
 
 export default function Todo() {
+  const [todoId, setTodoId] = useState<number>(0);
+  const [displayingDate, setDisplayingDate] = useState<Date>(new Date());
   const { data: session } = useSession();
   const sessionId = session?.user?.id; // session에서 받아온 id // modal에 각각 선언하는 건 코드 가독성에서..
-  const [todoId, setTodoId] = useState<number>(0);
   const { value: isModalOpen, setTrue: setIsModalOpenTrue, setFalse: setIsModalOpenFalse } = useBooleanState();
+  const { value: isCalendarOpen, toggle: toggleIsCalendarOpen } = useBooleanState();
   const {
     value: isModalOpenedByFAB,
     setTrue: setIsModalOpenedByFABTrue,
@@ -50,13 +53,30 @@ export default function Todo() {
     <S.TodoSection>
       <Box width="100%" height={56} borderRadius={2} display="flex" alignItems="center" boxShadow="1px 1px 10px lightgray">
         <Text $fontSize={`${theme.fontSize.lg}px`} $fontWeight="700" $marginLeft="16px">
-          {getFormattedDateKr()}
+          {format(displayingDate, 'yyyy년 MM월 dd일')}
         </Text>
         <Box marginTop={0.2}>
-          <IconButton size="small">
+          <IconButton size="small" onClick={toggleIsCalendarOpen}>
             <ArrowDropDownIcon fontSize="large" color="action" />
           </IconButton>
         </Box>
+      </Box>
+      <Box
+        position="absolute"
+        zIndex="1"
+        bgcolor="white"
+        top="84px"
+        borderRadius={2}
+        boxShadow="1px 1px 10px lightgray"
+        display={isCalendarOpen ? 'block' : 'none'}
+      >
+        <DateCalendar
+          defaultValue={new Date()}
+          onChange={(value) => {
+            setDisplayingDate(value);
+            toggleIsCalendarOpen();
+          }}
+        />
       </Box>
       <Box
         marginTop={1}
@@ -69,8 +89,14 @@ export default function Todo() {
         boxShadow="1px 1px 10px lightgray"
       >
         <Pagination
-          defaultPage={getCurrentDate()}
-          count={31}
+          defaultPage={displayingDate.getDate()}
+          page={displayingDate.getDate()}
+          onChange={(e, value) => {
+            const newDate = new Date(displayingDate);
+            newDate.setDate(value);
+            setDisplayingDate(newDate);
+          }}
+          count={getDaysInMonth(displayingDate)}
           siblingCount={5}
           boundaryCount={0}
           color="primary"
