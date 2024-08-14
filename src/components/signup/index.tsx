@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import logo from '@/assets/images/sumtimeLogo.png';
 import { useRouter } from 'next/navigation';
-import { emailValidation } from '@/api/queryFn/userQueryFn';
+import { emailDuplicated } from '@/api/queryFn/userQueryFn';
 import { NICKNAME_REG_EXP } from '@/constants/regExp';
 import { useCreateUser } from '@/api/hooks/userHooks';
 import { useEmailValidation } from '@/hooks/auth/useEmailValidation';
@@ -76,7 +76,7 @@ function SignupSection() {
     const email = emailInputRef.current?.value || '';
     if (handleEmailValidation()) {
       try {
-        const isEmailAvailable = await emailValidation(email);
+        const isEmailAvailable = await emailDuplicated(email);
         if (isEmailAvailable) {
           setIsEmailChecked(true);
           return true;
