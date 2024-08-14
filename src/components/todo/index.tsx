@@ -12,11 +12,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useSession } from 'next-auth/react';
 import { DateCalendar } from '@mui/x-date-pickers';
 import { format, getDaysInMonth } from 'date-fns';
+import { TodoModalMode } from '@/types/todo';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
 import { Text } from '../common';
-import { TodoModalMode } from '../../types/todo';
 
 export default function Todo() {
   const [todoId, setTodoId] = useState<number>(0);
@@ -33,7 +33,7 @@ export default function Todo() {
   const [mode, setTodoModalMode] = useState<TodoModalMode>(''); // modal이 열리는 경우 mode로 관리
 
   // sessionId 있을 때만 useGetTodosMatchingDate 호출
-  const { data: todoListData } = sessionId ? useGetTodosMatchingDate(sessionId, new Date()) : { data: [] };
+  const { data: todoListData } = sessionId ? useGetTodosMatchingDate(sessionId, displayingDate) : { data: [] };
 
   const handleOpenModalByFAB = () => {
     setIsModalOpenedByFABTrue();
