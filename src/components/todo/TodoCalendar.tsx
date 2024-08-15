@@ -1,6 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { DateCalendar } from '@mui/x-date-pickers';
+import { useRouter } from 'next/navigation';
 
 interface PropsType {
   isOpened: boolean;
@@ -10,6 +11,8 @@ interface PropsType {
 }
 
 function TodoCalendar({ isOpened, date, setDate, toggleOpen }: PropsType) {
+  const router = useRouter();
+
   return (
     <Box
       position="absolute"
@@ -25,6 +28,10 @@ function TodoCalendar({ isOpened, date, setDate, toggleOpen }: PropsType) {
         value={date}
         onChange={(value) => {
           setDate(value);
+          const newYear = value.getFullYear();
+          const newMonth = value.getMonth() + 1;
+          const newDay = value.getDate();
+          router.push(`/mainpagetest/day/${newYear}/${newMonth}/${newDay}`);
           toggleOpen();
         }}
       />

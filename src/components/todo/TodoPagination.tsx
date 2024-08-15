@@ -32,7 +32,6 @@ function TodoPagination({ date, setDate }: PropsType) {
           const newYear = newDate.getFullYear();
           const newMonth = newDate.getMonth() + 1;
           const newDay = newDate.getDate();
-
           router.push(`/mainpagetest/day/${newYear}/${newMonth}/${newDay}`);
         }}
         count={getDaysInMonth(date)}
