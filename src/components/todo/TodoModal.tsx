@@ -12,7 +12,6 @@ import { red } from '@mui/material/colors';
 import { TimePicker } from '@mui/x-date-pickers';
 import { parseISO } from 'date-fns';
 import { useSession } from 'next-auth/react';
-import { TodoModalMode } from '@/types/todo';
 import { TodoModalStyle } from './Todo.styled';
 
 interface TodoModalProps {
@@ -20,7 +19,7 @@ interface TodoModalProps {
   todoId: number;
   isModalOpenedByFAB: boolean;
   setIsModalOpenFalse: () => void;
-  mode: TodoModalMode;
+  mode: string;
   displayingDate: Date;
 }
 

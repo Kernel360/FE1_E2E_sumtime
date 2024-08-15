@@ -1,124 +1,56 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import useBooleanState from '@/hooks/utils/useBooleanState';
-import Box from '@mui/material/Box';
-import { IconButton, Pagination } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { DateCalendar } from '@mui/x-date-pickers';
-import { format, getDaysInMonth } from 'date-fns';
-import { TodoModalMode } from '@/types/todo';
-import { ko } from 'date-fns/locale/ko';
+import React, { useContext } from 'react';
 import { TodoContext } from '@/context/TodoContext';
-import TodoComponent from './TodoComponent';
+import TodoHeader from '@/components/todo/TodoHeader';
+import TodoPagination from '@/components/todo/TodoPagination';
+import TodoCalendar from '@/components/todo/TodoCalendar';
+import TodoReport from '@/components/todo/TodoReport';
+import TodoList from '@/components/todo/TodoList';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
-import { Text } from '../common';
 
 export default function Todo() {
-  const { displayingDate, setDisplayingDate, todoListData } = useContext(TodoContext);
-  const [todoId, setTodoId] = useState<number>(0);
-  const { value: isModalOpen, setTrue: setIsModalOpenTrue, setFalse: setIsModalOpenFalse } = useBooleanState();
-  const { value: isCalendarOpen, toggle: toggleIsCalendarOpen } = useBooleanState();
   const {
-    value: isModalOpenedByFAB,
-    setTrue: setIsModalOpenedByFABTrue,
-    setFalse: setIsModalOpenedByFABFalse,
-  } = useBooleanState();
-  const [mode, setTodoModalMode] = useState<TodoModalMode>(''); // modal이 열리는 경우 mode로 관리
-
-  const handleOpenModalByFAB = () => {
-    setIsModalOpenedByFABTrue();
-    setTodoId(0); // 새로 추가하는 경우 todoId를 0으로 설정
-    setIsModalOpenTrue();
-    setTodoModalMode('create'); // 이렇게 mode를 설정해주면 todocomponent, todomodal에 직접 Mode='create'로 전달할 필요가 없음
-  };
-
-  const handleOpenModalByTodo = (id: number) => {
-    setIsModalOpenedByFABFalse();
-    setTodoId(id);
-    setIsModalOpenTrue();
-    setTodoModalMode('update'); // 이렇게 mode를 설정해주면 todocomponent, todomodal에 직접 Mode='create'로 전달할 필요가 없음
-  };
+    // 데이터
+    displayingDate,
+    setDisplayingDate,
+    todoId,
+    setTodoId,
+    todoListData,
+    // 달력
+    isCalendarOpen,
+    toggleIsCalendarOpen,
+    // 모달
+    mode,
+    setTodoModalMode,
+    isModalOpen,
+    setIsModalOpenTrue,
+    setIsModalOpenFalse,
+    isModalOpenedByFAB,
+    setIsModalOpenedByFABTrue,
+    setIsModalOpenedByFABFalse,
+  } = useContext(TodoContext);
 
   return (
     <S.TodoSection>
-      <Box width="100%" height={56} borderRadius={2} display="flex" alignItems="center" boxShadow="1px 1px 10px lightgray">
-        <Text $fontSize="18px" $fontWeight="700" $marginLeft="16px">
-          {format(displayingDate, 'yyyy년 MM월 dd일 (EEE)', { locale: ko })}
-        </Text>
-        <Box marginTop={0.2}>
-          <IconButton size="small" onClick={toggleIsCalendarOpen}>
-            <ArrowDropDownIcon fontSize="large" color="action" />
-          </IconButton>
-        </Box>
-      </Box>
-      <Box
-        position="absolute"
-        zIndex="1"
-        bgcolor="white"
-        top="84px"
-        borderRadius={2}
-        boxShadow="1px 1px 10px lightgray"
-        display={isCalendarOpen ? 'block' : 'none'}
-      >
-        <DateCalendar
-          defaultValue={new Date()}
-          value={displayingDate}
-          onChange={(value) => {
-            setDisplayingDate(value);
-            toggleIsCalendarOpen();
-          }}
-        />
-      </Box>
-      <Box
-        marginTop={1}
-        marginBottom={1}
-        padding={1}
-        borderRadius={2}
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        boxShadow="1px 1px 10px lightgray"
-      >
-        <Pagination
-          defaultPage={displayingDate.getDate()}
-          page={displayingDate.getDate()}
-          onChange={(e, value) => {
-            const newDate = new Date(displayingDate);
-            newDate.setDate(value);
-            setDisplayingDate(newDate);
-          }}
-          count={getDaysInMonth(displayingDate)}
-          siblingCount={5}
-          boundaryCount={0}
-          color="primary"
-          size="medium"
-          showFirstButton
-          showLastButton
-          hideNextButton
-          hidePrevButton
-        />
-      </Box>
-      <Box position="relative" width="100%" height="50%">
-        <S.TodoComponentsSection>
-          <Box>
-            {todoListData &&
-              todoListData.map((todo) => (
-                <TodoComponent key={todo.todoId} todoId={todo.todoId} title={todo.title} setTodoId={handleOpenModalByTodo} />
-              ))}
-          </Box>
-        </S.TodoComponentsSection>
-        <S.FloatingButton>
-          <Fab color="primary" size="small" aria-label="add" onClick={handleOpenModalByFAB}>
-            <AddIcon />
-          </Fab>
-        </S.FloatingButton>
-      </Box>
-      <Box width="100%" height="300px" marginTop={2} borderRadius={2} boxShadow="1px 1px 10px lightgray" />
-
+      <TodoHeader toggleCalendar={toggleIsCalendarOpen} />
+      <TodoCalendar
+        isOpened={isCalendarOpen}
+        date={displayingDate}
+        setDate={setDisplayingDate}
+        toggleOpen={toggleIsCalendarOpen}
+      />
+      <TodoPagination date={displayingDate} setDate={setDisplayingDate} />
+      <TodoList
+        dataList={todoListData}
+        setTodoId={setTodoId}
+        setTodoModalMode={setTodoModalMode}
+        setIsModalOpenTrue={setIsModalOpenTrue}
+        setIsModalOpenedByFABTrue={setIsModalOpenedByFABTrue}
+        setIsModalOpenedByFABFalse={setIsModalOpenedByFABFalse}
+      />
+      <TodoReport />
       <TodoModal
         open={isModalOpen}
         setIsModalOpenFalse={setIsModalOpenFalse}
