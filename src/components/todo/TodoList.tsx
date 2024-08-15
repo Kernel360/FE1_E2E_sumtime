@@ -25,17 +25,17 @@ function TodoList({
   setIsModalOpenedByFABFalse,
 }: PropsType) {
   const handleOpenModalByFAB = () => {
-    setTodoId(0); // 새로 추가하는 경우 todoId를 0으로 설정
+    setTodoId(0);
     setIsModalOpenTrue();
     setIsModalOpenedByFABTrue();
-    setTodoModalMode('create'); // 이렇게 mode를 설정해주면 todocomponent, todomodal에 직접 Mode='create'로 전달할 필요가 없음
+    setTodoModalMode('create');
   };
 
   const handleOpenModalByTodo = (id: number) => {
     setTodoId(id);
     setIsModalOpenTrue();
     setIsModalOpenedByFABFalse();
-    setTodoModalMode('update'); // 이렇게 mode를 설정해주면 todocomponent, todomodal에 직접 Mode='create'로 전달할 필요가 없음
+    setTodoModalMode('update');
   };
 
   return (

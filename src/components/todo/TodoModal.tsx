@@ -168,14 +168,14 @@ export default function TodoModal({
             />
             <TimePicker
               sx={{ width: '100%', margin: '10px 0' }}
-              views={['hours', 'minutes', 'seconds']}
+              views={['hours', 'minutes']}
               label="시작 시간"
               defaultValue={startTime ? parseISO(startTime) : null}
               onChange={(value) => setStartTime(value ? value.toISOString() : null)}
             />
             <TimePicker
               sx={{ width: '100%', margin: '10px 0' }}
-              views={['hours', 'minutes', 'seconds']}
+              views={['hours', 'minutes']}
               label="종료 시간"
               defaultValue={endTime ? parseISO(endTime) : null}
               onChange={(value) => setEndTime(value ? value.toISOString() : null)}
