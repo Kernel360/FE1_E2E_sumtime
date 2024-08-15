@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useContext } from 'react';
-import { TodoContext } from '@/context/TodoContext';
+import { TodoDataContext } from '@/context/TodoDataContext';
+import { TodoUIContext } from '@/context/TodoUIContext';
 import TodoHeader from '@/components/todo/TodoHeader';
 import TodoPagination from '@/components/todo/TodoPagination';
 import TodoCalendar from '@/components/todo/TodoCalendar';
@@ -18,6 +19,8 @@ export default function Todo() {
     todoId,
     setTodoId,
     todoListData,
+  } = useContext(TodoDataContext);
+  const {
     // 달력
     isCalendarOpen,
     toggleIsCalendarOpen,
@@ -30,7 +33,7 @@ export default function Todo() {
     isModalOpenedByFAB,
     setIsModalOpenedByFABTrue,
     setIsModalOpenedByFABFalse,
-  } = useContext(TodoContext);
+  } = useContext(TodoUIContext);
 
   return (
     <S.TodoSection>

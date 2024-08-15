@@ -3,12 +3,12 @@
 import Timetable from '@/app/timetable/components';
 import { startTime, endTime } from '@/app/timetable/mocks/timetableMockData';
 import { useContext } from 'react';
-import { TodoContext } from '@/context/TodoContext';
+import { TodoDataContext } from '@/context/TodoDataContext';
 import { convertTodosForTimetable } from '@/utils/convertTodosForTimetable';
 import * as S from './TimeTable.styled';
 
 function TimeTable() {
-  const { todoListData } = useContext(TodoContext);
+  const { todoListData } = useContext(TodoDataContext);
   const allTodosForTimetable = convertTodosForTimetable(todoListData);
   return (
     <S.TimeTableSection>

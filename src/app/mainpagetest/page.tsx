@@ -5,16 +5,19 @@ import Todo from '@/components/todo';
 import { BasicContainer } from '@/components/common';
 import TimeTable from '@/components/TimeTable';
 import Header from '@/components/Header';
-import { TodoProvider } from '@/context/TodoContext';
+import { TodoDataProvider } from '@/context/TodoDataContext';
+import { TodoUIProvider } from '@/context/TodoUIContext';
 
 export default function mainTestPage() {
   return (
-    <TodoProvider>
-      <Header />
-      <BasicContainer>
-        <TimeTable />
-        <Todo />
-      </BasicContainer>
-    </TodoProvider>
+    <TodoDataProvider>
+      <TodoUIProvider>
+        <Header />
+        <BasicContainer>
+          <TimeTable />
+          <Todo />
+        </BasicContainer>
+      </TodoUIProvider>
+    </TodoDataProvider>
   );
 }
