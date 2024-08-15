@@ -68,7 +68,8 @@ function Timetable<T extends BaseTask>({
   const checkOverlapFromTaskList = useCallback((currentTaskList: T[]) => checkTaskListOverlap(currentTaskList), [taskList]);
 
   if (checkOverlapFromTaskList(taskList)) {
-    throw new Error('task time is overlap. please check your taskList');
+    // throw new Error('task time is overlap. please check your taskList');
+    alert('task time is overlap. please check your taskList');
   }
 
   return (
