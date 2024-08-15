@@ -1,28 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import Box from '@mui/material/Box';
 import { IconButton, Pagination } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { useSession } from 'next-auth/react';
 import { DateCalendar } from '@mui/x-date-pickers';
 import { format, getDaysInMonth } from 'date-fns';
 import { TodoModalMode } from '@/types/todo';
 import { ko } from 'date-fns/locale/ko';
+import { TodoContext } from '@/context/TodoContext';
 import TodoComponent from './TodoComponent';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 
 export default function Todo() {
+  const { displayingDate, setDisplayingDate, todoListData } = useContext(TodoContext);
   const [todoId, setTodoId] = useState<number>(0);
-  const [displayingDate, setDisplayingDate] = useState<Date>(new Date());
-  const { data: session } = useSession();
-  const sessionId = session?.user?.id; // session에서 받아온 id // modal에 각각 선언하는 건 코드 가독성에서..
   const { value: isModalOpen, setTrue: setIsModalOpenTrue, setFalse: setIsModalOpenFalse } = useBooleanState();
   const { value: isCalendarOpen, toggle: toggleIsCalendarOpen } = useBooleanState();
   const {
@@ -31,9 +28,6 @@ export default function Todo() {
     setFalse: setIsModalOpenedByFABFalse,
   } = useBooleanState();
   const [mode, setTodoModalMode] = useState<TodoModalMode>(''); // modal이 열리는 경우 mode로 관리
-
-  // sessionId 있을 때만 useGetTodosMatchingDate 호출
-  const { data: todoListData } = sessionId ? useGetTodosMatchingDate(sessionId, displayingDate) : { data: [] };
 
   const handleOpenModalByFAB = () => {
     setIsModalOpenedByFABTrue();

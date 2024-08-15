@@ -12,8 +12,8 @@ import { red } from '@mui/material/colors';
 import { TimePicker } from '@mui/x-date-pickers';
 import { parseISO } from 'date-fns';
 import { useSession } from 'next-auth/react';
+import { TodoModalMode } from '@/types/todo';
 import { TodoModalStyle } from './Todo.styled';
-import { TodoModalMode } from '../../types/todo';
 
 interface TodoModalProps {
   open: boolean;
@@ -99,12 +99,11 @@ export default function TodoModal({
       alert('로그인이 필요합니다');
     } else {
       // session 존재할 때만 실행
-      const createdAt = displayingDate;
       await createTodo(
         {
           userId: sessionId,
           title,
-          createdAt,
+          createdAt: displayingDate,
           content,
           startTime,
           endTime,
@@ -126,7 +125,7 @@ export default function TodoModal({
   const handleDelete = async () => {
     if (!sessionId) {
       alert('로그인이 필요합니다');
-    } else if (typeof sessionId === 'number') {
+    } else {
       // session 존재할 때만 실행
       await deleteTodo(todoId, {
         onSuccess: () => {
@@ -138,8 +137,6 @@ export default function TodoModal({
           alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
         },
       });
-    } else {
-      alert('로그인이 필요합니다');
     }
   };
 
