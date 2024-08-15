@@ -2,6 +2,7 @@ import React, { createContext, useMemo, useState } from 'react';
 import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import { useSession } from 'next-auth/react';
 import { SelectTodo } from '@/db/schema/todos';
+import { useParams } from 'next/navigation';
 
 interface ContextType {
   // 세션
@@ -31,7 +32,9 @@ export function TodoDataProvider({ children }: React.PropsWithChildren) {
   const { data: session } = useSession();
   const sessionId = session?.user?.id;
   // 사용자가 선택한 날짜
-  const [displayingDate, setDisplayingDate] = useState<Date>(new Date());
+  const params = useParams();
+  const { year, month, day } = params;
+  const [displayingDate, setDisplayingDate] = useState<Date>(new Date(Number(year), Number(month) - 1, Number(day)));
   // 데이터
   const [todoId, setTodoId] = useState<number>(0);
   const { data: todoListData = [] } = sessionId ? useGetTodosMatchingDate(sessionId, displayingDate) : { data: [] };

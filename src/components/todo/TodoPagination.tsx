@@ -2,6 +2,7 @@ import React from 'react';
 import { Pagination } from '@mui/material';
 import { getDaysInMonth } from 'date-fns';
 import Box from '@mui/material/Box';
+import { useRouter } from 'next/navigation';
 
 interface PropsType {
   date: Date;
@@ -9,6 +10,7 @@ interface PropsType {
 }
 
 function TodoPagination({ date, setDate }: PropsType) {
+  const router = useRouter();
   return (
     <Box
       marginTop={1}
@@ -27,6 +29,11 @@ function TodoPagination({ date, setDate }: PropsType) {
           const newDate = new Date(date);
           newDate.setDate(value);
           setDate(newDate);
+          const newYear = newDate.getFullYear();
+          const newMonth = newDate.getMonth() + 1;
+          const newDay = newDate.getDate();
+
+          router.push(`/mainpagetest/day/${newYear}/${newMonth}/${newDay}`);
         }}
         count={getDaysInMonth(date)}
         siblingCount={5}
