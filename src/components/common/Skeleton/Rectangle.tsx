@@ -35,15 +35,7 @@ export const RectangleSkeleton = styled(Container)`
 `;
 
 function Rectangle() {
-  return (
-    <>
-      <RectangleSkeleton />
-      <RectangleSkeleton />
-      <RectangleSkeleton />
-      <RectangleSkeleton />
-      <RectangleSkeleton />
-    </>
-  );
+  return <RectangleSkeleton />;
 }
 
 export default Rectangle;
