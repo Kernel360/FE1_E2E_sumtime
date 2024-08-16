@@ -13,7 +13,7 @@ import { TimePicker } from '@mui/x-date-pickers';
 import { parseISO } from 'date-fns';
 import { useSession } from 'next-auth/react';
 import { TodoModalStyle } from './Todo.styled';
-import { checkTaskListOverlap } from '../../app/timetable/components';
+// import { checkTaskListOverlap } from '../../app/timetable/components';
 
 interface TodoModalProps {
   open: boolean;
