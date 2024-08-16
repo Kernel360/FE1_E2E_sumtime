@@ -49,6 +49,7 @@ function TodoList({
             ))
           ) : (
             <>
+            {/* 일단 3개로 구현 */}
               <RectangleSkeleton />
               <RectangleSkeleton />
               <RectangleSkeleton />
