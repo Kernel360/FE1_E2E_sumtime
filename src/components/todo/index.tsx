@@ -16,6 +16,7 @@ import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 import { TodoModalMode } from '../../types/todo';
+import { RectangleSkeleton } from '../common/Skeleton/Rectangle';
 
 export default function Todo() {
   const { data: session } = useSession();
@@ -84,10 +85,13 @@ export default function Todo() {
       <Box position="relative" width="100%" height="50%">
         <S.TodoComponentsSection>
           <Box>
-            {todoListData &&
+            {!todoListData ? (
+              <RectangleSkeleton />
+            ) : (
               todoListData.map((todo) => (
                 <TodoComponent key={todo.todoId} todoId={todo.todoId} title={todo.title} setTodoId={handleOpenModalByTodo} />
-              ))}
+              ))
+            )}
           </Box>
         </S.TodoComponentsSection>
         <S.FloatingButton>
