@@ -6,6 +6,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { SelectTodo } from '@/db/schema/todos';
 import { TodoModalMode } from '@/types/todo';
+import { RectangleSkeleton } from '../common/Skeleton/Rectangle';
 
 interface PropsType {
   dataList: SelectTodo[];
@@ -42,10 +43,17 @@ function TodoList({
     <Box position="relative" width="100%" height="50%">
       <S.TodoComponentsSection>
         <Box>
-          {dataList &&
+          {dataList.length !== 0 ? (
             dataList.map((todo) => (
               <TodoComponent key={todo.todoId} todoId={todo.todoId} title={todo.title} setTodoId={handleOpenModalByTodo} />
-            ))}
+            ))
+          ) : (
+            <>
+              <RectangleSkeleton />
+              <RectangleSkeleton />
+              <RectangleSkeleton />
+            </>
+          )}
         </Box>
       </S.TodoComponentsSection>
       <S.FloatingButton>

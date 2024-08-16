@@ -10,7 +10,6 @@ import TodoReport from '@/components/todo/TodoReport';
 import TodoList from '@/components/todo/TodoList';
 import TodoModal from './TodoModal';
 import * as S from './Todo.styled';
-import { RectangleSkeleton } from '../common/Skeleton/Rectangle';
 
 export default function Todo() {
   const {

@@ -17,7 +17,7 @@ const loading = keyframes`
 export const RectangleSkeleton = styled(Container)`
   margin: 10px;
   height: 3rem;
-  background-color: #dfdfdf;
+  background-color: #f0f0f0;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
@@ -29,7 +29,7 @@ export const RectangleSkeleton = styled(Container)`
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 30%, rgba(255, 255, 255, 0) 70%);
     animation: ${loading} 2.5s infinite;
   }
 `;
