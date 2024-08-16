@@ -48,12 +48,7 @@ function TodoList({
               <TodoComponent key={todo.todoId} todoId={todo.todoId} title={todo.title} setTodoId={handleOpenModalByTodo} />
             ))
           ) : (
-            <>
-            {/* 일단 3개로 구현 */}
-              <RectangleSkeleton />
-              <RectangleSkeleton />
-              <RectangleSkeleton />
-            </>
+            <RectangleSkeleton />
           )}
         </Box>
       </S.TodoComponentsSection>
