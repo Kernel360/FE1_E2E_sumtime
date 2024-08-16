@@ -43,6 +43,7 @@ export function TodoDataProvider({ children }: React.PropsWithChildren) {
     ? useGetTodosMatchingDate(sessionId, displayingDate)
     : { data: [] };
 
+
   const value = useMemo(
     () => ({
       // 세션
@@ -53,7 +54,6 @@ export function TodoDataProvider({ children }: React.PropsWithChildren) {
       todoId,
       setTodoId,
       todoListData,
-      isLoading, // 로딩 상태 포함
     }),
     [sessionId, displayingDate, todoId, todoListData, isLoading],
   );

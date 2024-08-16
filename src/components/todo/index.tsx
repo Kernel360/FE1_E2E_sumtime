@@ -18,6 +18,8 @@ export default function Todo() {
     setDisplayingDate,
     todoId,
     setTodoId,
+    todoListData,
+
   } = useContext(TodoDataContext);
   const {
     // 달력
@@ -45,7 +47,6 @@ export default function Todo() {
       />
       <TodoPagination date={displayingDate} setDate={setDisplayingDate} />
       <TodoList
-        // dataList={todoListData}
         setTodoId={setTodoId}
         setTodoModalMode={setTodoModalMode}
         setIsModalOpenTrue={setIsModalOpenTrue}
