@@ -86,7 +86,11 @@ export default function Todo() {
         <S.TodoComponentsSection>
           <Box>
             {!todoListData ? (
-              <RectangleSkeleton />
+              <>
+                <RectangleSkeleton />
+                <RectangleSkeleton />
+                <RectangleSkeleton />
+              </>
             ) : (
               todoListData.map((todo) => (
                 <TodoComponent key={todo.todoId} todoId={todo.todoId} title={todo.title} setTodoId={handleOpenModalByTodo} />
