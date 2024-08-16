@@ -9,7 +9,6 @@ import { TodoDataContext } from '@/context/TodoDataContext';
 import { RectangleSkeleton } from '../common/Skeleton/Rectangle';
 
 interface PropsType {
-
   setTodoId: (id: number) => void;
   setIsModalOpenTrue: () => void;
   setTodoModalMode: (mode: TodoModalMode) => void;
@@ -57,7 +56,6 @@ function TodoList({
               ))}
           </Box>
         )}
-
       </S.TodoComponentsSection>
       <S.FloatingButton>
         <Fab color="primary" size="small" aria-label="add" onClick={handleOpenModalByFAB}>

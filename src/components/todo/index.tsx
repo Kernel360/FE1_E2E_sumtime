@@ -18,8 +18,6 @@ export default function Todo() {
     setDisplayingDate,
     todoId,
     setTodoId,
-    todoListData,
-
   } = useContext(TodoDataContext);
   const {
     // 달력
