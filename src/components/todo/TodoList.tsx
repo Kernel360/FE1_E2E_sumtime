@@ -6,7 +6,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { TodoModalMode } from '@/types/todo';
 import { TodoDataContext } from '@/context/TodoDataContext';
-import { RectangleSkeleton } from '../common/Skeleton/Rectangle';
+import { SkeletonRectangle } from '../common/SkeletonRectangle';
 
 interface PropsType {
   setTodoId: (id: number) => void;
@@ -44,9 +44,9 @@ function TodoList({
       <S.TodoComponentsSection>
         {isLoading ? (
           <>
-            <RectangleSkeleton />
-            <RectangleSkeleton />
-            <RectangleSkeleton />
+            <SkeletonRectangle />
+            <SkeletonRectangle />
+            <SkeletonRectangle />
           </>
         ) : (
           <Box>

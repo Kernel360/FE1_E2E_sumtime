@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
-import { Container } from '../Container.styled';
+import { Container } from './Container.styled';
 
 // Pulse 애니메이션 정의
 const pulse = keyframes`
@@ -14,7 +14,7 @@ const pulse = keyframes`
 `;
 
 // Pulse 애니메이션을 적용한 Skeleton 컴포넌트
-export const RectangleSkeleton = styled(Container)`
+export const SkeletonRectangle = styled(Container)`
   margin: 10px;
   height: 3rem;
   background: linear-gradient(-90deg, #efefef 0%, #fcfcfc 50%, #efefef 100%);
