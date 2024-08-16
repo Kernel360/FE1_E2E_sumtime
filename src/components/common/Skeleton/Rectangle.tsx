@@ -1,41 +1,26 @@
-import React from 'react';
-import { keyframes } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { Container } from '../Container.styled';
 
-//  애니메이션 정의
-const loading = keyframes`
+// Pulse 애니메이션 정의
+const pulse = keyframes`
   0% {
-    transform: translateX(-100%);
+    background-position: 0% 0%;
   }
   100% {
-    transform: translateX(100%);
+    background-position: -135% 0%;
   }
 `;
 
-// TodoSkeletonComponent 컴포넌트에 애니메이션 적용
+// Pulse 애니메이션을 적용한 Skeleton 컴포넌트
 export const RectangleSkeleton = styled(Container)`
   margin: 10px;
   height: 3rem;
-  background-color: #f0f0f0;
+  background: linear-gradient(-90deg, #efefef 0%, #fcfcfc 50%, #efefef 100%);
+  background-size: 400% 400%;
+  animation: ${pulse} 1.2s ease-in-out infinite;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 30%, rgba(255, 255, 255, 0) 70%);
-    animation: ${loading} 2.5s infinite;
-  }
 `;
-
-function Rectangle() {
-  return <RectangleSkeleton />;
-}
-
-export default Rectangle;
