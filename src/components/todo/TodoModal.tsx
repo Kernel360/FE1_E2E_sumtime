@@ -12,7 +12,7 @@ import { red } from '@mui/material/colors';
 import { TimePicker } from '@mui/x-date-pickers';
 import { parseISO } from 'date-fns';
 import { useSession } from 'next-auth/react';
-import Tags from '@/components/todo/Tags';
+import CategoryField from '@/components/todo/CategoryField';
 import { TodoModalStyle } from './Todo.styled';
 // import { checkTaskListOverlap } from '../../app/timetable/components';
 
@@ -184,7 +184,7 @@ export default function TodoModal({
                 onChange={(value) => setEndTime(value ? value.toISOString() : null)}
               />
             </Box>
-            <Tags />
+            <CategoryField />
             <TextField
               sx={{ width: '100%', margin: '10px 0' }}
               label="색"
