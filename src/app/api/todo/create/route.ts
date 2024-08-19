@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
       .values({
         title,
         content,
-        createdAt: formattedCreatedAt,
+        createdAt,
+        date: formattedCreatedAt,
         startTime,
         endTime,
         color,
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest) {
         categoryId,
       })
       .returning({
-        todoId: schema.todosTable.todoId,
+        todoId: schema.todosTable.id,
         title: schema.todosTable.title,
         content: schema.todosTable.content,
         createdAt: schema.todosTable.createdAt,
@@ -28,6 +29,7 @@ export async function POST(req: NextRequest) {
         color: schema.todosTable.color,
         userId: schema.todosTable.userId,
         categoryId: schema.todosTable.categoryId,
+        date: schema.todosTable.date,
       });
     const insertedTodo = result[0];
 
