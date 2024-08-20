@@ -42,6 +42,17 @@ export default function CategoryField() {
     }
   };
 
+  const handleCategoryChange = (value: (string | Category)[]) => {
+    const lastValue = value[value.length - 1]; // 이 때, value는 Category[]이거나 Stirng 타입
+    if (typeof lastValue === 'string') {
+      const newCategory = { id: categories.length + 1, title: lastValue, color: 'lightgray' };
+      setCategories([...categories, newCategory]);
+      setSelectedCategory([newCategory]);
+    } else if (lastValue && !selectedCategory.includes(lastValue)) {
+      setSelectedCategory([lastValue]); // 마지막으로 선택한 카테고리만 선택
+    }
+  };
+
   return (
     <Box sx={{ margin: '10px 0' }}>
       <Box sx={{ display: isEditing ? 'flex' : 'none', position: 'relative', alignItems: 'center' }}>
@@ -134,14 +145,7 @@ export default function CategoryField() {
           </Box>
         )}
         onChange={(e, value) => {
-          const lastValue = value[value.length - 1]; // 이 때, value는 Category이거나 Stirng 타입
-          if (typeof lastValue === 'string') {
-            const newCategory = { id: categories.length + 1, title: lastValue, color: 'lightgray' };
-            setCategories([...categories, newCategory]);
-            setSelectedCategory([newCategory]);
-          } else if (lastValue && !selectedCategory.includes(lastValue)) {
-            setSelectedCategory([lastValue]); // 마지막으로 선택한 카테고리만 선택
-          }
+          handleCategoryChange(value);
         }}
       />
     </Box>
