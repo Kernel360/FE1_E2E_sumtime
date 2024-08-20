@@ -1,7 +1,7 @@
 'use client';
 
 import { Container, Box, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { ExpandMore } from '@mui/icons-material';
 import * as S from '@/components/common';
 import { QNA_LIST } from './constants';
 
@@ -23,7 +23,7 @@ function FAQ() {
                   <AccordionSummary
                     id="panel-header"
                     aria-controls="panel-content"
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMore />}
                     sx={{ flexDirection: 'row-reverse', gap: '16px' }}
                   >
                     <Typography variant="body2">{QnA.question}</Typography>
