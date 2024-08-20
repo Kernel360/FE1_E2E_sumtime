@@ -11,13 +11,11 @@ export async function GET(request: Request, { params }: { params: { id: string }
       return NextResponse.json({ error: '유효한 카테고리 ID를 제공해 주세요.' }, { status: 400 });
     }
 
-    const categories = await db.select().from(categoriesTable).where(eq(categoriesTable.id, id)).all();
+    const category = await db.select().from(categoriesTable).where(eq(categoriesTable.id, id)).get();
 
-    if (categories.length === 0) {
+    if (!category) {
       return NextResponse.json({ error: '카테고리를 찾을 수 없습니다.' }, { status: 404 });
     }
-
-    const category = categories[0];
 
     const filteredCategory = {
       id: category.id,
