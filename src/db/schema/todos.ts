@@ -35,8 +35,11 @@ export interface TodoForTimetable {
   title: string;
   content: string | null;
   color: string | null;
-  todoId: number;
+  categoryId: number;
   userId: number;
   id: number;
   taskColor: string | null;
+  date: string;
+  updatedAt: string;
+  createdAt: string;
 }
