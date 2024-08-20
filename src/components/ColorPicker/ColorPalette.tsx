@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getLocalItem, setLocalItem } from '@/utils';
+import { getItemFromLocalStorage, setItemFromLocalStorage } from '@/utils';
 import * as CommonStyle from '@/components/common';
 import * as ColorPickerStyle from './ColorPicker.styled';
 import { DEFAULT_COLOR_PALETTE } from './constants';
@@ -12,7 +12,7 @@ interface ColorPickerProps extends React.ComponentPropsWithRef<'div'> {
 }
 
 function ColorPalette({ color, setColor }: ColorPickerProps) {
-  const [localColorPalette, setLocalColorPalette] = useState<string[]>(getLocalItem<string[]>('colorPalette') ?? []);
+  const [localColorPalette, setLocalColorPalette] = useState<string[]>(getItemFromLocalStorage<string[]>('colorPalette') ?? []);
   const [colorPalette, setColorPalette] = useState<string[]>([...localColorPalette, ...DEFAULT_COLOR_PALETTE].slice(0, 10));
 
   const handleSaveColor = () => {
@@ -26,7 +26,7 @@ function ColorPalette({ color, setColor }: ColorPickerProps) {
 
     const updatedLocalColorPalette = [color, ...localColorPalette];
     setLocalColorPalette([...updatedLocalColorPalette]);
-    setLocalItem('colorPalette', [...updatedLocalColorPalette]);
+    setItemFromLocalStorage('colorPalette', [...updatedLocalColorPalette]);
     setColorPalette([...updatedLocalColorPalette, ...DEFAULT_COLOR_PALETTE].slice(0, 10));
   };
 
