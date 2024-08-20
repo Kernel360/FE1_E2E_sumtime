@@ -1,12 +1,7 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import { HexColorPicker } from 'react-colorful';
-import { getLocalItem, setLocalItem } from '@/utils';
-import * as CommonStyle from '@/components/common';
-import * as ColorPickerStyle from './ColorPicker.styled';
-import { DEFAULT_COLOR_PALETTE } from './constants';
+import * as S from './ColorPicker.styled';
 import ColorPalette from './ColorPalette';
-
-const S = { ...CommonStyle, ...ColorPickerStyle };
 
 interface ColorPickerProps extends React.ComponentPropsWithRef<'div'> {
   color: string;
