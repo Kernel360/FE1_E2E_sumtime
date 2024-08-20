@@ -31,6 +31,7 @@ export async function POST(request: Request) {
   }
 }
 
+
 export async function GET() {
   try {
     const categories = await db.select().from(categoriesTable).all();
