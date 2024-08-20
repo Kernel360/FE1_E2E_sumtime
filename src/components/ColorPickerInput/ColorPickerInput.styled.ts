@@ -13,13 +13,13 @@ const ColorPickerInputLayout = styled(Flex)<ColorPickerInputLayoutProps>`
   height: 56px;
   padding: 14px;
   line-height: 1.4375em;
-  margin: 10px 0px;
+  margin: 20px 0px 10px 0px;
   position: relative;
 `;
 
 const LabelP = styled.label`
   background-color: white;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.4);
   position: absolute;
   font-size: 1rem;
   top: -0.5em;
