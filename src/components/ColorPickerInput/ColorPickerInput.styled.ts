@@ -42,8 +42,4 @@ const ColorPickerInput = styled.input<{
   box-sizing: border-box;
 `;
 
-const ColorPickerLayout = styled.div`
-  z-index: 999;
-`;
-
-export { ColorPickerInputLayout, LabelP, ColorPickerInput, ColorPickerLayout };
+export { ColorPickerInputLayout, LabelP, ColorPickerInput };
