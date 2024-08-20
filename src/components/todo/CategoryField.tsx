@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import useBooleanState from '@/hooks/utils/useBooleanState';
+import { useState } from 'react';
 
 type Category = {
   id: number;
@@ -15,14 +16,14 @@ type Category = {
 };
 
 export default function CategoryField() {
-  const [categories, setCategories] = React.useState<Category[]>([
+  const [categories, setCategories] = useState<Category[]>([
     { id: 1, title: '식사', color: 'lightcoral' },
     { id: 2, title: '공부', color: 'lightblue' },
     { id: 3, title: '업무', color: 'lightgreen' },
     { id: 4, title: '휴식', color: 'lightpink' },
   ]);
-  const [selectedCategory, setSelectedCategory] = React.useState<Category[]>([]);
-  const [editingCategory, setEditingCategory] = React.useState<Category>({ id: 0, title: '', color: '' });
+  const [selectedCategory, setSelectedCategory] = useState<Category[]>([]);
+  const [editingCategory, setEditingCategory] = useState<Category>({ id: 0, title: '', color: '' });
   const { value: isEditing, toggle } = useBooleanState(false);
 
   const handleEdit = (id: number, title: string, color: string) => {
