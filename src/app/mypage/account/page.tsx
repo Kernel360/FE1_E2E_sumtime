@@ -56,7 +56,7 @@ function Account() {
           <S.SectionTitle>Nickname</S.SectionTitle>
           <S.InputWrapper>
             <TextField inputRef={nameRef} disabled={!isEditState} defaultValue={name} />
-            <Button onClick={handleEditClick}>{isEditState ? '확인' : '수정'}</Button>
+            <Button onClick={handleEditClick}>{isEditState ? '저장' : '수정'}</Button>
           </S.InputWrapper>
         </S.ItemWrapper>
         <S.ItemWrapper>
