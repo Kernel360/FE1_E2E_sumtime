@@ -43,7 +43,7 @@ export default function CategoryField() {
   };
 
   const handleCategoryChange = (value: (string | Category)[]) => {
-    const lastValue = value[value.length - 1]; // 이 때, value는 Category[]이거나 Stirng 타입
+    const lastValue = value[value.length - 1];
     if (typeof lastValue === 'string') {
       const newCategory = { id: categories.length + 1, title: lastValue, color: 'lightgray' };
       setCategories([...categories, newCategory]);
@@ -52,7 +52,7 @@ export default function CategoryField() {
       setSelectedCategory([lastValue]); // 마지막으로 선택한 카테고리만 선택
     }
   };
-  //
+
   return (
     <Box sx={{ margin: '10px 0' }}>
       <Box sx={{ display: isEditing ? 'flex' : 'none', position: 'relative', alignItems: 'center' }}>
