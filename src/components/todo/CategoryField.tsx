@@ -52,7 +52,7 @@ export default function CategoryField() {
       setSelectedCategory([lastValue]); // 마지막으로 선택한 카테고리만 선택
     }
   };
-
+  //
   return (
     <Box sx={{ margin: '10px 0' }}>
       <Box sx={{ display: isEditing ? 'flex' : 'none', position: 'relative', alignItems: 'center' }}>
