@@ -13,8 +13,8 @@ function Account() {
   }
 
   const { email, name } = userData.user;
-  const [isEditState, setIsEditState] = useState(false); // 닉네임 수정 상태 관리
-  const nameRef = useRef<HTMLInputElement>(null); // ref로 input element를 직접 참조
+  const [isEditState, setIsEditState] = useState(false);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   const handleEditClick = () => {
     if (isEditState) {
