@@ -1,42 +1,34 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import * as S from '@/components/todo/Todo.styled';
 import TodoComponent from '@/components/todo/TodoComponent';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import { TodoModalMode } from '@/types/todo';
-import { TodoDataContext } from '@/context/TodoDataContext';
+import { RootState } from '@/lib/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTodoId } from '@/lib/todos/todoDataSlice';
+import { openModal, closeModalByFAB, openModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
 import { SkeletonRectangle } from '../common/SkeletonRectangle';
 
-interface PropsType {
-  setTodoId: (id: number) => void;
-  setIsModalOpenTrue: () => void;
-  setTodoModalMode: (mode: TodoModalMode) => void;
-  setIsModalOpenedByFABTrue: () => void;
-  setIsModalOpenedByFABFalse: () => void;
-}
+function TodoList() {
+  const dispatch = useDispatch();
 
-function TodoList({
-  setTodoId,
-  setIsModalOpenTrue,
-  setTodoModalMode,
-  setIsModalOpenedByFABTrue,
-  setIsModalOpenedByFABFalse,
-}: PropsType) {
-  const { todoListData, isLoading } = useContext(TodoDataContext);
+  // redux store에서 todoListData, isLoading 가져오기
+  const { todoListData } = useSelector((state: RootState) => state.todoData);
+  const { isLoading } = useSelector((state: RootState) => state.todoData);
 
   const handleOpenModalByFAB = () => {
-    setTodoId(0);
-    setIsModalOpenTrue();
-    setIsModalOpenedByFABTrue();
-    setTodoModalMode('create');
+    dispatch(setTodoId(0)); // 새 Todo 생성 시 ID는 0으로 설정
+    dispatch(openModalByFAB()); // FAB 버튼으로 모달 열림
+    dispatch(openModal()); // 모달 열기
+    dispatch(setModalMode('create')); // 모드 설정
   };
 
   const handleOpenModalByTodo = (id: number) => {
-    setTodoId(id);
-    setIsModalOpenTrue();
-    setIsModalOpenedByFABFalse();
-    setTodoModalMode('update');
+    dispatch(setTodoId(id)); // 선택한 Todo의 ID를 설정
+    dispatch(closeModalByFAB()); // FAB로 열리지 않은 모달
+    dispatch(openModal()); // 모달 열기
+    dispatch(setModalMode('update')); // 수정 모드로 설정
   };
 
   return (
