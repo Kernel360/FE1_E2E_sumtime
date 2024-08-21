@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     if (todos.length > 0) {
       return NextResponse.json({ todos });
     }
-    return NextResponse.json({ error: 'Todos not found' }, { status: 404 });
+    return NextResponse.json({ todos: [] });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch Todos', details: (error as Error).message }, { status: 500 });
   }
