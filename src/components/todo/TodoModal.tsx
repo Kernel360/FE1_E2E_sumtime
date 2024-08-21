@@ -13,6 +13,7 @@ import { parseISO } from 'date-fns';
 import { useSession } from 'next-auth/react';
 import randomColor from 'randomcolor';
 import CategoryField from '@/components/todo/CategoryField';
+import { isValid } from 'date-fns';
 import { TodoModalStyle } from './Todo.styled';
 import ColorPickerInput from '../ColorPickerInput';
 
@@ -68,7 +69,7 @@ export default function TodoModal({
     setIsModalOpenFalse();
   };
 
-  const handleUpdateTodo = async () => {
+  const handleUpdate = async () => {
     if (!sessionId) {
       alert('로그인이 필요합니다');
     } else {
@@ -96,7 +97,7 @@ export default function TodoModal({
     }
   };
 
-  const handleCreateTodo = async () => {
+  const handleCreate = async () => {
     if (!sessionId) {
       alert('로그인이 필요합니다');
       return;
@@ -143,6 +144,34 @@ export default function TodoModal({
       });
     }
   };
+  const validateCreateTodo = () => {
+    if (title.length === 0 || title.trim().length === 0) {
+      alert('제목을 작성해주세요');
+      return false;
+    }
+    if (startTime === null) {
+      alert('시작 시간을 확인해주세요');
+      return false;
+    }
+    if (endTime === null) {
+      alert('종료 시간을 확인해주세요');
+      return false;
+    }
+    if (startTime && endTime && startTime >= endTime) {
+      alert('시작 시간이 종료 시간보다 늦습니다');
+      return false;
+    }
+    return true;
+  };
+  const handleSaveClick = () => {
+    if (validateCreateTodo()) {
+      if (mode === 'create') {
+        handleCreate();
+      } else {
+        handleUpdate();
+      }
+    }
+  };
 
   return (
     (isModalOpenedByFAB || isSuccessGetOneTodo) && (
@@ -164,12 +193,14 @@ export default function TodoModal({
               label="제목"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              onBlur={() => setTitle((prev) => prev.trim())}
             />
             <TextField
               sx={{ width: '100%', margin: '10px 0' }}
               label="설명"
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              onBlur={() => setTitle((prev) => prev.trim())}
             />
             <Box display="flex" gap={1}>
               <TimePicker
@@ -177,7 +208,8 @@ export default function TodoModal({
                 views={['hours', 'minutes']}
                 label="시작 시간"
                 value={startTime ? parseISO(startTime) : null}
-                onChange={(value) => setStartTime(value ? value.toISOString() : null)}
+                maxTime={endTime ? parseISO(endTime) : undefined}
+                onChange={(value) => setStartTime(value && isValid(value) ? value.toISOString() : null)}
               />
               <TimePicker
                 sx={{ width: '100%', margin: '10px 0' }}
@@ -185,7 +217,7 @@ export default function TodoModal({
                 label="종료 시간"
                 value={endTime ? parseISO(endTime) : null}
                 minTime={startTime ? parseISO(startTime) : undefined}
-                onChange={(value) => setEndTime(value ? value.toISOString() : null)}
+                onChange={(value) => setEndTime(value && isValid(value) ? value.toISOString() : null)}
               />
             </Box>
             <CategoryField />
@@ -195,7 +227,7 @@ export default function TodoModal({
             <Button onClick={handleCloseModal} variant="text" size="medium" color="error" sx={{ border: '1px solid pink' }}>
               취소
             </Button>
-            <Button onClick={mode === 'create' ? handleCreateTodo : handleUpdateTodo} variant="contained" color="primary">
+            <Button onClick={handleSaveClick} variant="contained" color="primary">
               저장
             </Button>
           </Box>
