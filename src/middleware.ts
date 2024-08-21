@@ -5,7 +5,8 @@ export const config = { matcher: ['/login', '/signup', '/day/:path*', '/mypage/:
 
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const isAuthenticated = !!req.cookies.get('next-auth.session-token');
+  const sessionToken = process.env.MODE === 'production' ? '__Secure-next-auth.session-token' : 'next-auth.session-token';
+  const isAuthenticated = !!req.cookies.get(sessionToken);
 
   const unauthenticatedOnlyPaths = ['/login', '/signup'];
   const authenticatedOnlyPaths = ['/mypage', '/day'];
