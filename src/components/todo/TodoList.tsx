@@ -18,17 +18,17 @@ function TodoList() {
   const { isLoading } = useSelector((state: RootState) => state.todoData);
 
   const handleOpenModalByFAB = () => {
-    dispatch(setTodoId(0)); // 새 Todo 생성 시 ID는 0으로 설정
-    dispatch(openModalByFAB()); // FAB 버튼으로 모달 열림
-    dispatch(openModal()); // 모달 열기
-    dispatch(setModalMode('create')); // 모드 설정
+    dispatch(setTodoId(0));
+    dispatch(openModalByFAB());
+    dispatch(openModal());
+    dispatch(setModalMode('create'));
   };
 
   const handleOpenModalByTodo = (id: number) => {
-    dispatch(setTodoId(id)); // 선택한 Todo의 ID를 설정
-    dispatch(closeModalByFAB()); // FAB로 열리지 않은 모달
-    dispatch(openModal()); // 모달 열기
-    dispatch(setModalMode('update')); // 수정 모드로 설정
+    dispatch(setTodoId(id));
+    dispatch(closeModalByFAB());
+    dispatch(openModal());
+    dispatch(setModalMode('update'));
   };
 
   return (

@@ -13,8 +13,8 @@ import { parseISO } from 'date-fns';
 import randomColor from 'randomcolor';
 import CategoryField from '@/components/todo/CategoryField';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setModalMode, closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
-import { setSessionId, selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
+import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
+import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
 import { TodoModalStyle } from './Todo.styled';
 import ColorPickerInput from '../ColorPickerInput';
 

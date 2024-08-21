@@ -26,7 +26,9 @@ export default function Todo() {
   // 선택한 날짜를 메모이제이션하여 렌더링마다 새로운 객체가 생성되지 않도록 함
   const displayingDate = useMemo(() => {
     return year && month && day ? new Date(Number(year), Number(month) - 1, Number(day)) : new Date();
+    // return year && month && day ? new Date(Number(year), Number(month) - 1, Number(day)) : null;
   }, [year, month, day]);
+
   // sessionId가 변경될 때마다 redux store에 저장
   useEffect(() => {
     if (sessionId) {
@@ -41,7 +43,8 @@ export default function Todo() {
 
   // sessionId가 존재할 때만 데이터를 가져옴
   const { data: todoListData = [], isLoading } = useGetTodosMatchingDate(sessionId, displayingDate);
-  // todoListData가 변경될 때마다 redux store에 저장
+
+  // todoListData가 변경될 때마다 todoListData를 업데이트
   useEffect(() => {
     dispatch(setLoading(isLoading));
     if (!isLoading && todoListData) {
