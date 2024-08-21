@@ -5,7 +5,7 @@ import ColorPicker from '../ColorPicker';
 
 interface ColorPickerInputProps {
   color: string;
-  setColor: (newColor: string) => void;
+  setColor: (newColor: string) => void; // React.Dispatch<React.SetStateAction<string>>;
 }
 
 function ColorPickerInput({ color, setColor }: ColorPickerInputProps) {
