@@ -4,13 +4,13 @@ export interface Category {
   id: number;
   title: string;
   color: string | null;
-  isReported: boolean;
+  isReported: number | null;
 }
 
 export interface CreateCategoryInfo {
   title: string;
   color: string | null;
-  isReported: boolean | null;
+  isReported: number | null;
 }
 
 export const getCategoryList = async (): Promise<Category[]> => {

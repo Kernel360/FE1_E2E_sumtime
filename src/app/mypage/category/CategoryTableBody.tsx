@@ -20,11 +20,11 @@ function CategoryTableBody() {
 
   const [data, setData] = useState<CreateCategoryInfo>(() => ({
     title: categoryInfo?.title || '',
-    isReported: categoryInfo?.isReported || true,
+    isReported: categoryInfo?.isReported || 0,
     color: categoryInfo?.color || '',
   }));
 
-  const setCategoryData = (unit: keyof typeof data, value: string) => {
+  const setCategoryData = (unit: keyof typeof data, value: number | string | boolean) => {
     setData((prevData) => ({
       ...prevData,
       [unit]: value,
@@ -36,7 +36,7 @@ function CategoryTableBody() {
   };
 
   const mutateFunction = (body: CreateCategoryInfo) => {
-    handleUpdateCategory(id!, body); // 이건 다르게 수정해봐도 좋을듯
+    handleUpdateCategory(id!, body);
     close();
   };
 
@@ -45,10 +45,19 @@ function CategoryTableBody() {
     open();
   };
 
+  const handleCloseModal = () => {
+    setId(undefined);
+    close();
+  };
+
+  const convertBoolStateToString = (isReported: number | null) => {
+    return isReported ? '공개' : '비공개';
+  };
+
   useEffect(() => {
     setData({
       title: categoryInfo?.title || '',
-      isReported: categoryInfo?.isReported || true,
+      isReported: categoryInfo?.isReported || 0,
       color: categoryInfo?.color || '',
     });
   }, [categoryInfo]);
@@ -59,16 +68,16 @@ function CategoryTableBody() {
     <TableBody>
       {categoryList.map((category) => (
         <TableRow key={category.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-          <TableCell component="th" scope="row">
+          <TableCell component="th" scope="row" sx={{ maxWidth: '200px', overflowX: 'auto' }}>
             {category.title}
           </TableCell>
           <TableCell align="right">
             <Flex $gap="20px">
               <S.ColorState hexColor={category.color} />
-              {category.color}
+              <S.ColorCode>{category.color}</S.ColorCode>
             </Flex>
           </TableCell>
-          <TableCell align="right">{category.isReported}</TableCell>
+          <TableCell align="right">{convertBoolStateToString(category.isReported)}</TableCell>
           <TableCell align="right">
             <Button onClick={() => clickUpdateButton(category.id)}>수정</Button>
           </TableCell>
@@ -76,7 +85,7 @@ function CategoryTableBody() {
       ))}
       <CategoryModal
         isOpen={isOpen}
-        close={close}
+        close={handleCloseModal}
         title="수정"
         mutateAction={mutateFunction}
         data={data}

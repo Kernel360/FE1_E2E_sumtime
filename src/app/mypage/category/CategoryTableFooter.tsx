@@ -9,11 +9,19 @@ function CategoryTableFooter() {
   const { value: isOpen, setTrue: open, setFalse: close } = useBooleanState();
   const [data, setData] = useState<CreateCategoryInfo>(() => ({
     title: '',
-    isReported: true,
+    isReported: 0,
     color: '',
   }));
 
-  const setCategoryData = (unit: keyof typeof data, value: string) => {
+  const resetForm = () => {
+    setData({
+      title: '',
+      isReported: 0,
+      color: '',
+    });
+  };
+
+  const setCategoryData = (unit: keyof typeof data, value: number | string | boolean) => {
     setData((prevData) => ({
       ...prevData,
       [unit]: value,
@@ -24,6 +32,12 @@ function CategoryTableFooter() {
 
   const createFunction = (body: CreateCategoryInfo) => {
     createCategory(body);
+    resetForm();
+    close();
+  };
+
+  const handleCloseModal = () => {
+    resetForm();
     close();
   };
 
@@ -38,7 +52,7 @@ function CategoryTableFooter() {
       </TableRow>
       <CategoryModal
         isOpen={isOpen}
-        close={close}
+        close={handleCloseModal}
         title="생성"
         mutateAction={createFunction}
         data={data}

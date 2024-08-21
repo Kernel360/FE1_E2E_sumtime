@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Modal, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControlLabel, IconButton, Modal, Switch, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { TodoModalStyle } from '@/components/todo/Todo.styled';
 import ColorPickerInput from '@/components/ColorPickerInput';
@@ -11,7 +11,7 @@ interface CategoryModalProps {
   title: string;
   mutateAction: (body: CreateCategoryInfo) => void;
   data: CreateCategoryInfo;
-  setData: (unit: keyof CreateCategoryInfo, value: string) => void;
+  setData: (unit: keyof CreateCategoryInfo, value: number | string | boolean) => void;
   id?: number;
 }
 
@@ -52,13 +52,22 @@ function CategoryModal({ isOpen, close, title, mutateAction, data, setData, id }
             value={data.title}
             onChange={(e) => setData('title', e.target.value)}
           />
-          <TextField
-            sx={{ width: '100%', margin: '10px 0' }}
-            label="report 여부"
-            value={data.isReported}
-            onChange={(e) => setData('isReported', e.target.value)}
-          />
           <ColorPickerInput color={deleteUndefined(data.color)} setColor={handleColorChange} />
+          <FormControlLabel
+            value="isReported"
+            control={
+              <Switch
+                checked={Boolean(data.isReported)}
+                onChange={(e) => {
+                  setData('isReported', e.target.checked ? 1 : 0);
+                }}
+                name="isReported"
+              />
+            }
+            label="isReported"
+            labelPlacement="start"
+            sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '1rem' }}
+          />
         </Box>
         <Box display="flex" gap={1} m={1} justifyContent="flex-end">
           <Button onClick={close} variant="text" size="medium" color="error" sx={{ border: '1px solid pink' }}>
