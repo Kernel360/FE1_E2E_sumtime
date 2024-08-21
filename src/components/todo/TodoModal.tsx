@@ -150,15 +150,15 @@ export default function TodoModal({
       return false;
     }
     if (startTime === null) {
-      alert('시작 시간을 확인해주세요');
+      alert('시작 시간을 확인해주세요.');
       return false;
     }
     if (endTime === null) {
-      alert('종료 시간을 확인해주세요');
+      alert('종료 시간을 확인해주세요.');
       return false;
     }
     if (startTime && endTime && startTime >= endTime) {
-      alert('시작 시간이 종료 시간보다 늦습니다');
+      alert('시작 시간이 종료 시간보다 늦습니다.');
       return false;
     }
     return true;
