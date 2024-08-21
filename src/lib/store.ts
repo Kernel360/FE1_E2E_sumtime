@@ -1,16 +1,25 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './features/counter/counterSlice';
+import todoDataReducer from '@/lib/todos/todoDataSlice';
+import todoUIReducer from '@/lib/todos/todoUISlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      counter: counterReducer, // 'counter'라는 이름으로 리듀서를 등록
+      todoData: todoDataReducer,
+      todoUI: todoUIReducer,
     },
+    // useGetTodosMatchingDate 호출시 인수로 Date 넣어줄 수 있도록 설정
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          // Date 객체를 직렬화 가능한 값으로 간주
+          ignoredActions: ['todoData.displayingDate', 'todoData/setDisplayingDate', 'payload'],
+          ignoredPaths: ['todoData.displayingDate', 'todoData.setDisplayingDate', 'payload'],
+        },
+      }),
   });
 };
 
-// Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>;
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];

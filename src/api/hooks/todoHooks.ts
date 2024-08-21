@@ -32,8 +32,15 @@ export const useCreateTodo = (): UseMutationResult<
 export const useGetAllTodos = (userId: number): UseQueryResult<SelectTodo[], Error> =>
   useQuery({ queryKey: ['todos', userId], queryFn: () => getAllTodosByUserId(userId), enabled: !!userId });
 
-export const useGetTodosMatchingDate = (userId: number, date: Date): UseQueryResult<SelectTodo[], Error> =>
-  useQuery({ queryKey: ['todos', userId, date], queryFn: () => getTodosByDate(userId, date), enabled: !!userId });
+export const useGetTodosMatchingDate = (userId: number | undefined, date: Date): UseQueryResult<SelectTodo[], Error> =>
+  useQuery({
+    queryKey: ['todos', userId, date],
+    queryFn: () => {
+      if (!userId) return Promise.resolve([]);
+      return getTodosByDate(userId, date);
+    },
+    enabled: !!userId,
+  });
 
 export const useGetAllTodosForTimetable = (userId: number): UseQueryResult<TodoForTimetable[], Error> =>
   useQuery({

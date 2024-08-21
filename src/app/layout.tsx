@@ -21,7 +21,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <AuthProvider session={session}>
           <LocalizationProviders>
             <ReactQueryProviders>
-              <StoreProvider count={10}>{children}</StoreProvider>
+              <StoreProvider>{children}</StoreProvider>
             </ReactQueryProviders>
           </LocalizationProviders>
         </AuthProvider>
