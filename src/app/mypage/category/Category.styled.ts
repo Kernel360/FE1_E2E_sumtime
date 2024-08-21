@@ -39,3 +39,7 @@ export const ColorState = styled.div<{ hexColor: string | null }>`
   border-radius: 50%;
   background-color: ${({ hexColor }) => hexColor};
 `;
+
+export const ColorCode = styled.div`
+  width: 70px;
+`;

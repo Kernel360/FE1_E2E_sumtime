@@ -15,7 +15,7 @@ function Category() {
       <S.Section>
         <S.ItemWrapper>
           <Paper sx={{ width: '100%' }}>
-            <TableContainer sx={{ maxHeight: 400 }}>
+            <TableContainer sx={{ maxHeight: 500 }}>
               <Table sx={{ minWidth: 750 }} stickyHeader>
                 <CategoryTableHeader />
                 <CategoryTableBody />
