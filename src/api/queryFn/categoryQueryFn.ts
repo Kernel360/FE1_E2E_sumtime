@@ -16,6 +16,7 @@ export interface CreateCategoryInfo {
 export const getCategoryList = async (): Promise<Category[]> => {
   try {
     const { data } = await axios.get('/api/category');
+
     return data.categories;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -28,7 +29,7 @@ export const getCategoryList = async (): Promise<Category[]> => {
 export const getCategory = async (categoryId: number | undefined): Promise<Category> => {
   try {
     const { data } = await axios.get(`/api/category/${categoryId}`);
-    console.log('data', data);
+
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -45,6 +46,7 @@ export const createCategory = async (createInfo: CreateCategoryInfo): Promise<Ca
       color: createInfo.color,
       isReported: createInfo.isReported,
     });
+
     return data.category;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -61,6 +63,7 @@ export const updateCategory = async (categoryId: number, createInfo: CreateCateg
       color: createInfo.color,
       isReported: createInfo.isReported,
     });
+
     return data.category;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -73,6 +76,7 @@ export const updateCategory = async (categoryId: number, createInfo: CreateCateg
 export const deleteCategory = async (categoryId: number): Promise<string> => {
   try {
     const { data } = await axios.delete(`/api/category/${categoryId}`);
+
     return data.message;
   } catch (error) {
     if (error instanceof AxiosError) {
