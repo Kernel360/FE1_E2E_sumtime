@@ -8,7 +8,7 @@ const S = { ...CommonStyle, ...ColorPickerStyle };
 
 interface ColorPickerProps extends React.ComponentPropsWithRef<'div'> {
   color: string;
-  setColor: React.Dispatch<React.SetStateAction<string>>;
+  setColor: (newColor: string) => void;
 }
 
 function ColorPalette({ color, setColor }: ColorPickerProps) {
