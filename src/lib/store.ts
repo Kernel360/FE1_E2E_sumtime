@@ -8,7 +8,7 @@ export const makeStore = () => {
       todoData: todoDataReducer,
       todoUI: todoUIReducer,
     },
-    // useGetTodosMatchingDate 호출시 인수로 Date 넣어줄 수 있도록 설정
+    // useGetTodosMatchingDate 호출시 인수로 Date 넣어줄 수 있도록 middleware 설정
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
