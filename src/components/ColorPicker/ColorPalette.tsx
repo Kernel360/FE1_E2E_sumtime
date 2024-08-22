@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getItemFromLocalStorage, setItemFromLocalStorage } from '@/utils';
+import { getItemFromLocalStorage, setItemToLocalStorage } from '@/utils';
 import * as CommonStyle from '@/components/common';
 import * as ColorPickerStyle from './ColorPicker.styled';
 import { DEFAULT_COLOR_PALETTE, PALETTE_SIZE } from './constants';
@@ -23,7 +23,7 @@ function ColorPalette({ color, setColor }: ColorPaletteProps) {
     const updatedLocalColorPalette =
       PALETTE_SIZE <= localColorPalette.length ? [color, ...localColorPalette.slice(0, -1)] : [color, ...localColorPalette];
     setLocalColorPalette([...updatedLocalColorPalette]);
-    setItemFromLocalStorage('colorPalette', [...updatedLocalColorPalette]);
+    setItemToLocalStorage('colorPalette', [...updatedLocalColorPalette]);
     setColorPalette([...updatedLocalColorPalette, ...DEFAULT_COLOR_PALETTE].slice(0, 10));
   };
 

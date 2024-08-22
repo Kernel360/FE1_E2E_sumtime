@@ -1,4 +1,4 @@
-const setItemFromLocalStorage = (key: string, item: unknown) => {
+const setItemToLocalStorage = (key: string, item: unknown) => {
   const jsonItem = JSON.stringify(item);
   localStorage.setItem(key, jsonItem);
 };
@@ -18,4 +18,4 @@ const deleteLocalStorageItem = (key: string) => {
   localStorage.removeItem(key);
 };
 
-export { setItemFromLocalStorage, getItemFromLocalStorage, deleteLocalStorageItem };
+export { setItemToLocalStorage, getItemFromLocalStorage, deleteLocalStorageItem };
