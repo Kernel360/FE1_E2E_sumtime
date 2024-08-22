@@ -26,7 +26,13 @@ export async function GET(request: Request, { params }: { params: { userId: stri
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request, { params }: { params: { userId: string } }) {
+  const userId = Number(params.userId);
+
+  if (Number.isNaN(userId)) {
+    return NextResponse.json({ error: '유효한 user ID를 제공해 주세요.' }, { status: 400 });
+  }
+
   try {
     const body = await request.json();
     const { title, color, isDisplayed } = body;
