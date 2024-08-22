@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { getItemFromLocalStorage, setItemFromLocalStorage } from '@/utils';
 import * as CommonStyle from '@/components/common';
 import * as ColorPickerStyle from './ColorPicker.styled';
-import { DEFAULT_COLOR_PALETTE } from './constants';
+import { DEFAULT_COLOR_PALETTE, PALETTE_SIZE } from './constants';
 
 const S = { ...CommonStyle, ...ColorPickerStyle };
 
-interface ColorPickerProps extends React.ComponentPropsWithRef<'div'> {
+interface ColorPaletteProps extends React.ComponentPropsWithRef<'div'> {
   color: string;
   setColor: (newColor: string) => void;
 }
 
-function ColorPalette({ color, setColor }: ColorPickerProps) {
+function ColorPalette({ color, setColor }: ColorPaletteProps) {
   const [localColorPalette, setLocalColorPalette] = useState<string[]>(getItemFromLocalStorage<string[]>('colorPalette') ?? []);
   const [colorPalette, setColorPalette] = useState<string[]>([...localColorPalette, ...DEFAULT_COLOR_PALETTE].slice(0, 10));
 
@@ -20,11 +20,8 @@ function ColorPalette({ color, setColor }: ColorPickerProps) {
       return;
     }
 
-    if (localColorPalette.length >= 10) {
-      localColorPalette.pop();
-    }
-
-    const updatedLocalColorPalette = [color, ...localColorPalette];
+    const updatedLocalColorPalette =
+      PALETTE_SIZE <= localColorPalette.length ? [color, ...localColorPalette.slice(0, -1)] : [color, ...localColorPalette];
     setLocalColorPalette([...updatedLocalColorPalette]);
     setItemFromLocalStorage('colorPalette', [...updatedLocalColorPalette]);
     setColorPalette([...updatedLocalColorPalette, ...DEFAULT_COLOR_PALETTE].slice(0, 10));

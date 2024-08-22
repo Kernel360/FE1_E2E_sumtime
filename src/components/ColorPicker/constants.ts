@@ -8,4 +8,6 @@ const DEFAULT_COLOR_PALETTE = [
   '#800080', // purple
 ];
 
-export { DEFAULT_COLOR_PALETTE };
+const PALETTE_SIZE = 10;
+
+export { DEFAULT_COLOR_PALETTE, PALETTE_SIZE };
