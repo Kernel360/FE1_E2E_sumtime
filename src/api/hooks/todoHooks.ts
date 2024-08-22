@@ -36,7 +36,7 @@ export const useGetTodosMatchingDate = (userId: number | undefined, date: Date):
   useQuery({
     queryKey: ['todos', userId, date],
     queryFn: () => {
-      if (!userId) return Promise.resolve([]);
+      if (!userId) return Promise.resolve([]); // 클라이언트가 아닌 todoHooks에서 userId 예외처리
       return getTodosByDate(userId, date);
     },
     enabled: !!userId,
