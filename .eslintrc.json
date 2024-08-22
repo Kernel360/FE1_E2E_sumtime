@@ -43,9 +43,8 @@
   },
   "overrides": [
     {
-      // feel free to replace with your preferred file pattern - eg. 'src/**/*Slice.ts'
+      // Slice로 끝나는 파일(리덕스 슬라이스)에 대해서만 no-param-reassign 룰을 끔 => 리덕스 슬라이스에서 state를 직접 변경하는 것을 허용
       "files": ["src/**/*Slice.ts"],
-      // avoid state param assignment
       "rules": { "no-param-reassign": ["error", { "props": false }] }
     }
   ]
