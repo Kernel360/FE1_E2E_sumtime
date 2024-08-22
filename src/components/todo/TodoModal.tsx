@@ -135,11 +135,11 @@ export default function TodoModal() {
       alert('제목을 작성해주세요');
       return false;
     }
-    if (startTime === null) {
+    if (endTime && startTime === null) {
       alert('시작 시간을 확인해주세요.');
       return false;
     }
-    if (endTime === null) {
+    if (startTime && endTime === null) {
       alert('종료 시간을 확인해주세요.');
       return false;
     }
