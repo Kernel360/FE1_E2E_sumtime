@@ -2,8 +2,7 @@ import useGetCategoryList from '@/api/hooks/categoryHooks/useGetCategoryList';
 import { Flex } from '@/components/common';
 import { Button, TableBody, TableCell, TableRow } from '@mui/material';
 import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useEffect, useState } from 'react';
-import useGetCategory from '@/api/hooks/categoryHooks/useGetCategory';
+import { useState } from 'react';
 import useUpdateCategory from '@/api/hooks/categoryHooks/useUpdateCategory';
 import { CreateCategoryInfo } from '@/api/queryFn/categoryQueryFn';
 import * as S from './Category.styled';
@@ -14,14 +13,13 @@ function CategoryTableBody() {
   const [id, setId] = useState<number | undefined>(undefined);
 
   const categoryList = useGetCategoryList();
-  const categoryInfo = useGetCategory(id);
 
   const { mutate: updateCategory } = useUpdateCategory();
 
   const [data, setData] = useState<CreateCategoryInfo>(() => ({
-    title: categoryInfo?.title || '',
-    isReported: categoryInfo?.isReported || 0,
-    color: categoryInfo?.color || '',
+    title: '',
+    isReported: 0,
+    color: '',
   }));
 
   const setCategoryData = (unit: keyof typeof data, value: number | string | boolean) => {
@@ -54,14 +52,6 @@ function CategoryTableBody() {
     return isReported ? '공개' : '비공개';
   };
 
-  useEffect(() => {
-    setData({
-      title: categoryInfo?.title || '',
-      isReported: categoryInfo?.isReported || 0,
-      color: categoryInfo?.color || '',
-    });
-  }, [categoryInfo]);
-
   if (!categoryList) return null;
 
   return (
@@ -79,7 +69,16 @@ function CategoryTableBody() {
           </TableCell>
           <TableCell align="right">{convertBoolStateToString(category.isReported)}</TableCell>
           <TableCell align="right">
-            <Button onClick={() => clickUpdateButton(category.id)}>수정</Button>
+            <Button
+              onClick={() => {
+                setCategoryData('title', category.title);
+                setCategoryData('color', category.color || '');
+                setCategoryData('isReported', category.isReported || 0);
+                clickUpdateButton(category.id);
+              }}
+            >
+              수정
+            </Button>
           </TableCell>
         </TableRow>
       ))}
