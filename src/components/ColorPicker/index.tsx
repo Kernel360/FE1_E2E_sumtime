@@ -5,7 +5,7 @@ import ColorPalette from './ColorPalette';
 
 interface ColorPickerProps extends React.ComponentPropsWithRef<'div'> {
   color: string;
-  setColor: React.Dispatch<React.SetStateAction<string>>;
+  setColor: (newColor: string) => void;
   showPalette?: boolean;
 }
 
