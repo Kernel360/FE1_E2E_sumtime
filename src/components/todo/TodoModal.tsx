@@ -189,24 +189,26 @@ export default function TodoModal() {
               onChange={(e) => setContent(e.target.value)}
               onBlur={() => setTitle((prev) => prev.trim())}
             />
-            <Box display="flex" gap={1}>
-              <TimePicker
-                sx={{ width: '100%', margin: '10px 0' }}
-                views={['hours', 'minutes']}
-                label="시작 시간"
-                value={startTime ? parseISO(startTime) : null}
-                maxTime={endTime ? parseISO(endTime) : undefined}
-                onChange={(value) => setStartTime(value && isValid(value) ? value.toISOString() : null)}
-              />
-              <TimePicker
-                sx={{ width: '100%', margin: '10px 0' }}
-                views={['hours', 'minutes']}
-                label="종료 시간"
-                value={endTime ? parseISO(endTime) : null}
-                minTime={startTime ? parseISO(startTime) : undefined}
-                onChange={(value) => setEndTime(value && isValid(value) ? value.toISOString() : null)}
-              />
-            </Box>
+            {mode === 'update' && (
+              <Box display="flex" gap={1}>
+                <TimePicker
+                  sx={{ width: '100%', margin: '10px 0' }}
+                  views={['hours', 'minutes']}
+                  label="시작 시간"
+                  value={startTime ? parseISO(startTime) : null}
+                  maxTime={endTime ? parseISO(endTime) : undefined}
+                  onChange={(value) => setStartTime(value && isValid(value) ? value.toISOString() : null)}
+                />
+                <TimePicker
+                  sx={{ width: '100%', margin: '10px 0' }}
+                  views={['hours', 'minutes']}
+                  label="종료 시간"
+                  value={endTime ? parseISO(endTime) : null}
+                  minTime={startTime ? parseISO(startTime) : undefined}
+                  onChange={(value) => setEndTime(value && isValid(value) ? value.toISOString() : null)}
+                />
+              </Box>
+            )}
             <CategoryField />
             <ColorPickerInput color={color} setColor={setColor} />
           </Box>
