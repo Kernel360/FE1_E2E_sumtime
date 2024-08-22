@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '@/db';
 import { eq } from 'drizzle-orm';
 
-export async function GET({ params }: { params: { todoId: string } }) {
+export async function GET(request: Request, { params }: { params: { todoId: string } }) {
   const { todoId } = params;
-
   if (!todoId) {
     return NextResponse.json({ error: 'URL path parameter (todoId) is required' }, { status: 400 });
   }
@@ -63,7 +62,7 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-export async function DELETE({ params }: { params: { todoId: string } }) {
+export async function DELETE(request: Request, { params }: { params: { todoId: string } }) {
   const { todoId } = params;
 
   if (!todoId) {

@@ -62,7 +62,7 @@ export default function TodoModal() {
     if (!sessionId) {
       alert('로그인이 필요합니다');
     } else {
-      await updateTodo(
+      updateTodo(
         {
           todoId,
           title,
@@ -91,7 +91,7 @@ export default function TodoModal() {
       return;
     }
 
-    await createTodo(
+    createTodo(
       {
         userId: sessionId,
         title,
@@ -118,7 +118,7 @@ export default function TodoModal() {
     if (!sessionId) {
       alert('로그인이 필요합니다');
     } else {
-      await deleteTodo(todoId, {
+      deleteTodo(todoId, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
           queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });

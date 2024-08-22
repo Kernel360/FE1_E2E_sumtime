@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'date query parameter is required' }, { status: 400 });
   }
 
-  const date = parseISO(dateParam).toISOString();
+  const date = parseISO(dateParam).toDateString();
   const query = db
     .select()
     .from(schema.todosTable)
