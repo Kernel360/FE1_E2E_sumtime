@@ -1,15 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { PieChart } from '@mui/x-charts';
 import { convertTodosForTimetable as convertDateStringToDate } from '@/utils/convertTodosForTimetable';
-import { TodoDataContext } from '@/context/TodoDataContext';
 import { Grid } from '@mui/material';
 import useGetCategoryList from '@/api/hooks/categoryHooks/useGetCategoryList';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/store';
 import * as S from './TodoReport.styled';
 import { formatToChartData } from './util';
 
 function TodoReport() {
   const categoryList = useGetCategoryList();
-  const { todoListData } = useContext(TodoDataContext);
+  const { todoListData } = useSelector((state: RootState) => state.todoData);
   const todoList = convertDateStringToDate(todoListData);
   const chartDataList = formatToChartData(todoList, categoryList);
 
