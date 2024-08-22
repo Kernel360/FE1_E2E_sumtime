@@ -40,6 +40,7 @@ const PaletteColorButton = styled.button<PaletteColorButtonProps>`
   width: 24px;
   background-color: ${(props) => props.$backgroundColor};
   aspect-ratio: 1 / 1;
+  cursor: pointer;
 `;
 
 export { ColorPickerLayout, ColorPaletteLayout, PaletteColorButton, SaveButton, SaveBarLayout };
