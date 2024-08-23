@@ -6,7 +6,7 @@ import { setTodoId } from '@/lib/todos/todoDataSlice';
 import { openModal, openModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
 import * as S from './TodoList.styled';
 
-function CreateTodoButton() {
+function OpenCreateTodoModalButton() {
   const dispatch = useDispatch();
 
   const handleOpenModalByFAB = () => {
@@ -25,4 +25,4 @@ function CreateTodoButton() {
   );
 }
 
-export default CreateTodoButton;
+export default OpenCreateTodoModalButton;

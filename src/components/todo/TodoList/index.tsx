@@ -9,7 +9,7 @@ import * as TodoStyle from './TodoList.styled';
 import { SkeletonRectangle } from '../../common/SkeletonRectangle';
 import * as CommonStyle from '../../common';
 import EmptyTodoList from './EmptyTodoList';
-import CreateTodoButton from './CreateTodoButton';
+import OpenCreateTodoModalButton from './OpenCreateTodoModalButton';
 
 const S = { ...TodoStyle, ...CommonStyle };
 
@@ -52,7 +52,7 @@ function TodoList() {
           ))}
         </Box>
       </S.TodoComponentsSection>
-      <CreateTodoButton />
+      <OpenCreateTodoModalButton />
     </Box>
   );
 }
