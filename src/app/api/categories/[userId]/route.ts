@@ -45,7 +45,7 @@ export async function POST(request: Request, { params }: { params: { userId: str
       title,
       color: color || null,
       isDisplayed: isDisplayed !== undefined ? isDisplayed : 1,
-      userId: 0,
+      userId,
     };
 
     const insertedCategory = await db.insert(categoriesTable).values(newCategory).returning({
