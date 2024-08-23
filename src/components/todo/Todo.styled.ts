@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Flex, Container } from '../common';
+import { css } from '@emotion/react';
 
 export const TodoSection = styled(Flex)`
   flex-direction: column;
@@ -19,48 +20,29 @@ export const TodoComponentsSection = styled(Container)`
   box-shadow: 1px 1px 10px lightgrey;
 `;
 
-interface TodoWrapperProps {
-  inProgress?: boolean;
-}
-
-export const TodoWrapper = styled(Container)<TodoWrapperProps>`
+export const TodoWrapper = styled(Container)`
   margin: 10px;
-  height: auto;
   background-color: #ffffff;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 5px;
   box-sizing: border-box;
-  box-shadow: ${(props) => (props.inProgress ? '1px 1px 8px gray' : '1px 1px 5px lightgray')};
 `;
 
 export const TodoContainer = styled(Flex)`
   display: flex;
-  flex-direction: row;
+  z-index: 1;
+  position: relative;
   align-items: center;
+  justify-content: space-between;
+  background-color: white;
   width: 100%;
+  height: 44px;
   border-radius: 5px;
   padding: 10px;
   box-sizing: border-box;
-  min-height: 30px;
-  max-height: fit-content;
-  input {
-    flex-grow: 1;
-    background-color: transparent;
-  }
-
-  button {
-    width: 25px;
-    height: 100%;
-    font-size: small;
-    z-index: 2;
-  }
-
-  button + button {
-    margin-left: 10px; // 버튼 사이의 간격을 위한 마진
-  }
+  box-shadow: 1px 1px 5px lightgrey;
 `;
 
 export const FloatingButton = styled.div`

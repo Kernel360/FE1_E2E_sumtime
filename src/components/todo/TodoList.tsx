@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setTodoId } from '@/lib/todos/todoDataSlice';
 import { openModal, closeModalByFAB, openModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
 import { SkeletonRectangle } from '../common/SkeletonRectangle';
+import GlowingBorder from '@/components/todo/GlowingBorder';
 
 function TodoList() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ function TodoList() {
                   startTime={todo.startTime}
                   endTime={todo.endTime}
                   setTodoId={handleOpenModalByTodo}
+                  isProgress={!!todo.isProgress}
                 />
               ))}
           </Box>
