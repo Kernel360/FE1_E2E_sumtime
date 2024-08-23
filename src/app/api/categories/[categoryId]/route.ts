@@ -1,22 +1,29 @@
 import { db } from '@/db';
 import { categoriesTable } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { authOptions } from '@/lib/auth';
+import { and, eq } from 'drizzle-orm';
+import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request, { params }: { params: { categoryId: string; userId: string } }) {
-  const userId = Number(params.userId);
-  const categoryId = Number(params.categoryId);
-
-  if (Number.isNaN(userId)) {
-    return NextResponse.json({ error: '유효한 user ID를 제공해 주세요.' }, { status: 400 });
+export async function GET(request: Request, { params }: { params: { categoryId: string } }) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: 'unAuthorized Error' }, { status: 401 });
   }
+
+  const userId = session.user.id;
+  const categoryId = Number(params.categoryId);
 
   if (Number.isNaN(categoryId)) {
     return NextResponse.json({ error: '유효한 카테고리 ID를 제공해 주세요.' }, { status: 400 });
   }
 
   try {
-    const category = await db.select().from(categoriesTable).where(eq(categoriesTable.id, categoryId)).get();
+    const category = await db
+      .select()
+      .from(categoriesTable)
+      .where(and(eq(categoriesTable.id, categoryId), eq(categoriesTable.userId, userId)))
+      .get();
 
     if (!category) {
       return NextResponse.json({ error: '카테고리를 찾을 수 없습니다.' }, { status: 404 });
@@ -36,13 +43,15 @@ export async function GET(request: Request, { params }: { params: { categoryId: 
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { categoryId: string; userId: string } }) {
-  const userId = Number(params.userId);
-  const categoryId = Number(params.categoryId);
+export async function PUT(request: Request, { params }: { params: { categoryId: string } }) {
+  const session = await getServerSession(authOptions);
 
-  if (Number.isNaN(userId)) {
-    return NextResponse.json({ error: '유효한 user ID를 제공해 주세요.' }, { status: 400 });
+  if (!session) {
+    return NextResponse.json({ error: 'unAuthorized Error' }, { status: 401 });
   }
+
+  const userId = session.user.id;
+  const categoryId = Number(params.categoryId);
 
   if (Number.isNaN(categoryId)) {
     return NextResponse.json({ error: '유효한 카테고리 ID를 제공해 주세요.' }, { status: 400 });
@@ -65,7 +74,7 @@ export async function PUT(request: Request, { params }: { params: { categoryId: 
     const result = await db
       .update(categoriesTable)
       .set(updatedCategory)
-      .where(eq(categoriesTable.id, categoryId))
+      .where(and(eq(categoriesTable.id, categoryId), eq(categoriesTable.userId, userId)))
       .returning({
         id: categoriesTable.id,
         title: categoriesTable.title,
@@ -89,26 +98,37 @@ export async function PUT(request: Request, { params }: { params: { categoryId: 
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { categoryId: string; userId: string } }) {
-  const userId = Number(params.userId);
-  const categoryId = Number(params.categoryId);
+export async function DELETE(request: Request, { params }: { params: { categoryId: string } }) {
+  const session = await getServerSession(authOptions);
 
-  if (Number.isNaN(userId)) {
-    return NextResponse.json({ error: '유효한 user ID를 제공해 주세요.' }, { status: 400 });
+  if (!session) {
+    return NextResponse.json({ error: 'unAuthorized Error' }, { status: 401 });
   }
+
+  const userId = session.user.id;
+
+  const categoryId = Number(params.categoryId);
 
   if (Number.isNaN(categoryId)) {
     return NextResponse.json({ error: '유효한 카테고리 ID를 제공해 주세요.' }, { status: 400 });
   }
 
   try {
-    const existingCategory = await db.select().from(categoriesTable).where(eq(categoriesTable.id, categoryId)).get();
+    const existingCategory = await db
+      .select()
+      .from(categoriesTable)
+      .where(and(eq(categoriesTable.id, categoryId), eq(categoriesTable.userId, userId)))
+      .get();
 
     if (!existingCategory) {
       return NextResponse.json({ error: '삭제할 카테고리를 찾을 수 없습니다.' }, { status: 404 });
     }
 
-    const category = await db.select().from(categoriesTable).where(eq(categoriesTable.id, categoryId)).get();
+    const category = await db
+      .select()
+      .from(categoriesTable)
+      .where(and(eq(categoriesTable.id, categoryId), eq(categoriesTable.userId, userId)))
+      .get();
 
     if (!category) {
       return NextResponse.json({ error: '카테고리 정보를 가져오는 데 실패했습니다.' }, { status: 500 });

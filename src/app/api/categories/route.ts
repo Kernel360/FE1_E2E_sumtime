@@ -2,13 +2,16 @@ import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { categoriesTable, InsertCategory } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 
-export async function GET(request: Request, { params }: { params: { userId: string } }) {
-  const userId = Number(params.userId);
-
-  if (Number.isNaN(userId)) {
-    return NextResponse.json({ error: '유효한 user ID를 제공해 주세요.' }, { status: 400 });
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: 'unAuthorized Error' }, { status: 401 });
   }
+
+  const userId = session.user.id;
 
   try {
     const categories = await db.select().from(categoriesTable).where(eq(categoriesTable.userId, userId)).all();
@@ -26,12 +29,13 @@ export async function GET(request: Request, { params }: { params: { userId: stri
   }
 }
 
-export async function POST(request: Request, { params }: { params: { userId: string } }) {
-  const userId = Number(params.userId);
-
-  if (Number.isNaN(userId)) {
-    return NextResponse.json({ error: '유효한 user ID를 제공해 주세요.' }, { status: 400 });
+export async function POST(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: 'unAuthorized Error' }, { status: 401 });
   }
+
+  const userId = session.user.id;
 
   try {
     const body = await request.json();
