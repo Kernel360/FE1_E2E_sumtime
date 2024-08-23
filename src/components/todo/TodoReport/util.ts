@@ -28,13 +28,11 @@ const formatToChartData = (todoList: TodoDateType[], categoryList: Category[] | 
     [key: string]: PieValueType;
   } = {};
 
-  // console.log('todoList', todoList);
-
   todoList.forEach((todo) => {
     const { categoryId, startTime, endTime } = todo;
     const todoCategory = categoryList.find((category) => category.id === categoryId);
 
-    if (!startTime || !endTime || !todoCategory) {
+    if (!startTime || !endTime || !todoCategory || todoCategory.isDisplayed === 0) {
       return;
     }
 
