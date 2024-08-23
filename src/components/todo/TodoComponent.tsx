@@ -30,8 +30,12 @@ function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
     const startTime = new Date().toISOString();
     const endTime = null;
 
-    await updateTodoTime(
-      { todoId: id, startTime, endTime },
+    updateTodoTime(
+      {
+        todoId: id,
+        startTime,
+        endTime,
+      },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
@@ -48,8 +52,12 @@ function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
     const startTime = null;
     const endTime = new Date().toISOString();
 
-    await updateTodoTime(
-      { todoId: id, startTime, endTime },
+    updateTodoTime(
+      {
+        todoId: id,
+        startTime,
+        endTime,
+      },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
