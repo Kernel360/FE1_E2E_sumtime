@@ -14,9 +14,11 @@ interface TodoComponentProps {
   todoId: number;
   title: string;
   setTodoId: (todoId: number) => void;
+  startTime: string | null;
+  endTime: string | null;
 }
 
-function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
+function TodoComponent({ todoId, title, setTodoId, startTime, endTime }: TodoComponentProps) {
   const queryClient = useQueryClient();
   const { mutate: updateTodoTime } = useUpdateTodoTime();
   const { sessionId } = useAppSelector(selectTodoData);
@@ -27,14 +29,14 @@ function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
   };
 
   const handleStart = async (id: number) => {
-    const startTime = new Date().toISOString();
-    const endTime = null;
+    const newStartTime = new Date().toISOString();
+    const newEndTime = null;
 
     updateTodoTime(
       {
         todoId: id,
-        startTime,
-        endTime,
+        startTime: newStartTime,
+        endTime: newEndTime,
       },
       {
         onSuccess: () => {
@@ -49,14 +51,14 @@ function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
   };
 
   const handleEnd = async (id: number) => {
-    const startTime = null;
-    const endTime = new Date().toISOString();
+    const newStartTime = null;
+    const newEndTime = new Date().toISOString();
 
     updateTodoTime(
       {
         todoId: id,
-        startTime,
-        endTime,
+        startTime: newStartTime,
+        endTime: newEndTime,
       },
       {
         onSuccess: () => {
@@ -71,7 +73,7 @@ function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
   };
 
   return (
-    <S.ATodoComponentContainer>
+    <S.TodoWrapper inProgress={!!startTime && !endTime}>
       <S.TodoContainer
         onClick={() => {
           handleOpenModal();
@@ -81,27 +83,31 @@ function TodoComponent({ todoId, title, setTodoId }: TodoComponentProps) {
           {title}
         </Text>
         <Box display="flex" alignItems="center" justifyContent="center">
-          <IconButton
-            sx={{ padding: '0' }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleStart(todoId);
-            }}
-          >
-            <PlayCircleFilledWhiteOutlinedIcon color="action" />
-          </IconButton>
-          <IconButton
-            sx={{ padding: '0' }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleEnd(todoId);
-            }}
-          >
-            <CheckCircleOutlinedIcon color="action" />
-          </IconButton>
+          {!endTime && (
+            <>
+              <IconButton
+                sx={{ padding: '0' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleStart(todoId);
+                }}
+              >
+                <PlayCircleFilledWhiteOutlinedIcon color="action" />
+              </IconButton>
+              <IconButton
+                sx={{ padding: '0' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEnd(todoId);
+                }}
+              >
+                <CheckCircleOutlinedIcon color="action" />
+              </IconButton>
+            </>
+          )}
         </Box>
       </S.TodoContainer>
-    </S.ATodoComponentContainer>
+    </S.TodoWrapper>
   );
 }
 

@@ -19,7 +19,11 @@ export const TodoComponentsSection = styled(Container)`
   box-shadow: 1px 1px 10px lightgrey;
 `;
 
-export const ATodoComponentContainer = styled(Container)`
+interface TodoWrapperProps {
+  inProgress?: boolean;
+}
+
+export const TodoWrapper = styled(Container)<TodoWrapperProps>`
   margin: 10px;
   height: auto;
   background-color: #ffffff;
@@ -29,7 +33,7 @@ export const ATodoComponentContainer = styled(Container)`
   align-items: stretch;
   padding: 5px;
   box-sizing: border-box;
-  box-shadow: 1px 1px 5px lightgrey;
+  box-shadow: ${(props) => (props.inProgress ? '1px 1px 8px gray' : '1px 1px 5px lightgray')};
 `;
 
 export const TodoContainer = styled(Flex)`

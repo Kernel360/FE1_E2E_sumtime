@@ -44,7 +44,14 @@ function TodoList() {
           <Box>
             {todoListData &&
               todoListData.map((todo) => (
-                <TodoComponent key={todo.id} todoId={todo.id} title={todo.title} setTodoId={handleOpenModalByTodo} />
+                <TodoComponent
+                  key={todo.id}
+                  todoId={todo.id}
+                  title={todo.title}
+                  startTime={todo.startTime}
+                  endTime={todo.endTime}
+                  setTodoId={handleOpenModalByTodo}
+                />
               ))}
           </Box>
         )}
