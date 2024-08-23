@@ -75,7 +75,12 @@ function CategoryTableBody() {
       {categoryList.map((category) => {
         const isDisable = category.isDefault === 1;
         return (
-          <Tooltip key={category.id} open={!!isDisable} title="Add" arrow>
+          <Tooltip
+            key={category.id}
+            open={!!isDisable}
+            title="기본 카테고리는 수정 불가능 합니다."
+            disableHoverListener={!isDisable}
+          >
             <StyledTableRow isDisable={isDisable}>
               <TableCell component="th" scope="row" sx={{ maxWidth: '200px', overflowX: 'auto' }}>
                 {category.title}
