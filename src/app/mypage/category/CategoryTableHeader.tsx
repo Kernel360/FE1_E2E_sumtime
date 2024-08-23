@@ -6,7 +6,7 @@ function CategoryTableHeader() {
       <TableRow>
         <TableCell>Title</TableCell>
         <TableCell align="right">Category Color</TableCell>
-        <TableCell align="right">is Reported</TableCell>
+        <TableCell align="right">Chart Include </TableCell>
         <TableCell align="right" sx={{ paddingRight: '35px' }}>
           수정
         </TableCell>
