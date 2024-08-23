@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import EmptyTodoListIcon from '@/assets/images/emptyTodoIcon.png';
 import * as TodoStyle from './TodoList.styled';
 import * as CommonStyle from '../../common';
-import AddTodoButton from './AddTodoButton';
+import CreateTodoButton from './CreateTodoButton';
 
 const S = { ...TodoStyle, ...CommonStyle };
 
@@ -24,7 +24,7 @@ function EmptyTodoList() {
             </S.Flex>
           </S.Flex>
         </Box>
-        <AddTodoButton />
+        <CreateTodoButton />
       </S.TodoComponentsSection>
     </Box>
   );
