@@ -100,7 +100,6 @@ function CategoryTableBody() {
                   수정
                 </Button>
               </TableCell>
-              {/* </TableRow> */}
             </StyledTableRow>
           </Tooltip>
         );
