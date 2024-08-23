@@ -1,42 +1,36 @@
-import { Divider, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Divider, Menu, MenuItem } from '@mui/material';
 import { signOut } from 'next-auth/react';
 
-function HeaderList() {
+interface HeaderListProps {
+  anchorEl: HTMLElement | null;
+  open: boolean;
+  onClose: () => void;
+}
+
+function HeaderList({ anchorEl, open, onClose }: HeaderListProps) {
   return (
-    <List
-      sx={{
-        position: 'absolute',
-        top: '100%',
-        left: 0,
-        zIndex: 10,
-        backgroundColor: 'white',
-        border: '1px solid #dadce0',
-        borderRadius: '5px',
-        boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
+    <Menu
+      id="basic-menu"
+      anchorEl={anchorEl}
+      open={open}
+      onClose={onClose}
+      MenuListProps={{
+        'aria-labelledby': 'basic-button',
       }}
+      sx={{ marginTop: '10px' }}
     >
-      <ListItem disablePadding>
-        <ListItemButton component="a" href="/mypage/account">
-          <ListItemText primary="Account" />
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton component="a" href="/mypage/category">
-          <ListItemText primary="Category" />
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton component="a" href="/mypage/faq">
-          <ListItemText primary="FAQ" />
-        </ListItemButton>
-      </ListItem>
+      <MenuItem component="a" href="/mypage/account">
+        Account
+      </MenuItem>
+      <MenuItem component="a" href="/mypage/category">
+        Category
+      </MenuItem>
+      <MenuItem component="a" href="/mypage/faq">
+        FAQ
+      </MenuItem>
       <Divider />
-      <ListItem disablePadding>
-        <ListItemButton onClick={() => signOut({ callbackUrl: '/landing' })}>
-          <ListItemText primary="Logout" />
-        </ListItemButton>
-      </ListItem>
-    </List>
+      <MenuItem onClick={() => signOut({ callbackUrl: '/landing' })}>Logout</MenuItem>
+    </Menu>
   );
 }
 

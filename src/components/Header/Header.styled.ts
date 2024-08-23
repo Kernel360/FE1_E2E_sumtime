@@ -24,7 +24,7 @@ export const ProfileDiv = styled(Flex)`
   height: 100%;
 `;
 
-export const UserNameButton = styled.button`
+export const MenuButton = styled.button`
   position: relative;
   border: none;
   background-color: transparent;
