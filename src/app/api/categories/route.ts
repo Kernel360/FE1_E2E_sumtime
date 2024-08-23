@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'title 값을 입력해주세요' }, { status: 400 });
     }
 
-    const newCategory: InsertCategory = {
+    const newCategory: Pick<InsertCategory, 'title' | 'color' | 'isDisplayed' | 'userId'> = {
       title,
       color: color || null,
       isDisplayed: isDisplayed !== undefined ? isDisplayed : 1,
@@ -53,7 +53,6 @@ export async function POST(request: Request) {
     };
 
     const insertedCategory = await db.insert(categoriesTable).values(newCategory).returning({
-      id: categoriesTable.id,
       title: categoriesTable.title,
       color: categoriesTable.color,
       isDisplayed: categoriesTable.isDisplayed,
