@@ -55,18 +55,35 @@ function TodoComponent({ todoId, title, setTodoId, startTime, endTime, isProgres
 
   return (
     <S.TodoWrapper>
-      <GlowingBorder>
-        <S.TodoContainer
-          onClick={() => {
-            handleOpenModal();
-          }}
-        >
-          <Text $width="90%" $fontSize="small" title-wrap="wrap">
-            {title}
-          </Text>
-          <TodoRecordButton todoId={todoId} isProgress={isProgress} toggleRecord={() => toggleRecord(todoId)} />
-        </S.TodoContainer>
-      </GlowingBorder>
+      {isProgress ? (
+        <GlowingBorder isProgress={isProgress}>
+          <Box width="100%" padding="2px" display="flex" alignItems="center" justifyContent="center">
+            <S.TodoContainer
+              onClick={() => {
+                handleOpenModal();
+              }}
+            >
+              <Text $width="90%" $fontSize="small" title-wrap="wrap">
+                {title}
+              </Text>
+              <TodoRecordButton todoId={todoId} isProgress={isProgress} toggleRecord={() => toggleRecord(todoId)} />
+            </S.TodoContainer>
+          </Box>
+        </GlowingBorder>
+      ) : (
+        <Box width="100%" padding="2px" display="flex" alignItems="center" justifyContent="center">
+          <S.TodoContainer
+            onClick={() => {
+              handleOpenModal();
+            }}
+          >
+            <Text $width="90%" $fontSize="small" title-wrap="wrap">
+              {title}
+            </Text>
+            <TodoRecordButton todoId={todoId} isProgress={isProgress} toggleRecord={() => toggleRecord(todoId)} />
+          </S.TodoContainer>
+        </Box>
+      )}
     </S.TodoWrapper>
   );
 }

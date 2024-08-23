@@ -57,21 +57,15 @@ const Card = styled.div`
     left: calc(50% - 25px);
     width: 50px;
     height: 300px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(209, 98, 98, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(223, 102, 102, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
     transform-origin: top center;
     transform: translate(-50%, -50%);
     animation: ${customRotate} 3s linear infinite;
   }
 `;
 
-function GlowingBorder({ children }: { children: React.ReactNode }) {
-  return (
-    <Card>
-      <Box width="100%" padding="2px" display="flex" alignItems="center" justifyContent="center">
-        {children}
-      </Box>
-    </Card>
-  );
+function GlowingBorder({ isProgress, children }: { isProgress?: boolean; children: React.ReactNode }) {
+  return <Card>{children}</Card>;
 }
 
 export default GlowingBorder;
