@@ -14,12 +14,6 @@ function TodoReport() {
   const todoList = convertDateStringToDate(todoListData);
   const chartDataList = formatToChartData(todoList, categoryList);
 
-  console.log('categoryList', categoryList);
-
-  // console.log('categoryList', categoryList);
-  // console.log('todoListData', todoListData);
-  // console.log('chartDataList', chartDataList);
-
   return (
     <Grid
       container
