@@ -7,9 +7,8 @@ import { selectTodoData } from '@/lib/todos/todoDataSlice';
 import * as S from './Todo.styled';
 import { Text } from '../common';
 import TodoRecordButton from '@/components/todo/TodoRecordButton';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import GlowingBorder from '@/components/todo/GlowingBorder';
+import Todo from '@/components/todo/Todo';
 
 interface TodoComponentProps {
   todoId: number;
@@ -20,7 +19,7 @@ interface TodoComponentProps {
   isProgress?: boolean;
 }
 
-function TodoComponent({ todoId, title, setTodoId, startTime, endTime, isProgress }: TodoComponentProps) {
+function TodoWrapper({ todoId, title, setTodoId, startTime, endTime, isProgress }: TodoComponentProps) {
   const queryClient = useQueryClient();
   const { mutate: updateTodoTime } = useUpdateTodoTime();
   const { sessionId } = useAppSelector(selectTodoData);
@@ -56,36 +55,30 @@ function TodoComponent({ todoId, title, setTodoId, startTime, endTime, isProgres
   return (
     <S.TodoWrapper>
       {isProgress ? (
-        <GlowingBorder isProgress={isProgress}>
-          <Box width="100%" padding="2px" display="flex" alignItems="center" justifyContent="center">
-            <S.TodoContainer
-              onClick={() => {
-                handleOpenModal();
-              }}
-            >
-              <Text $width="90%" $fontSize="small" title-wrap="wrap">
-                {title}
-              </Text>
-              <TodoRecordButton todoId={todoId} isProgress={isProgress} toggleRecord={() => toggleRecord(todoId)} />
-            </S.TodoContainer>
-          </Box>
+        <GlowingBorder>
+          <Todo
+            todoId={todoId}
+            title={title}
+            isProgress={isProgress}
+            startTime={startTime}
+            endTime={endTime}
+            toggleRecord={toggleRecord}
+            handleOpenModal={handleOpenModal}
+          />
         </GlowingBorder>
       ) : (
-        <Box width="100%" padding="2px" display="flex" alignItems="center" justifyContent="center">
-          <S.TodoContainer
-            onClick={() => {
-              handleOpenModal();
-            }}
-          >
-            <Text $width="90%" $fontSize="small" title-wrap="wrap">
-              {title}
-            </Text>
-            <TodoRecordButton todoId={todoId} isProgress={isProgress} toggleRecord={() => toggleRecord(todoId)} />
-          </S.TodoContainer>
-        </Box>
+        <Todo
+          todoId={todoId}
+          title={title}
+          isProgress={isProgress}
+          startTime={startTime}
+          endTime={endTime}
+          toggleRecord={toggleRecord}
+          handleOpenModal={handleOpenModal}
+        />
       )}
     </S.TodoWrapper>
   );
 }
 
-export default TodoComponent;
+export default TodoWrapper;

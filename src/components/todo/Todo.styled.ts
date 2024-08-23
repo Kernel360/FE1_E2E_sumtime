@@ -30,7 +30,11 @@ export const TodoWrapper = styled(Container)`
   box-sizing: border-box;
 `;
 
-export const TodoContainer = styled(Flex)`
+interface TodoContainerProps {
+  endTime: string | null;
+}
+
+export const TodoContainer = styled(Flex)<TodoContainerProps>`
   display: flex;
   z-index: 1;
   position: relative;
@@ -42,7 +46,9 @@ export const TodoContainer = styled(Flex)`
   border-radius: 5px;
   padding: 10px;
   box-sizing: border-box;
-  box-shadow: 1px 1px 5px lightgrey;
+  box-shadow: ${(props) => (props.endTime ? 'none' : '1px 1px 5px lightgrey')};
+  border: ${(props) => (props.endTime ? '1px solid #e3e3e3' : 'none')};
+  cursor: pointer;
 `;
 
 export const FloatingButton = styled.div`

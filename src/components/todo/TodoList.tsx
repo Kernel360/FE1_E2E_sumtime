@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import * as S from '@/components/todo/Todo.styled';
-import TodoComponent from '@/components/todo/TodoComponent';
+import TodoWrapper from '@/components/todo/TodoWrapper';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { RootState } from '@/lib/store';
@@ -45,7 +45,7 @@ function TodoList() {
           <Box>
             {todoListData &&
               todoListData.map((todo) => (
-                <TodoComponent
+                <TodoWrapper
                   key={todo.id}
                   todoId={todo.id}
                   title={todo.title}

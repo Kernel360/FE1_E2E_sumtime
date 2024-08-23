@@ -64,7 +64,7 @@ const Card = styled.div`
   }
 `;
 
-function GlowingBorder({ isProgress, children }: { isProgress?: boolean; children: React.ReactNode }) {
+function GlowingBorder({ children }: { children: React.ReactNode }) {
   return <Card>{children}</Card>;
 }
 
