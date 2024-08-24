@@ -1,25 +1,33 @@
 import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUpdateTodoTime } from '@/api/hooks/todoHooks';
-import Box from '@mui/material/Box';
 import { useAppSelector } from '@/lib/hooks';
 import { selectTodoData } from '@/lib/todos/todoDataSlice';
-import * as S from './Todo.styled';
-import { Text } from '../common';
-import TodoRecordButton from '@/components/todo/TodoRecordButton';
 import GlowingBorder from '@/components/todo/GlowingBorder';
 import Todo from '@/components/todo/Todo';
+import * as S from './Todo.styled';
 
-interface TodoComponentProps {
+interface TodoWrapperProps {
   todoId: number;
   title: string;
   setTodoId: (todoId: number) => void;
   startTime: string | null;
   endTime: string | null;
   isProgress?: boolean;
+  isListProgressing: boolean;
+  setIsListProgressing: (isListProgressing: boolean) => void;
 }
 
-function TodoWrapper({ todoId, title, setTodoId, startTime, endTime, isProgress }: TodoComponentProps) {
+function TodoWrapper({
+  todoId,
+  title,
+  setTodoId,
+  startTime,
+  endTime,
+  isProgress,
+  isListProgressing,
+  setIsListProgressing,
+}: TodoWrapperProps) {
   const queryClient = useQueryClient();
   const { mutate: updateTodoTime } = useUpdateTodoTime();
   const { sessionId } = useAppSelector(selectTodoData);
@@ -30,6 +38,7 @@ function TodoWrapper({ todoId, title, setTodoId, startTime, endTime, isProgress 
   };
 
   const toggleRecord = async (id: number) => {
+    setIsListProgressing(!isListProgressing);
     const newStartTime = !isProgress ? new Date().toISOString() : null;
     const newEndTime = isProgress ? new Date().toISOString() : null;
 
@@ -60,6 +69,7 @@ function TodoWrapper({ todoId, title, setTodoId, startTime, endTime, isProgress 
             todoId={todoId}
             title={title}
             isProgress={isProgress}
+            isListProgressing={isListProgressing}
             startTime={startTime}
             endTime={endTime}
             toggleRecord={toggleRecord}
@@ -71,6 +81,7 @@ function TodoWrapper({ todoId, title, setTodoId, startTime, endTime, isProgress 
           todoId={todoId}
           title={title}
           isProgress={isProgress}
+          isListProgressing={isListProgressing}
           startTime={startTime}
           endTime={endTime}
           toggleRecord={toggleRecord}

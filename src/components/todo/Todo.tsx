@@ -8,13 +8,13 @@ interface TodoProps {
   title: string;
   todoId: number;
   isProgress?: boolean;
-  startTime: string | null;
+  isListProgressing: boolean;
   endTime: string | null;
   handleOpenModal: () => void;
   toggleRecord: (id: number) => void;
 }
 
-const Todo = ({ title, todoId, isProgress, startTime, endTime, handleOpenModal, toggleRecord }: TodoProps) => {
+function Todo({ title, todoId, isProgress, isListProgressing, endTime, handleOpenModal, toggleRecord }: TodoProps) {
   return (
     <Box width="100%" padding="2px" display="flex" alignItems="center" justifyContent="center">
       <S.TodoContainer
@@ -26,10 +26,17 @@ const Todo = ({ title, todoId, isProgress, startTime, endTime, handleOpenModal, 
         <Text $width="90%" $fontSize="small" title-wrap="wrap">
           {title}
         </Text>
-        {!endTime && <TodoRecordButton todoId={todoId} isProgress={isProgress} toggleRecord={() => toggleRecord(todoId)} />}
+        {!endTime && (
+          <TodoRecordButton
+            todoId={todoId}
+            isProgress={isProgress}
+            isListProgressing={isListProgressing}
+            toggleRecord={() => toggleRecord(todoId)}
+          />
+        )}
       </S.TodoContainer>
     </Box>
   );
-};
+}
 
 export default Todo;

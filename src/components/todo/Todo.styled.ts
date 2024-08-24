@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { Flex, Container } from '../common';
-import { css } from '@emotion/react';
 
 export const TodoSection = styled(Flex)`
   flex-direction: column;
