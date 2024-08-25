@@ -11,7 +11,6 @@ interface TodoRecordButtonProps {
 function TodoRecordButton({ toggleRecord, todoId, isProgress, isListProgressing }: TodoRecordButtonProps) {
   return (
     <Box
-      margin={1}
       boxSizing="border-box"
       display="flex"
       alignItems="center"

@@ -16,7 +16,7 @@ interface TodoProps {
 
 function Todo({ title, todoId, isProgress, isListProgressing, endTime, handleOpenModal, toggleRecord }: TodoProps) {
   return (
-    <Box width="100%" padding="2px" display="flex" alignItems="center" justifyContent="center">
+    <Box width="100%" padding="0 3px" display="flex" alignItems="center" justifyContent="center" borderRadius={2}>
       <S.TodoContainer
         endTime={endTime}
         onClick={() => {

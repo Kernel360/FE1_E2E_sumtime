@@ -11,7 +11,6 @@ interface TodoWrapperProps {
   todoId: number;
   title: string;
   setTodoId: (todoId: number) => void;
-  startTime: string | null;
   endTime: string | null;
   isProgress?: boolean;
   isListProgressing: boolean;
@@ -22,7 +21,6 @@ function TodoWrapper({
   todoId,
   title,
   setTodoId,
-  startTime,
   endTime,
   isProgress,
   isListProgressing,
@@ -70,7 +68,6 @@ function TodoWrapper({
             title={title}
             isProgress={isProgress}
             isListProgressing={isListProgressing}
-            startTime={startTime}
             endTime={endTime}
             toggleRecord={toggleRecord}
             handleOpenModal={handleOpenModal}
@@ -82,7 +79,6 @@ function TodoWrapper({
           title={title}
           isProgress={isProgress}
           isListProgressing={isListProgressing}
-          startTime={startTime}
           endTime={endTime}
           toggleRecord={toggleRecord}
           handleOpenModal={handleOpenModal}

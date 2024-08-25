@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { Flex, Container } from '../common';
 
 export const TodoSection = styled(Flex)`
@@ -39,15 +40,15 @@ export const TodoContainer = styled(Flex)<TodoContainerProps>`
   position: relative;
   align-items: center;
   justify-content: space-between;
-  background-color: white;
   width: 100%;
   height: 44px;
   border-radius: 5px;
-  padding: 10px;
   box-sizing: border-box;
   box-shadow: ${(props) => (props.endTime ? 'none' : '1px 1px 5px lightgrey')};
   border: ${(props) => (props.endTime ? '1px solid #e3e3e3' : 'none')};
   cursor: pointer;
+  padding: 0 12px;
+  background-color: #ffffff;
 `;
 
 export const FloatingButton = styled.div`
@@ -68,3 +69,39 @@ export const TodoModalStyle = {
   borderRadius: 2,
   p: 3.7,
 };
+
+// GlowingBorder 를 위한 Animation
+// 상수처럼 취급되므로 CamaelCase로 작성했습니다.
+export const rotate = keyframes`
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+export const customRotate = keyframes`
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-out;
+  }
+ 
+  25% {
+    transform: rotate(90deg);
+    animation-timing-function: ease-in;
+  } 
+    50% {
+    transform: rotate(180deg);
+        animation-timing-function: ease-out;
+
+    }
+    75% {   
+    transform: rotate(270deg);
+    animation-timing-function: ease-in;
+  }
+ 
+  100% {
+    transform: rotate(360deg);
+    animation-timing-function: ease-out;
+  }
+`;
