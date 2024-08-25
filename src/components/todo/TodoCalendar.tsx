@@ -15,7 +15,7 @@ function TodoCalendar() {
   return (
     <Box
       position="absolute"
-      zIndex="1"
+      zIndex="2"
       bgcolor="white"
       top="84px"
       borderRadius={2}
