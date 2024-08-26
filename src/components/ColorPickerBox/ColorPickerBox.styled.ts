@@ -50,7 +50,8 @@ const ColorPickerInputLayout = styled.input<{
   box-sizing: border-box;
 `;
 
-interface EditedSpanProps {
+// ValidationSpanProps 형식 가져옴. 추후 공통 컴포넌트로 빼는 작업 필요
+interface ColorPickerEditedSpanProps {
   $color?: string;
   theme?: {
     color: {
@@ -70,10 +71,10 @@ interface EditedSpanProps {
   };
 }
 
-const EditedSpan = styled.span<EditedSpanProps>`
+const ColorPickerEditedSpan = styled.span<ColorPickerEditedSpanProps>`
   font-size: 12px;
 
   color: ${(props) => (props?.$color ? props.$color : props?.theme?.color?.fontColor)};
 `;
 
-export { ColorPickerBoxLayout, LabelP, ColorPickerInputLayout, EditedSpan };
+export { ColorPickerBoxLayout, LabelP, ColorPickerInputLayout, ColorPickerEditedSpan };
