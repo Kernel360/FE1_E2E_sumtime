@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import * as S from '@/components/todo/Todo.styled';
 import TodoWrapper from '@/components/todo/TodoWrapper';
@@ -17,6 +17,14 @@ function TodoList() {
   const { todoListData } = useSelector((state: RootState) => state.todoData);
   const { isLoading } = useSelector((state: RootState) => state.todoData);
   const [isListProgressing, setIsListProgressing] = React.useState(false);
+
+  useEffect(() => {
+    if (todoListData.some((todo) => todo.isProgress)) {
+      setIsListProgressing(true);
+    } else {
+      setIsListProgressing(false);
+    }
+  }, [todoListData]);
 
   const handleOpenModalByFAB = () => {
     dispatch(setTodoId(0));
@@ -50,12 +58,10 @@ function TodoList() {
                     key={todo.id}
                     todoId={todo.id}
                     title={todo.title}
-                    startTime={todo.startTime}
                     endTime={todo.endTime}
                     setTodoId={handleOpenModalByTodo}
                     isProgress={!!todo.isProgress}
                     isListProgressing={isListProgressing}
-                    setIsListProgressing={setIsListProgressing}
                   />
                 );
               })}

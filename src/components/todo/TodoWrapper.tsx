@@ -14,18 +14,9 @@ interface TodoWrapperProps {
   endTime: string | null;
   isProgress?: boolean;
   isListProgressing: boolean;
-  setIsListProgressing: (isListProgressing: boolean) => void;
 }
 
-function TodoWrapper({
-  todoId,
-  title,
-  setTodoId,
-  endTime,
-  isProgress,
-  isListProgressing,
-  setIsListProgressing,
-}: TodoWrapperProps) {
+function TodoWrapper({ todoId, title, setTodoId, endTime, isProgress, isListProgressing }: TodoWrapperProps) {
   const queryClient = useQueryClient();
   const { mutate: updateTodoTime } = useUpdateTodoTime();
   const { sessionId } = useAppSelector(selectTodoData);
@@ -36,7 +27,6 @@ function TodoWrapper({
   };
 
   const toggleRecord = async (id: number) => {
-    setIsListProgressing(!isListProgressing);
     const newStartTime = !isProgress ? new Date().toISOString() : null;
     const newEndTime = isProgress ? new Date().toISOString() : null;
 
