@@ -14,7 +14,6 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
 import { TodoModalStyle } from '../Todo.styled';
-import ColorPickerInput from '../../ColorPickerInput';
 import DeleteTodoButton from './DeleteTodoButton';
 
 export default function TodoModal() {
@@ -215,7 +214,6 @@ export default function TodoModal() {
             )}
 
             <CategoryField />
-            <ColorPickerInput color={color} setColor={setColor} />
           </Box>
           <Box display="flex" gap={1} m={1} justifyContent="flex-end">
             <Button onClick={handleCloseModal} variant="text" size="medium" color="error" sx={{ border: '1px solid pink' }}>

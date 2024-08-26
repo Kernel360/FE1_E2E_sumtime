@@ -1,7 +1,7 @@
 import { Box, Button, FormControlLabel, IconButton, Modal, Switch, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { TodoModalStyle } from '@/components/todo/Todo.styled';
-import ColorPickerInput from '@/components/ColorPickerInput';
+import ColorPickerInput from '@/components/ColorPickerBox/ColorPickerInput';
 import useDeleteCategory from '@/api/hooks/categoryHooks/useDeleteCategory';
 import { CreateCategoryInfo } from '@/api/queryFn/categoryQueryFn';
 
