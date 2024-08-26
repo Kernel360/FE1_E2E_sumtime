@@ -1,12 +1,13 @@
-import React from 'react';
-import { Box } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Box, Skeleton } from '@mui/material';
 import TodoComponent from '@/components/todo/TodoComponent';
-import { RootState } from '@/lib/store';
-import { useSelector, useDispatch } from 'react-redux';
-import { setTodoId } from '@/lib/todos/todoDataSlice';
+import { useDispatch } from 'react-redux';
+import { selectTodoData, setLoading, setTodoId, setTodoListData } from '@/lib/todos/todoDataSlice';
 import { openModal, closeModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
+import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
+import { useSession } from 'next-auth/react';
+import { useAppSelector } from '@/lib/hooks';
 import * as TodoStyle from './TodoList.styled';
-import { SkeletonRectangle } from '../../common/SkeletonRectangle';
 import * as CommonStyle from '../../common';
 import EmptyTodoList from './EmptyTodoList';
 import OpenCreateTodoModalButton from './OpenCreateTodoModalButton';
@@ -15,10 +16,17 @@ const S = { ...TodoStyle, ...CommonStyle };
 
 function TodoList() {
   const dispatch = useDispatch();
+  const { data: session } = useSession();
+  const sessionId = session?.user?.id;
+  const { displayingDate } = useAppSelector(selectTodoData);
+  const { data: todoListData = [], isLoading } = useGetTodosMatchingDate(sessionId, displayingDate);
 
-  // redux store에서 todoListData, isLoading 가져오기
-  const { todoListData } = useSelector((state: RootState) => state.todoData);
-  const { isLoading } = useSelector((state: RootState) => state.todoData);
+  useEffect(() => {
+    dispatch(setLoading(isLoading));
+    if (!isLoading && todoListData) {
+      dispatch(setTodoListData(todoListData));
+    }
+  }, [todoListData, dispatch, isLoading]);
 
   const handleOpenModalByTodo = (id: number) => {
     dispatch(setTodoId(id));
@@ -31,9 +39,7 @@ function TodoList() {
     return (
       <Box position="relative" width="100%" height="50%">
         <S.TodoComponentsSection>
-          <SkeletonRectangle />
-          <SkeletonRectangle />
-          <SkeletonRectangle />
+          <Skeleton width="100%" height="100%" sx={{ transform: 'scale(1, 1)', transformOrigin: '0 0%' }} />
         </S.TodoComponentsSection>
       </Box>
     );
