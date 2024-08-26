@@ -8,6 +8,7 @@ import { RootState } from '@/lib/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTodoId } from '@/lib/todos/todoDataSlice';
 import { openModal, closeModalByFAB, openModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
+import { FloatingButton } from '@/components/todo/TodoList/TodoList.styled';
 import { SkeletonRectangle } from '../common/SkeletonRectangle';
 
 function TodoList() {
@@ -68,11 +69,11 @@ function TodoList() {
           </Box>
         )}
       </S.TodoComponentsSection>
-      <S.FloatingButton>
+      <FloatingButton>
         <Fab color="primary" size="small" aria-label="add" onClick={handleOpenModalByFAB}>
           <AddIcon />
         </Fab>
-      </S.FloatingButton>
+      </FloatingButton>
     </Box>
   );
 }

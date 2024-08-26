@@ -21,7 +21,7 @@ const Card = styled.div`
     top: calc(50% - 800px);
     left: calc(50% - 50px);
     width: 400px;
-    height: 1000px;
+    height: 1200px;
     background: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(221, 93, 93, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
     transform-origin: center center;
     transform: translate(-50%, -50%);
