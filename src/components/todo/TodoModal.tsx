@@ -9,10 +9,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
 import { red } from '@mui/material/colors';
 import { TimePicker } from '@mui/x-date-pickers';
-import { parseISO } from 'date-fns';
+import { parseISO, isValid } from 'date-fns';
 import randomColor from 'randomcolor';
 import CategoryField from '@/components/todo/CategoryField';
-import { isValid } from 'date-fns';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
@@ -120,7 +119,6 @@ export default function TodoModal() {
     } else {
       deleteTodo(todoId, {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
           queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
           handleCloseModal();
         },
