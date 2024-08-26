@@ -11,10 +11,10 @@ import { modalStyle } from './modal.styled';
 
 interface DeleteTodoButtonProps {
   todoId: number;
-  handleCloseParentModal: () => void;
+  handleCloseParentModal?: () => void;
 }
 
-function DeleteTodoButton({ todoId, handleCloseParentModal }: DeleteTodoButtonProps) {
+function DeleteTodoButton({ todoId, handleCloseParentModal = () => {} }: DeleteTodoButtonProps) {
   const queryClient = useQueryClient();
   const { data } = useSession();
   const sessionId = data?.user.id;
