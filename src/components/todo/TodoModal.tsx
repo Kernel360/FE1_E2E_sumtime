@@ -41,9 +41,9 @@ export default function TodoModal() {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // 오늘의 시작 시점
 
-  const isPastDate = isBefore(displayingDate, today);
-  const isTodayDate = isToday(displayingDate);
-  const isFutureDate = isAfter(displayingDate, today);
+  const isPastDate = isBefore(displayingDate ?? new Date(), today);
+  const isTodayDate = isToday(displayingDate ?? new Date());
+  const isFutureDate = isAfter(displayingDate ?? new Date(), today);
 
   useEffect(() => {
     if (isModalOpen && mode === 'create') {
