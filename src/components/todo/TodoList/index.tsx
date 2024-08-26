@@ -17,8 +17,7 @@ function TodoList() {
   const dispatch = useDispatch();
 
   // redux store에서 todoListData, isLoading 가져오기
-  const { todoListData } = useSelector((state: RootState) => state.todoData);
-  const { isLoading } = useSelector((state: RootState) => state.todoData);
+  const { todoListData, isLoading } = useSelector((state: RootState) => state.todoData);
   const [isListProgressing, setIsListProgressing] = React.useState(false);
 
   useEffect(() => {
