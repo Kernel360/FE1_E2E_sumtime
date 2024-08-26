@@ -9,7 +9,7 @@ import * as S from './Category.styled';
 import CategoryModal from './CategoryModal';
 
 interface StyledTableRowProps {
-  isDisable: boolean;
+  disabled: boolean;
 }
 
 function CategoryTableBody() {
@@ -58,15 +58,15 @@ function CategoryTableBody() {
 
   if (!categoryList) return null;
 
-  const StyledTableRow = styled(TableRow)<StyledTableRowProps>(({ theme, isDisable }) => ({
-    backgroundColor: isDisable ? theme.palette.action.hover : 'inherit',
-    cursor: isDisable ? 'not-allowed' : 'default',
-    opacity: isDisable ? 0.5 : 1,
+  const StyledTableRow = styled(TableRow)<StyledTableRowProps>(({ theme, disabled }) => ({
+    backgroundColor: disabled ? theme.palette.action.hover : 'inherit',
+    cursor: disabled ? 'not-allowed' : 'default',
+    opacity: disabled ? 0.5 : 1,
     '&:last-child td, &:last-child th': {
       border: 0,
     },
     '& td': {
-      color: isDisable ? theme.palette.text.disabled : theme.palette.text.primary,
+      color: disabled ? theme.palette.text.disabled : theme.palette.text.primary,
     },
   }));
 
@@ -76,7 +76,7 @@ function CategoryTableBody() {
         const isDisable = category.isDefault === 1;
         return (
           <Tooltip key={category.id} title="기본 카테고리는 수정 불가능 합니다." disableHoverListener={!isDisable}>
-            <StyledTableRow isDisable={isDisable}>
+            <StyledTableRow disabled={isDisable}>
               <TableCell component="th" scope="row" sx={{ maxWidth: '200px', overflowX: 'auto' }}>
                 {category.title}
               </TableCell>
