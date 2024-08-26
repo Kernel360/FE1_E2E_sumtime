@@ -65,3 +65,18 @@ export const deleteUser = async (userId: number): Promise<string> => {
     throw error;
   }
 };
+interface UpdateNicknameResponse {
+  nickname: string;
+}
+
+export const UpdateUserNickname = async (userId: number, nickname: UpdateNicknameResponse): Promise<UpdateNicknameResponse> => {
+  try {
+    const { data } = await axios.put(`/api/user/${userId}`, nickname);
+    return data.message;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error;
+    }
+    throw error;
+  }
+};

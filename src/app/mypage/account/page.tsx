@@ -3,25 +3,26 @@
 import { useSession } from 'next-auth/react';
 import { Alert, AlertTitle, Button, Snackbar, SnackbarCloseReason, TextField } from '@mui/material';
 import { useRef, useState } from 'react';
+import { useUpdateUserNickname } from '@/api/hooks/userHooks';
 import * as S from './Account.styled';
 
 function Account() {
   const { data: userData } = useSession();
+  const { mutate: updateUserNickname } = useUpdateUserNickname();
 
   if (!userData) {
     return null;
   }
 
-  const { email, name } = userData.user;
+  const { email, name, id } = userData.user;
   const [isEditState, setIsEditState] = useState(false);
   const [open, setOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
 
   const handleEditClick = () => {
     if (isEditState) {
-      // 닉네임 수정 후 서버 연동 파트
       const newName = nameRef.current?.value || '';
-      console.log('New name:', newName);
+      updateUserNickname({ userId: id, nickname: newName });
     }
     setIsEditState(!isEditState);
   };
