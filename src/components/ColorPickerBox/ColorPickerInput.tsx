@@ -3,26 +3,32 @@ import useColorPickerFloating from './useColorPickerFloating';
 import ColorPicker from '../ColorPicker';
 import * as S from './ColorPickerBox.styled';
 
-interface ColorPickerInputProps {
-  [key: string]: any; // 나머지 props를 모두 받을 수 있도록 설정
+interface ColorPickerInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   color: string;
   setColor: (newColor: string) => void;
+  showPalette?: boolean;
 }
-
-function ColorPickerInput({ color, setColor, ...rest }: ColorPickerInputProps) {
+function ColorPickerInput({ color, setColor, ...restStyleProps }: ColorPickerInputProps) {
   const { refs, floatingStyles, isOpen, getReferenceProps, getFloatingProps } = useColorPickerFloating();
 
   return (
     <>
       <S.ColorPickerInputLayout
-        {...rest} // 나머지 props를 한꺼번에 전달
+        {...restStyleProps}
         id="color-input"
         ref={refs.setReference}
         {...getReferenceProps()}
         $backgroundColor={color}
       />
       {isOpen && (
-        <ColorPicker color={color} setColor={setColor} ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()} />
+        <ColorPicker
+          color={color}
+          setColor={setColor}
+          showPalette
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps()}
+        />
       )}
     </>
   );
