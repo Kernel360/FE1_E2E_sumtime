@@ -1,13 +1,15 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Chip, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useState } from 'react';
+import { Input } from '../common';
+import ColorPickerInput from '../ColorPickerBox/ColorPickerInput';
+import * as S from '../ColorPickerBox/ColorPickerBox.styled';
 
 type Category = {
   id: number;
@@ -24,21 +26,28 @@ export default function CategoryField() {
   ]);
   const [selectedCategory, setSelectedCategory] = useState<Category[]>([]);
   const [editingCategory, setEditingCategory] = useState<Category>({ id: 0, title: '', color: '' });
+  const [isEditingComplete, setEditingComplete] = useState(false);
   const { value: isEditing, toggle } = useBooleanState(false);
 
   const handleEdit = (id: number, title: string, color: string) => {
     setEditingCategory({ id, title, color });
-    setCategories(categories.map((category) => (category.id === id ? { id, title, color } : category)));
     toggle();
   };
 
-  const handleDelete = (id: number) => {
-    setCategories(categories.filter((category) => category.id !== id));
+  const handleCompleteEdit = (id: number, title: string, color: string) => {
+    setCategories(categories.map((category) => (category.id === id ? { id, title, color } : category)));
+    toggle();
+    setEditingComplete(true);
+
+    // timeout으로 수정완료 메시지 보여주기
+    setTimeout(() => {
+      setEditingComplete(false);
+    }, 2000);
   };
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleEdit(editingCategory.id, editingCategory.title, editingCategory.color);
+      handleCompleteEdit(editingCategory.id, editingCategory.title, editingCategory.color);
     }
   };
 
@@ -53,28 +62,33 @@ export default function CategoryField() {
     }
   };
 
+  const handleSetCategoryColor = (newColor: string) => {
+    // 카테고리 색깔 변경
+    setEditingCategory({ ...editingCategory, color: newColor });
+  };
+
   return (
     <Box sx={{ margin: '10px 0' }}>
+      {/* 카테고리 수정 박스 */}
       <Box sx={{ display: isEditing ? 'flex' : 'none', position: 'relative', alignItems: 'center' }}>
-        <TextField
-          inputProps={{ maxLength: 15 }}
-          focused
-          label="카테고리 수정"
-          size="medium"
-          value={editingCategory.title}
-          onChange={(event) => setEditingCategory({ ...editingCategory, title: event.target.value })}
-          onKeyUp={handleKeyUp}
-          sx={{ width: '100%', length: '10' }}
-        />
-        <Box position="absolute" right={14}>
+        <S.ColorPickerBoxLayout $height="100%" $margin="0px 0px 0px 0px" $gap="10px" $alignItems="stretch">
+          <S.LabelP>카테고리 수정</S.LabelP>
+          <ColorPickerInput style={{ flex: 0.7 }} color={editingCategory.color} setColor={handleSetCategoryColor} />
+          <Input
+            style={{ flex: 8 }}
+            value={editingCategory.title}
+            onChange={(event) => setEditingCategory({ ...editingCategory, title: event.target.value })}
+            onKeyUp={handleKeyUp}
+          />
           <IconButton
+            style={{ flex: 1 }}
             size="medium"
             color="default"
-            onClick={() => handleEdit(editingCategory.id, editingCategory.title, editingCategory.color)}
+            onClick={() => handleCompleteEdit(editingCategory.id, editingCategory.title, editingCategory.color)}
           >
             <CheckCircleOutlinedIcon />
           </IconButton>
-        </Box>
+        </S.ColorPickerBoxLayout>
       </Box>
 
       <Autocomplete
@@ -116,10 +130,21 @@ export default function CategoryField() {
             borderRadius={1}
           >
             <Box width="100%" height="36px" display="flex" alignItems="center">
+              <Box
+                sx={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 1,
+                  bgcolor: option.color,
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                  },
+                }}
+              />
               <span
                 {...props}
                 style={{
-                  display: isEditing ? 'none' : 'block',
+                  display: 'block',
                   width: '100%',
                   height: '100%',
                   margin: '0',
@@ -128,7 +153,7 @@ export default function CategoryField() {
                 {option.title}
               </span>
             </Box>
-            <Box position="absolute" right={40}>
+            <Box position="absolute" right={8}>
               <IconButton
                 size="small"
                 sx={{ color: '#b3b3b3' }}
@@ -137,17 +162,14 @@ export default function CategoryField() {
                 <EditIcon />
               </IconButton>
             </Box>
-            <Box position="absolute" right={8}>
-              <IconButton size="small" sx={{ color: '#b3b3b3' }} onClick={() => handleDelete(option.id)}>
-                <DeleteIcon />
-              </IconButton>
-            </Box>
           </Box>
         )}
         onChange={(e, value) => {
           handleCategoryChange(value);
         }}
       />
+      {/* 카테고리 수정 완료 메시지 */}
+      {isEditingComplete && <S.ColorPickerEditedSpan $color="green">카테고리 수정 완료 </S.ColorPickerEditedSpan>}
     </Box>
   );
 }
