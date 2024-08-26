@@ -4,7 +4,7 @@ import { RootState } from '@/lib/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTodoId } from '@/lib/todos/todoDataSlice';
 import { openModal, closeModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
-import TodoWrapper from '@/components/todo/TodoWrapper';
+import TodoWrapper from '@/components/todo/TodoList/TodoWrapper';
 import * as TodoStyle from './TodoList.styled';
 import { SkeletonRectangle } from '../../common/SkeletonRectangle';
 import * as CommonStyle from '../../common';

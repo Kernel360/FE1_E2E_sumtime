@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { rotateAnimation } from '@/components/todo/Todo.styled';
+import { ANIMATION_ROTATE } from '@/components/todo/Todo.styled';
 
 const Card = styled.div`
   z-index: 1;
@@ -25,7 +25,7 @@ const Card = styled.div`
     background: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(221, 93, 93, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
     transform-origin: center center;
     transform: translate(-50%, -50%);
-    animation: ${rotateAnimation} 2.3s infinite linear;
+    animation: ${ANIMATION_ROTATE} 2.3s infinite linear;
   }
 `;
 

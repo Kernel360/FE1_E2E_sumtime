@@ -65,8 +65,7 @@ export const TodoModalStyle = {
 };
 
 // GlowingBorder 를 위한 Animation
-// 상수처럼 취급되므로 CamaelCase로 작성했습니다.
-export const rotateAnimation = keyframes`
+export const ANIMATION_ROTATE = keyframes`
   from {
     transform: rotate(270deg);
   }
@@ -75,7 +74,7 @@ export const rotateAnimation = keyframes`
   }
 `;
 
-export const customAnimation = keyframes`
+export const ANIMATION_CUSTOM = keyframes`
   0% {
     transform: rotate(0deg);
     animation-timing-function: ease-out;
@@ -101,4 +100,4 @@ export const customAnimation = keyframes`
   }
 `;
 
-export const disabledAnimation = keyframes``;
+export const ANIMATION_DISABLED = keyframes``;

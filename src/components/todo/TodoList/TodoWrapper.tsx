@@ -5,7 +5,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { selectTodoData } from '@/lib/todos/todoDataSlice';
 import GlowingBorder from '@/components/todo/GlowingBorder';
 import Todo from '@/components/todo/Todo';
-import * as S from './Todo.styled';
+import * as S from '../Todo.styled';
 
 interface TodoWrapperProps {
   todoId: number;
