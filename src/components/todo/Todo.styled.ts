@@ -51,12 +51,6 @@ export const TodoContainer = styled(Flex)<TodoContainerProps>`
   background-color: #ffffff;
 `;
 
-export const FloatingButton = styled.div`
-  position: absolute;
-  bottom: 5%;
-  right: 5%;
-`;
-
 // mui TodoModal에만 쓰이는 Style
 export const TodoModalStyle = {
   outline: 'none',
