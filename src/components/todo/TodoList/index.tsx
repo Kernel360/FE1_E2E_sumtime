@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { Box, Skeleton } from '@mui/material';
-import TodoComponent from '@/components/todo/TodoComponent';
 import { useDispatch } from 'react-redux';
-import { selectTodoData, setLoading, setTodoId, setTodoListData } from '@/lib/todos/todoDataSlice';
 import { openModal, closeModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
+import TodoWrapper from '@/components/todo/TodoList/TodoWrapper';
+import { selectTodoData, setLoading, setTodoId, setTodoListData } from '@/lib/todos/todoDataSlice';
 import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import { useSession } from 'next-auth/react';
 import { useAppSelector } from '@/lib/hooks';
+
 import * as TodoStyle from './TodoList.styled';
 import * as CommonStyle from '../../common';
 import EmptyTodoList from './EmptyTodoList';
@@ -27,6 +28,16 @@ function TodoList() {
       dispatch(setTodoListData(todoListData));
     }
   }, [todoListData, dispatch, isLoading]);
+
+  const [isListProgressing, setIsListProgressing] = React.useState(false);
+
+  useEffect(() => {
+    if (todoListData.some((todo) => todo.isProgress)) {
+      setIsListProgressing(true);
+    } else {
+      setIsListProgressing(false);
+    }
+  }, [todoListData]);
 
   const handleOpenModalByTodo = (id: number) => {
     dispatch(setTodoId(id));
@@ -54,7 +65,15 @@ function TodoList() {
       <S.TodoComponentsSection>
         <Box>
           {todoListData.map((todo) => (
-            <TodoComponent key={todo.id} todoId={todo.id} title={todo.title} setTodoId={handleOpenModalByTodo} />
+            <TodoWrapper
+              key={todo.id}
+              todoId={todo.id}
+              title={todo.title}
+              endTime={todo.endTime}
+              setTodoId={handleOpenModalByTodo}
+              isProgress={!!todo.isProgress}
+              isListProgressing={isListProgressing}
+            />
           ))}
         </Box>
       </S.TodoComponentsSection>
