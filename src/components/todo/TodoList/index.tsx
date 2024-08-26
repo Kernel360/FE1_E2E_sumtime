@@ -12,7 +12,7 @@ import EmptyTodoList from './EmptyTodoList';
 import OpenCreateTodoModalButton from './OpenCreateTodoModalButton';
 
 const S = { ...TodoStyle, ...CommonStyle };
-// test
+
 function TodoList() {
   const dispatch = useDispatch();
 
