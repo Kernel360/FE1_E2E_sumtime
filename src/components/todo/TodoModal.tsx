@@ -168,28 +168,16 @@ export default function TodoModal() {
   };
 
   const getTimePickerProps = () => {
+    if (isFutureDate) {
+      return { minTime: undefined, maxTime: undefined };
+    }
     if (isPastDate) {
-      return {
-        minTime: undefined,
-        maxTime: undefined,
-      };
+      return { minTime: undefined, maxTime: undefined };
     }
     if (isTodayDate && mode === 'update') {
-      return {
-        minTime: today,
-        maxTime: now,
-      };
+      return { minTime: today, maxTime: now };
     }
-    if (isFutureDate) {
-      return {
-        minTime: undefined,
-        maxTime: undefined,
-      };
-    }
-    return {
-      minTime: undefined,
-      maxTime: undefined,
-    };
+    return { minTime: undefined, maxTime: undefined };
   };
 
   const { minTime, maxTime } = getTimePickerProps();
@@ -232,8 +220,8 @@ export default function TodoModal() {
                   views={['hours', 'minutes']}
                   label="시작 시간"
                   value={startTime ? parseISO(startTime) : null}
-                  minTime={minTime}
-                  maxTime={endTime ? parseISO(endTime) : undefined}
+                  minTime={minTime} // 설정된 minTime 사용
+                  maxTime={endTime ? parseISO(endTime) : maxTime} // 설정된 maxTime 사용
                   onChange={(value) => setStartTime(value && isValid(value) ? value.toISOString() : null)}
                 />
                 <TimePicker
@@ -241,8 +229,8 @@ export default function TodoModal() {
                   views={['hours', 'minutes']}
                   label="종료 시간"
                   value={endTime ? parseISO(endTime) : null}
-                  minTime={startTime ? parseISO(startTime) : undefined}
-                  maxTime={maxTime}
+                  minTime={startTime ? parseISO(startTime) : minTime} // 설정된 minTime 사용
+                  maxTime={maxTime} // 설정된 maxTime 사용
                   onChange={(value) => setEndTime(value && isValid(value) ? value.toISOString() : null)}
                 />
               </Box>
