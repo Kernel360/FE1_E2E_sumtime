@@ -3,28 +3,51 @@
 import { useSession } from 'next-auth/react';
 import { Alert, AlertTitle, Button, Snackbar, SnackbarCloseReason, TextField } from '@mui/material';
 import { useRef, useState } from 'react';
-// import { useUpdateUserNickname } from '@/api/hooks/userHooks';
+import { NICKNAME_REG_EXP } from '@/constants/regExp';
 import * as S from './Account.styled';
 
 function Account() {
   const { data: userData, update } = useSession();
-  // const { mutate: updateUserNickname } = useUpdateUserNickname();
 
   if (!userData) {
     return null;
   }
+  const [fieldErrors, setFieldErrors] = useState<string | null>('');
+
+  const handleNicknameValidation = (nickname: string) => {
+    if (!nickname) {
+      setFieldErrors('닉네임을 입력해주세요');
+      return false;
+    }
+    if (!NICKNAME_REG_EXP.test(nickname)) {
+      setFieldErrors('닉네임은 1~20자의 한글, 알파벳, 숫자만 사용 가능합니다');
+      return false;
+    }
+    setFieldErrors(null);
+    return true;
+  };
 
   const { email, name } = userData.user;
   const [isEditState, setIsEditState] = useState(false);
   const [open, setOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
 
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     if (isEditState) {
       const newName = nameRef.current?.value || '';
-      update({ ...userData, user: { ...userData.user, name: newName } });
+
+      if (handleNicknameValidation(newName)) {
+        try {
+          await update({ ...userData, user: { ...userData.user, name: newName } });
+          setIsEditState(!isEditState); // 업데이트 성공 시 state를 토글
+        } catch (error) {
+          console.error('Update failed:', error);
+          // 실패 시에는 state를 변경하지 않음
+        }
+      }
+    } else {
+      setIsEditState(true);
     }
-    setIsEditState(!isEditState);
   };
 
   const handleClick = () => {
@@ -62,6 +85,7 @@ function Account() {
             <TextField inputRef={nameRef} disabled={!isEditState} defaultValue={name} />
             <Button onClick={handleEditClick}>{isEditState ? '저장' : '수정'}</Button>
           </S.InputWrapper>
+          <S.ValidationSpan $color="#d32f2f">{fieldErrors}</S.ValidationSpan>
         </S.ItemWrapper>
 
         <S.ItemWrapper>
