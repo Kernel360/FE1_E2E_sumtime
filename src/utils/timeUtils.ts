@@ -20,13 +20,10 @@ export const isValidDate = (year: string | undefined, month: string | undefined,
   const m = parseInt(month, 10);
   const d = parseInt(day, 10);
 
-  // Check if year, month, day are valid numbers
   if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) return false;
 
-  // Check if month is between 1 and 12
   if (m < 1 || m > 12) return false;
 
-  // Check if day is valid for the given month
   const daysInMonth = new Date(y, m, 0).getDate();
   if (d < 1 || d > daysInMonth) return false;
 
