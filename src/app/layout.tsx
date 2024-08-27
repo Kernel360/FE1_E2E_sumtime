@@ -8,7 +8,7 @@ import LocalizationProviders from '@/utils/LocalizationProviders';
 import StoreProvider from '@/app/StoreProvider';
 
 export const metadata: Metadata = {
-  title: 'sumday',
+  title: 'sumtime',
   description: 'kernel FE E2E project',
 };
 
