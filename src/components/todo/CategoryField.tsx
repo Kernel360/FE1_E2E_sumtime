@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -7,27 +7,53 @@ import { Chip, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import useBooleanState from '@/hooks/utils/useBooleanState';
+import useUpdateCategory from '@/api/hooks/categoryHooks/useUpdateCategory';
+import { getCategoryList } from '@/api/queryFn/categoryQueryFn';
+import useCreateCategory from '@/api/hooks/categoryHooks/useCreateCategory';
 import { Input } from '../common';
 import ColorPickerInput from '../ColorPickerBox/ColorPickerInput';
 import * as S from '../ColorPickerBox/ColorPickerBox.styled';
+import randomColor from 'randomcolor';
 
 type Category = {
   id: number;
   title: string;
   color: string;
+  isDisplayed?: number; // 사용시에 optional 처리
+};
+
+type EditingCategory = {
+  title: string;
+  color: string;
+  isDisplayed: number; // 사용시에 optional 처리
 };
 
 export default function CategoryField() {
-  const [categories, setCategories] = useState<Category[]>([
-    { id: 1, title: '식사', color: 'lightcoral' },
-    { id: 2, title: '공부', color: 'lightblue' },
-    { id: 3, title: '업무', color: 'lightgreen' },
-    { id: 4, title: '휴식', color: 'lightpink' },
-  ]);
+  // const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category[]>([]);
   const [editingCategory, setEditingCategory] = useState<Category>({ id: 0, title: '', color: '' });
   const [isEditingComplete, setEditingComplete] = useState(false);
   const { value: isEditing, toggle } = useBooleanState(false);
+  const { mutate: updateCategory } = useUpdateCategory();
+  const { mutate: createCategory } = useCreateCategory();
+  const [categoryToCreate, setCategoryToCreate] = useState<EditingCategory>();
+
+  // useEffect(() => {
+  //   // Fetch categories on component mount
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const categoriesData = await getCategoryList();
+  //       setCategories(categoriesData);
+  //     } catch (error) {
+  //       console.error('Failed to fetch categories', error);
+  //     }
+  //   };
+
+  //   fetchCategories();
+  // }, []);
+
+  const categoriesData = getCategoryList();
+  console.log('categoriesData', categoriesData);
 
   const handleEdit = (id: number, title: string, color: string) => {
     setEditingCategory({ id, title, color });
@@ -35,41 +61,66 @@ export default function CategoryField() {
   };
 
   const handleCompleteEdit = (id: number, title: string, color: string) => {
+    if (id === 0 || !title) {
+      console.error('Invalid category data');
+      return;
+    }
+
     setCategories(categories.map((category) => (category.id === id ? { id, title, color } : category)));
+
+    updateCategory({ categoryId: id, createInfo: { title, color, isDisplayed: 0 } });
+    console.log('Category updated');
     toggle();
     setEditingComplete(true);
-
-    // timeout으로 수정완료 메시지 보여주기
-    setTimeout(() => {
-      setEditingComplete(false);
-    }, 2000);
   };
 
+  // const validateCategoryData = (data) => {
+  //   if (!data.title || !data.color) {
+  //     throw new Error('Invalid category data');
+  //   }
+  //   // Additional validation if needed
+  // };
+
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log('Key pressed:', e.key);
+
     if (e.key === 'Enter') {
-      handleCompleteEdit(editingCategory.id, editingCategory.title, editingCategory.color);
+      console.log('Enter key pressed, calling createCategory');
+
+      // Prepare the category data
+      const categoryData = {
+        title: editingCategory.title,
+        color: editingCategory.color,
+        isDisplayed: 0,
+      };
+      console.log('categoryToCreate 얘가 body에 들어갈 것', categoryData);
+
+      // Set the category data to create
+      setCategoryToCreate(categoryData);
     }
   };
 
   const handleCategoryChange = (value: (string | Category)[]) => {
+    console.log('뱌뀜? onCHange마다 바ss뀜?', value);
     const lastValue = value[value.length - 1];
     if (typeof lastValue === 'string') {
-      const newCategory = { id: categories.length + 1, title: lastValue, color: 'lightgray' };
-      setCategories([...categories, newCategory]);
-      setSelectedCategory([newCategory]);
+      console.log(value);
+      // const newCategory = { id: categories.length + 1, title: lastValue, color: 'lightgray' };
+      // setCategories([...categories, newCategory]);
+      // setSelectedCategory([newCategory]);
     } else if (lastValue && !selectedCategory.includes(lastValue)) {
-      setSelectedCategory([lastValue]); // 마지막으로 선택한 카테고리만 선택
+      setSelectedCategory([lastValue]); // Select only the last chosen category
     }
   };
 
   const handleSetCategoryColor = (newColor: string) => {
-    // 카테고리 색깔 변경
+    // Update category color
     setEditingCategory({ ...editingCategory, color: newColor });
   };
 
   return (
     <Box sx={{ margin: '10px 0' }}>
-      {/* 카테고리 수정 박스 */}
+      {/* Category Edit Box */}
       <Box sx={{ display: isEditing ? 'flex' : 'none', position: 'relative', alignItems: 'center' }}>
         <S.ColorPickerBoxLayout $height="100%" $margin="0px 0px 0px 0px" $gap="10px" $alignItems="stretch">
           <S.LabelP>카테고리 수정</S.LabelP>
@@ -137,7 +188,7 @@ export default function CategoryField() {
               position="relative"
               sx={{
                 '&:hover': {
-                  bgcolor: '#f2f3f5', // 상위 Box가 hover될 때 살짝 어두워지게
+                  bgcolor: '#f2f3f5', // Hover effect
                 },
               }}
             >
@@ -174,11 +225,14 @@ export default function CategoryField() {
           </Box>
         )}
         onChange={(e, value) => {
-          handleCategoryChange(value);
+          console.log('엔터 눌렸니?value', value);
+
+          handleCategoryChange(value); //얜 엔터를 치면 간다.
         }}
+        onKeyUp={handleKeyUp}
       />
-      {/* 카테고리 수정 완료 메시지 */}
-      {isEditingComplete && <S.ColorPickerEditedSpan $color="green">카테고리 수정 완료 </S.ColorPickerEditedSpan>}
+      {/* Category update completion message */}
+      {isEditingComplete && <S.ColorPickerEditedSpan $color="green">카테고리 수정 완료</S.ColorPickerEditedSpan>}
     </Box>
   );
 }
