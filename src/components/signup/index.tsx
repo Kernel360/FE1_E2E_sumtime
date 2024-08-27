@@ -139,6 +139,7 @@ function SignupSection() {
             },
             onError: () => {
               alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+              setLoading(false);
             },
             onSettled: () => {
               setLoading(false);
