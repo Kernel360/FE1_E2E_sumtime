@@ -37,7 +37,6 @@ const timeTableDateCalc = <T extends BaseTask>(taskList: T[]) => {
       }
     }
   }
-
   return false;
 };
 

@@ -8,21 +8,4 @@ export interface BaseTask {
   seed?: Seed;
 }
 
-export type TaskThemeType =
-  | 'red'
-  | 'orange'
-  | 'yellow'
-  | 'green'
-  | 'blue'
-  | 'purple'
-  | 'pink'
-  | 'random'
-  | `#${string}`
-  | undefined;
 export type Seed = string | number;
-
-export interface TaskSlotContextProps {
-  ellipsisText: string;
-}
-export type TimetableDirectionType = 'ROW' | 'COLUMN';
-export type PopoverType = 'CLICK' | 'HOVER';
