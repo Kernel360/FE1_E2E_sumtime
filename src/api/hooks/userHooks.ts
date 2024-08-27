@@ -7,6 +7,7 @@ import {
   login,
   UpdateUserNickname,
 } from '@/api/queryFn/userQueryFn';
+// import { useSession } from 'next-auth/react';
 
 interface User {
   userId: number;
@@ -53,7 +54,33 @@ export const useUpdateUserNickname = (): UseMutationResult<
   UpdateUserNicknameParams,
   Error,
   { userId: number; nickname: string }
-> =>
-  useMutation({
+  //
+> => {
+  // const { data: session, update } = useSession();
+
+  return useMutation({
     mutationFn: ({ userId, nickname }) => UpdateUserNickname(userId, { nickname }),
+    onSuccess: (data) => {
+      console.log('Nickname updated:', data.nickname);
+      // update({ ...session, user: { ...session?.user, name: data.nickname } });
+
+      // update({
+      //   ...session,
+      //   user: {
+      //     ...session?.user,
+      //     name: data.nickname,
+      //   },
+      // });
+
+      // if (update) {
+      //   update({
+      //     ...session,
+      //     user: {
+      //       ...session?.user,
+      //       name: data.nickname,
+      //     },
+      //   });
+      // }
+    },
   });
+};

@@ -71,8 +71,8 @@ interface UpdateNicknameResponse {
 
 export const UpdateUserNickname = async (userId: number, nickname: UpdateNicknameResponse): Promise<UpdateNicknameResponse> => {
   try {
-    const { data } = await axios.put(`/api/user/${userId}`, nickname);
-    return data.message;
+    const response = await axios.put(`/api/user/${userId}`, nickname);
+    return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       throw error;

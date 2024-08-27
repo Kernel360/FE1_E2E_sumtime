@@ -3,18 +3,18 @@
 import { useSession } from 'next-auth/react';
 import { Alert, AlertTitle, Button, Snackbar, SnackbarCloseReason, TextField } from '@mui/material';
 import { useRef, useState } from 'react';
-import { useUpdateUserNickname } from '@/api/hooks/userHooks';
+// import { useUpdateUserNickname } from '@/api/hooks/userHooks';
 import * as S from './Account.styled';
 
 function Account() {
-  const { data: userData } = useSession();
-  const { mutate: updateUserNickname } = useUpdateUserNickname();
+  const { data: userData, update } = useSession();
+  // const { mutate: updateUserNickname } = useUpdateUserNickname();
 
   if (!userData) {
     return null;
   }
 
-  const { email, name, id } = userData.user;
+  const { email, name } = userData.user;
   const [isEditState, setIsEditState] = useState(false);
   const [open, setOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -22,7 +22,7 @@ function Account() {
   const handleEditClick = () => {
     if (isEditState) {
       const newName = nameRef.current?.value || '';
-      updateUserNickname({ userId: id, nickname: newName });
+      update({ ...userData, user: { ...userData.user, name: newName } });
     }
     setIsEditState(!isEditState);
   };
