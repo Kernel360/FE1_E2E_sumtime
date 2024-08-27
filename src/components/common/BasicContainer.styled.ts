@@ -10,7 +10,7 @@ const BasicContainer = styled(Flex)`
   align-items: start;
   max-width: 960px;
   background-color: #ffffff;
-  height: 92vh;
+  height: calc(100vh - 65px);
   margin: 0 auto; /* 가운데 정렬 */
 `;
 

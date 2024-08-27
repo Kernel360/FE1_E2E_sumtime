@@ -9,12 +9,14 @@ export const Container = styled.div`
 
   position: fixed;
   top: 0;
-  left: calc(50% - 480px);
+  left: 50%;
+  transform: translate(-50%, 0);
   z-index: 100;
   background-color: white;
 
   width: 100%;
   max-width: 960px;
+
   height: 65px;
   margin: 0 auto;
   padding: 10px;

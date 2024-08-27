@@ -25,7 +25,7 @@ function Header() {
   };
 
   return (
-    <>
+    <Box>
       <S.Container>
         <S.Logo src={logo.src} alt="logo" onClick={() => router.push('/')} />
         <S.ProfileDiv $align="center">
@@ -44,8 +44,8 @@ function Header() {
           <HeaderList anchorEl={anchorEl} open={open} onClose={handleClose} />
         </S.ProfileDiv>
       </S.Container>
-      <Box width="960px" height="65px" position="relative" left="calc(50% - 480px)" />
-    </>
+      <Box height="65px" position="relative" left="calc(50% - 480px)" />
+    </Box>
   );
 }
 
