@@ -1,8 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { useRef, useState } from 'react';
+import { Button, TextField } from '@mui/material';
 import logo from '@/assets/images/sumtimeLogo.png';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -12,6 +11,7 @@ import * as S from './Login.styled';
 
 function LoginSection() {
   const router = useRouter();
+  const [isPending, setIsPending] = useState(false);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -32,20 +32,26 @@ function LoginSection() {
   const handleSignIn = async () => {
     const isEmailValid = handleEmailValidation();
     const isPasswordValid = handlePasswordValidation();
-    if (isEmailValid && isPasswordValid) {
-      try {
-        const signInData = await signIn('credentials', {
-          email: emailInputRef.current?.value,
-          password: passwordInputRef.current?.value,
-          redirect: false,
-        });
-        if (signInData?.status === 200) {
-          router.push('/');
-        } else alert('일치하는 이메일, 비밀번호가 없습니다');
-      } catch (error) {
-        console.log(error);
-      }
+
+    if (!isEmailValid || !isPasswordValid) {
+      return;
     }
+
+    setIsPending(true);
+
+    const signInData = await signIn('credentials', {
+      email: emailInputRef.current?.value,
+      password: passwordInputRef.current?.value,
+      redirect: false,
+    });
+
+    if (signInData?.status === 200) {
+      router.push('/');
+    } else {
+      alert('일치하는 이메일, 비밀번호가 없습니다');
+    }
+
+    setIsPending(false);
   };
 
   return (
@@ -79,7 +85,7 @@ function LoginSection() {
         />
       </S.LoginInputDiv>
 
-      <Button variant="outlined" onClick={() => handleSignIn()}>
+      <Button variant="outlined" disabled={isPending} onClick={handleSignIn}>
         로그인
       </Button>
     </S.LoginSection>
