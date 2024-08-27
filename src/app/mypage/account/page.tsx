@@ -39,10 +39,9 @@ function Account() {
       if (handleNicknameValidation(newName)) {
         try {
           await update({ ...userData, user: { ...userData.user, name: newName } });
-          setIsEditState(!isEditState); // 업데이트 성공 시 state를 토글
+          setIsEditState(!isEditState);
         } catch (error) {
           console.error('Update failed:', error);
-          // 실패 시에는 state를 변경하지 않음
         }
       }
     } else {
