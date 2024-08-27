@@ -167,8 +167,22 @@ export default function TodoModal() {
 
   const { minTime, maxTime } = getTimePickerProps();
 
-  const { value: isOpen, setTrue: open, setFalse: close } = useBooleanState(false);
+  const { value: isDeleteModalOpen, setTrue: deleteModalOpen, setFalse: deleteModalClose } = useBooleanState(false);
+
   const { mutate: deleteTodo } = useDeleteTodo();
+
+  const handelDeleteTodo = (id: number) => {
+    return deleteTodo(id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
+        deleteModalClose();
+        handleCloseModal();
+      },
+      onError: (error) => {
+        alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
+      },
+    });
+  };
 
   return (
     isModalOpen &&
@@ -180,17 +194,11 @@ export default function TodoModal() {
               {mode === 'create' ? 'Todo 생성' : 'Todo 수정'}
             </Typography>
             {mode === 'update' && (
-              <IconButton onClick={open} color="secondary">
+              <IconButton onClick={deleteModalOpen} color="secondary">
                 <DeleteIcon sx={{ color: 'red[400]', fontSize: 25 }} />
               </IconButton>
             )}
-            <DeleteConfirmModal
-              id={todoId}
-              open={isOpen}
-              handleClose={close}
-              deleteFn={deleteTodo}
-              handleCloseParentModal={handleCloseModal}
-            />
+            <DeleteConfirmModal id={todoId} open={isDeleteModalOpen} handleClose={deleteModalOpen} deleteFn={handelDeleteTodo} />
           </Box>
           <Box m={1}>
             <TextField
