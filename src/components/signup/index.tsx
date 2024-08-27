@@ -162,89 +162,89 @@ function SignupSection() {
     }
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <S.SignupSection>
       <Link href="/landing">
         <S.SignupLogo src={logo.src} alt="logo" />
       </Link>
 
-      {loading ? (
-        <Spinner />
-      ) : (
-        <>
-          <S.SignupInputDiv>
-            <TextField
-              fullWidth
-              id="outlined-error-helper-text"
-              label="email"
-              variant="standard"
-              type="email"
-              inputRef={emailInputRef}
-              error={!!emailErrorMessage}
-              helperText={emailErrorMessage}
-              onBlur={handleEmailValidation}
-              onChange={handleEmailChange}
-              onKeyDown={handleKeyDown}
-            />
-            <S.SignupValidationDiv $align="center" $justify="space-between">
-              {getEmailValidationMessage()}
+      <>
+        <S.SignupInputDiv>
+          <TextField
+            fullWidth
+            id="outlined-error-helper-text"
+            label="email"
+            variant="standard"
+            type="email"
+            inputRef={emailInputRef}
+            error={!!emailErrorMessage}
+            helperText={emailErrorMessage}
+            onBlur={handleEmailValidation}
+            onChange={handleEmailChange}
+            onKeyDown={handleKeyDown}
+          />
+          <S.SignupValidationDiv $align="center" $justify="space-between">
+            {getEmailValidationMessage()}
 
-              <Button size="small" onClick={checkEmailDuplication}>
-                중복검사
-              </Button>
-            </S.SignupValidationDiv>
-          </S.SignupInputDiv>
+            <Button size="small" onClick={checkEmailDuplication}>
+              중복검사
+            </Button>
+          </S.SignupValidationDiv>
+        </S.SignupInputDiv>
 
-          <S.SignupInputDiv>
-            <TextField
-              fullWidth
-              id="outlined-error-helper-text"
-              label="비밀번호"
-              variant="standard"
-              type="password"
-              inputRef={passwordInputRef}
-              error={!!passwordErrorMessage}
-              helperText={passwordErrorMessage}
-              onBlur={handlePasswordValidation}
-              onKeyDown={handleKeyDown}
-            />
-          </S.SignupInputDiv>
+        <S.SignupInputDiv>
+          <TextField
+            fullWidth
+            id="outlined-error-helper-text"
+            label="비밀번호"
+            variant="standard"
+            type="password"
+            inputRef={passwordInputRef}
+            error={!!passwordErrorMessage}
+            helperText={passwordErrorMessage}
+            onBlur={handlePasswordValidation}
+            onKeyDown={handleKeyDown}
+          />
+        </S.SignupInputDiv>
 
-          <S.SignupInputDiv>
-            <TextField
-              fullWidth
-              id="outlined-error-helper-text"
-              label="비밀번호 확인"
-              variant="standard"
-              type="password"
-              inputRef={confirmPasswordInputRef}
-              error={!!fieldErrors.confirmPassword}
-              helperText={fieldErrors.confirmPassword}
-              onBlur={handleConfirmPasswordValidation}
-              onKeyDown={handleKeyDown}
-            />
-          </S.SignupInputDiv>
+        <S.SignupInputDiv>
+          <TextField
+            fullWidth
+            id="outlined-error-helper-text"
+            label="비밀번호 확인"
+            variant="standard"
+            type="password"
+            inputRef={confirmPasswordInputRef}
+            error={!!fieldErrors.confirmPassword}
+            helperText={fieldErrors.confirmPassword}
+            onBlur={handleConfirmPasswordValidation}
+            onKeyDown={handleKeyDown}
+          />
+        </S.SignupInputDiv>
 
-          <S.SignupInputDiv>
-            <TextField
-              fullWidth
-              id="outlined-error-helper-text"
-              label="닉네임"
-              variant="standard"
-              type="text"
-              inputRef={nicknameInputRef}
-              error={!!fieldErrors.nickname}
-              helperText={fieldErrors.nickname}
-              onBlur={handleNicknameValidation}
-              onKeyDown={handleKeyDown}
-            />
-          </S.SignupInputDiv>
+        <S.SignupInputDiv>
+          <TextField
+            fullWidth
+            id="outlined-error-helper-text"
+            label="닉네임"
+            variant="standard"
+            type="text"
+            inputRef={nicknameInputRef}
+            error={!!fieldErrors.nickname}
+            helperText={fieldErrors.nickname}
+            onBlur={handleNicknameValidation}
+            onKeyDown={handleKeyDown}
+          />
+        </S.SignupInputDiv>
 
-          <Button variant="outlined" onClick={registerUserHandler}>
-            회원가입
-          </Button>
-        </>
-      )}
+        <Button variant="outlined" onClick={registerUserHandler}>
+          회원가입
+        </Button>
+      </>
     </S.SignupSection>
   );
 }
