@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { NextAuthOptions } from 'next-auth';
+import { NextAuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { and, eq, sql } from 'drizzle-orm';
 import { db, schema } from '@/db';
@@ -56,8 +56,6 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (trigger === 'update' && session?.user.name) {
-        console.log('session:=================================', session);
-        // 세션은 잘 들어오나, db를 업데이트 하는 과정에서 에러가 있는 것 같습니다.
         try {
           const userId = Number(session.user.id);
 
@@ -78,11 +76,14 @@ export const authOptions: NextAuthOptions = {
             .from(schema.usersTable)
             .where(eq(schema.usersTable.id, userId))
             .execute();
-          console.log('userFromDb:=================================', userFromDb);
+
           if (userFromDb.length > 0) {
             const { name } = userFromDb[0];
-            console.log('name:=================================', name);
             token.name = name; // 토큰에 사용자 이름을 업데이트합니다.
+            token.user = {
+              ...(token.user as Record<string, unknown>),
+              name,
+            };
           }
         } catch (error) {
           console.error('Error updating or fetching user from database:', error);
@@ -92,28 +93,22 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         return {
           ...token,
-          name: user.name,
-          email: user.email,
-          id: user.id,
+          user,
         };
       }
-      console.log('token:=================================', token);
 
       return token;
     },
 
     async session({ session, token }) {
-      const updatedSession = {
-        ...session,
-        user: {
-          ...session.user,
-          name: token.name || session.user.name,
-          email: token.email || session.user.email,
-          id: token.id || session.user.id,
-        },
-      };
+      if (token && token.user) {
+        return {
+          ...session,
+          user: token.user as User,
+        };
+      }
 
-      return updatedSession;
+      return session;
     },
   },
 };
