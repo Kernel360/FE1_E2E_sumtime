@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCreateTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
+import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
 import { TimePicker } from '@mui/x-date-pickers';
 import { parseISO, isValid, isBefore, isToday, isAfter } from 'date-fns';
 import randomColor from 'randomcolor';
@@ -13,14 +13,23 @@ import CategoryField from '@/components/todo/CategoryField';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import useBooleanState from '@/hooks/utils/useBooleanState';
+import DeleteConfirmModal from '@/components/Modal/DeleteConfirmModal';
+
+import { checkTaskListOverlap } from 'react-custom-timetable';
+import { convertTodosForTimetable } from '@/utils/timetable/convertTodosForTimetable';
+
 import { TodoModalStyle } from '../Todo.styled';
 import DeleteTodoButton from './DeleteTodoButton';
+import ColorPickerInput from '../../ColorPickerInput';
 
 export default function TodoModal() {
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
   const dispatch = useAppDispatch();
   const { isModalOpen, mode } = useAppSelector(selectTodoUI);
-  const { sessionId, todoId, displayingDate } = useAppSelector(selectTodoData);
+  const { sessionId, todoId, displayingDate, todoListData } = useAppSelector(selectTodoData);
 
   // 데이터 가져오기
   const { data: todoData, isSuccess: isSuccessGetOneTodo } = useGetOneTodo(todoId);
@@ -65,28 +74,47 @@ export default function TodoModal() {
   const handleUpdate = async () => {
     if (!sessionId) {
       alert('로그인이 필요합니다');
-    } else {
-      updateTodo(
-        {
-          todoId,
-          title,
-          content,
-          startTime,
-          endTime,
-          color,
-        },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
-            queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
-            handleCloseModal();
-          },
-          onError: (error) => {
-            alert(`Todo 업데이트에 실패했습니다.${error}`);
-          },
-        },
-      );
+      return;
     }
+
+    const updatedTodo = {
+      todoId,
+      title,
+      content,
+      startTime,
+      endTime,
+      isProgress: false,
+      color,
+    };
+
+    const updatedTodoList = [
+      ...todoListData,
+      {
+        ...updatedTodo,
+        date: displayingDate instanceof Date ? displayingDate.toISOString() : displayingDate || '',
+        id: todoId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        userId: sessionId,
+        categoryId: 1,
+        isProgress: 0,
+      },
+    ];
+    if (checkTaskListOverlap(convertTodosForTimetable(updatedTodoList))) {
+      alert('시간표가 중복됩니다. 시간을 다시 확인해주세요.');
+      return;
+    }
+
+    updateTodo(updatedTodo, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['todo', todoId] });
+        queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
+        handleCloseModal();
+      },
+      onError: (error) => {
+        alert(`Todo 업데이트에 실패했습니다.${error}`);
+      },
+    });
   };
 
   const handleCreate = async () => {
@@ -95,27 +123,26 @@ export default function TodoModal() {
       return;
     }
 
-    createTodo(
-      {
-        userId: sessionId,
-        title,
-        date: displayingDate ?? new Date(),
-        content,
-        startTime,
-        endTime,
-        color,
-        categoryId: 1,
+    const newTodo = {
+      userId: sessionId,
+      title,
+      date: displayingDate ?? new Date(),
+      content,
+      startTime,
+      endTime,
+      color,
+      categoryId: 1,
+    };
+
+    createTodo(newTodo, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
+        handleCloseModal();
       },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
-          handleCloseModal();
-        },
-        onError: (error) => {
-          alert(`Todo를 생성하는 데 실패했습니다.${error}`);
-        },
+      onError: (error) => {
+        alert(`Todo를 생성하는 데 실패했습니다.${error}`);
       },
-    );
+    });
   };
 
   const validateCreateTodo = () => {
@@ -163,6 +190,23 @@ export default function TodoModal() {
 
   const { minTime, maxTime } = getTimePickerProps();
 
+  const { value: isDeleteModalOpen, setTrue: deleteModalOpen, setFalse: deleteModalClose } = useBooleanState(false);
+
+  const { mutate: deleteTodo } = useDeleteTodo();
+
+  const handelDeleteTodo = (id: number) => {
+    return deleteTodo(id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
+        deleteModalClose();
+        handleCloseModal();
+      },
+      onError: (error) => {
+        alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
+      },
+    });
+  };
+
   return (
     isModalOpen &&
     (mode === 'create' || isSuccessGetOneTodo) && (
@@ -172,7 +216,12 @@ export default function TodoModal() {
             <Typography id="modal-title" variant="h6" component="h2">
               {mode === 'create' ? 'Todo 생성' : 'Todo 수정'}
             </Typography>
-            {mode === 'update' && <DeleteTodoButton todoId={todoId} handleCloseParentModal={handleCloseModal} />}
+            {mode === 'update' && (
+              <IconButton onClick={deleteModalOpen} color="secondary">
+                <DeleteIcon sx={{ color: 'red[400]', fontSize: 25 }} />
+              </IconButton>
+            )}
+            <DeleteConfirmModal id={todoId} open={isDeleteModalOpen} handleClose={deleteModalOpen} deleteFn={handelDeleteTodo} />
           </Box>
           <Box m={1}>
             <TextField
