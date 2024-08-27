@@ -26,7 +26,7 @@ export const usePasswordValidation = () => {
       return false;
     }
     if (!/[!@#$%^&*]/.test(password)) {
-      setPasswordErrorMessage('! @ $ % ^ & * 중 최소 하나의 특수 문자가 포함되어야 합니다');
+      setPasswordErrorMessage('! @ % ^ & * 중 최소 하나의 특수 문자가 포함되어야 합니다');
       return false;
     }
     if (!PASSWORD_REG_EXP.test(password)) {
