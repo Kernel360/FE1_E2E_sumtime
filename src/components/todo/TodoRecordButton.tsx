@@ -13,6 +13,8 @@ function TodoRecordButton({ toggleRecord, todoId, isProgress, isListProgressing 
   const { displayingDate } = useAppSelector((state) => state.todoData);
   const isRecordBlocked = (!isProgress && isListProgressing) || displayingDate?.toDateString() !== new Date().toDateString();
 
+  // test
+
   return (
     <Box
       boxSizing="border-box"
