@@ -40,7 +40,6 @@ function TodoRecordButton({ toggleRecord, todoId, isProgress, isListProgressing 
         display="flex"
         justifyContent="center"
         alignItems="center"
-
       >
         <Box
           position="absolute"
