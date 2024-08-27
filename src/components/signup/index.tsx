@@ -10,6 +10,7 @@ import { NICKNAME_REG_EXP } from '@/constants/regExp';
 import { useCreateUser } from '@/api/hooks/userHooks';
 import { useEmailValidation } from '@/hooks/auth/useEmailValidation';
 import { usePasswordValidation } from '@/hooks/auth/usePasswordValidation';
+import Link from 'next/link';
 import * as S from './Signup.styled';
 
 type EmailCheckStatus = 'inProgress' | 'success' | 'fail';
@@ -157,7 +158,9 @@ function SignupSection() {
 
   return (
     <S.SignupSection>
-      <S.SignupLogo src={logo.src} alt="logo" />
+      <Link href="/landing">
+        <S.SignupLogo src={logo.src} alt="logo" />
+      </Link>
 
       <S.SignupInputDiv>
         <TextField
