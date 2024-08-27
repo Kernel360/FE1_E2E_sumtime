@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import Link from 'next/link';
 import { Button, TextField } from '@mui/material';
 import logo from '@/assets/images/sumtimeLogo.png';
 import { signIn } from 'next-auth/react';
@@ -56,12 +57,13 @@ function LoginSection() {
 
   return (
     <S.LoginSection>
-      <S.LoginLogo src={logo.src} alt="logo" />
+      <Link href="/landing">
+        <S.LoginLogo src={logo.src} alt="logo" />
+      </Link>
 
       <S.LoginInputDiv>
         <TextField
           fullWidth
-          id="outlined-error-helper-text"
           label="email"
           variant="standard"
           type="email"
@@ -74,7 +76,6 @@ function LoginSection() {
       <S.LoginInputDiv>
         <TextField
           fullWidth
-          id="outlined-error-helper-text"
           label="비밀번호"
           variant="standard"
           type="password"
