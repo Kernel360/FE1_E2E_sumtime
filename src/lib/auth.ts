@@ -55,8 +55,6 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      console.log('jwt callback tet', { token, user, trigger, session });
-
       if (trigger === 'update' && session?.user.name) {
         try {
           const userId = Number(session.user.id);
@@ -81,9 +79,6 @@ export const authOptions: NextAuthOptions = {
 
           if (userFromDb.length > 0) {
             const { name } = userFromDb[0];
-            console.log('jwt callback userFromDb userFromDb[0]--=====', userFromDb[0]);
-            console.log('jwt callback userFromDb { name }=====', { name });
-            console.log('jwt callback userFromDb name =====', name);
             token.name = name; // 토큰에 사용자 이름을 업데이트합니다.
           }
         } catch (error) {
@@ -91,21 +86,15 @@ export const authOptions: NextAuthOptions = {
         }
       }
 
-      // token.name = session.user.name;
-      console.log('jwt callback sessionnnnnnn with Trigger db 바뀐걸로====================', session);
-      console.log('jwt callback Tokkkkkken with Trigger db 바뀐걸로====================', token);
-
       if (user) {
-        console.log('jwt callback userrrrrrr', user);
         return {
           ...token,
           name: user.name,
           email: user.email,
           id: user.id,
-          // user,
         };
       }
-      console.log('jwt callback tokenn with Trigger ====================', token);
+
       return token;
     },
 
@@ -120,7 +109,6 @@ export const authOptions: NextAuthOptions = {
         },
       };
 
-      console.log('session callback sessionnnnnnn====================', session);
       return updatedSession;
     },
   },
