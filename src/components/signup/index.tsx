@@ -149,6 +149,12 @@ function SignupSection() {
     setIsEmailChecked('inProgress'); // 이메일이 변경되면 중복 확인 상태를 초기화
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <S.SignupSection>
       <S.SignupLogo src={logo.src} alt="logo" />
@@ -165,6 +171,7 @@ function SignupSection() {
           helperText={emailErrorMessage}
           onBlur={handleEmailValidation}
           onChange={handleEmailChange}
+          onKeyDown={handleKeyDown}
         />
         <S.SignupValidationDiv $align="center" $justify="space-between">
           {getEmailValidationMessage()}
@@ -186,6 +193,7 @@ function SignupSection() {
           error={!!passwordErrorMessage}
           helperText={passwordErrorMessage}
           onBlur={handlePasswordValidation}
+          onKeyDown={handleKeyDown}
         />
       </S.SignupInputDiv>
 
@@ -200,6 +208,7 @@ function SignupSection() {
           error={!!fieldErrors.confirmPassword}
           helperText={fieldErrors.confirmPassword}
           onBlur={handleConfirmPasswordValidation}
+          onKeyDown={handleKeyDown}
         />
       </S.SignupInputDiv>
 
@@ -214,6 +223,7 @@ function SignupSection() {
           error={!!fieldErrors.nickname}
           helperText={fieldErrors.nickname}
           onBlur={handleNicknameValidation}
+          onKeyDown={handleKeyDown}
         />
       </S.SignupInputDiv>
 
