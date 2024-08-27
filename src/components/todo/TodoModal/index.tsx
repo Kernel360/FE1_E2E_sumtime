@@ -22,8 +22,6 @@ import { checkTaskListOverlap } from 'react-custom-timetable';
 import { convertTodosForTimetable } from '@/utils/timetable/convertTodosForTimetable';
 
 import { TodoModalStyle } from '../Todo.styled';
-import DeleteTodoButton from './DeleteTodoButton';
-import ColorPickerInput from '../../ColorPickerInput';
 
 export default function TodoModal() {
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
