@@ -56,6 +56,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (trigger === 'update' && session?.user.name) {
+        console.log('session:=================================', session);
+        // 세션은 잘 들어오나, db를 업데이트 하는 과정에서 에러가 있는 것 같습니다.
         try {
           const userId = Number(session.user.id);
 
@@ -76,9 +78,10 @@ export const authOptions: NextAuthOptions = {
             .from(schema.usersTable)
             .where(eq(schema.usersTable.id, userId))
             .execute();
-
+          console.log('userFromDb:=================================', userFromDb);
           if (userFromDb.length > 0) {
             const { name } = userFromDb[0];
+            console.log('name:=================================', name);
             token.name = name; // 토큰에 사용자 이름을 업데이트합니다.
           }
         } catch (error) {
@@ -94,6 +97,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
         };
       }
+      console.log('token:=================================', token);
 
       return token;
     },
