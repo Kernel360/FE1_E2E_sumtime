@@ -1,6 +1,5 @@
 import { useMutation, UseMutationResult, useQuery, UseQueryResult } from '@tanstack/react-query';
 import { createUser, deleteUser, checkEmailDuplicated, getUserIdByEmail, login } from '@/api/queryFn/userQueryFn';
-// import { useSession } from 'next-auth/react';
 
 interface User {
   userId: number;
