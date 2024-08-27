@@ -16,7 +16,7 @@ function DeleteCategoryButton({ categoryId, handleCloseParentModal = () => {} }:
   const { data } = useSession();
   const sessionId = data?.user.id;
   const { mutate: deleteCategoryMutation } = useDeleteCategory();
-  const { value: isModalOpen, setFalse: closeModal, setTrue: openMadal } = useBooleanState(false);
+  const { value: isModalOpen, setFalse: closeModal, setTrue: openModal } = useBooleanState(false);
 
   const handleDelete = () => {
     if (!sessionId) {
@@ -38,7 +38,7 @@ function DeleteCategoryButton({ categoryId, handleCloseParentModal = () => {} }:
 
   return (
     <>
-      <IconButton onClick={openMadal} color="secondary">
+      <IconButton onClick={openModal} color="secondary">
         <DeleteIcon sx={{ color: 'red', fontSize: 25 }} />
       </IconButton>
       <DeleteConfirmModal open={isModalOpen} handleClose={closeModal} deleteFn={handleDelete} />
