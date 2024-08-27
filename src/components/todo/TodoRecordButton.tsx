@@ -40,13 +40,20 @@ function TodoRecordButton({ toggleRecord, todoId, isProgress, isListProgressing 
         display="flex"
         justifyContent="center"
         alignItems="center"
+
       >
         <Box
+          position="absolute"
           width={!isProgress ? '0.9rem' : '0.6rem'}
           height={!isProgress ? '0.9rem' : '0.6rem'}
           bgcolor={isRecordBlocked ? '#b8b8b8' : '#CE4934'}
           borderRadius={!isProgress ? '50%' : '20%'}
-          sx={{ transition: 'all 0.15s ease' }}
+          sx={{
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            transition: 'all 0.15s ease',
+          }}
         />
       </Box>
     </Box>
