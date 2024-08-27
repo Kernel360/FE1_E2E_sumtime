@@ -13,7 +13,7 @@ import CategoryField from '@/components/todo/CategoryField';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
-import { timeTableDateCalc } from '@/utils/timetable/timeTableDateCalc';
+import { checkTaskListOverlap } from 'react-custom-timetable';
 import { convertTodosForTimetable } from '@/utils/timetable/convertTodosForTimetable';
 import { TodoModalStyle } from '../Todo.styled';
 import ColorPickerInput from '../../ColorPickerInput';
@@ -94,7 +94,7 @@ export default function TodoModal() {
         isProgress: 0,
       },
     ];
-    if (timeTableDateCalc(convertTodosForTimetable(updatedTodoList))) {
+    if (checkTaskListOverlap(convertTodosForTimetable(updatedTodoList))) {
       alert('시간표가 중복됩니다. 시간을 다시 확인해주세요.');
       return;
     }
