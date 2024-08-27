@@ -7,8 +7,14 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  position: fixed;
+  top: 0;
+  left: calc(50% - 480px);
+  z-index: 100;
+  background-color: white;
+
   width: 100%;
-  max-width: 1440px;
+  max-width: 960px;
   height: 65px;
   margin: 0 auto;
   padding: 10px;
