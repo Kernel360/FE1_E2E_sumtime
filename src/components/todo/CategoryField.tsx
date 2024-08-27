@@ -129,16 +129,24 @@ export default function CategoryField() {
             margin="8px"
             borderRadius={1}
           >
-            <Box width="100%" height="36px" display="flex" alignItems="center">
+            <Box
+              width="100%"
+              height="36px"
+              display="flex"
+              alignItems="center"
+              position="relative"
+              sx={{
+                '&:hover': {
+                  bgcolor: '#f2f3f5', // 상위 Box가 hover될 때 살짝 어두워지게
+                },
+              }}
+            >
               <Box
                 sx={{
                   width: 20,
                   height: 20,
                   borderRadius: 1,
                   bgcolor: option.color,
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                  },
                 }}
               />
               <span
@@ -152,15 +160,16 @@ export default function CategoryField() {
               >
                 {option.title}
               </span>
-            </Box>
-            <Box position="absolute" right={8}>
-              <IconButton
-                size="small"
-                sx={{ color: '#b3b3b3' }}
-                onClick={() => handleEdit(option.id, option.title, option.color)}
-              >
-                <EditIcon />
-              </IconButton>
+
+              <Box position="absolute" right={8}>
+                <IconButton
+                  size="small"
+                  sx={{ color: '#b3b3b3' }}
+                  onClick={() => handleEdit(option.id, option.title, option.color)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Box>
             </Box>
           </Box>
         )}
