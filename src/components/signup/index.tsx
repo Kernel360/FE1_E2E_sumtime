@@ -78,7 +78,6 @@ function SignupSection() {
   const checkEmailDuplication = async () => {
     const email = emailInputRef.current?.value || '';
     if (handleEmailValidation()) {
-      setIsEmailChecked('inProgress');
       try {
         const isEmailAvailable = await checkEmailDuplicated(email);
         if (isEmailAvailable) {
