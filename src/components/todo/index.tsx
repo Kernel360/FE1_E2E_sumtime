@@ -38,11 +38,13 @@ export default function Todo() {
 
   const displayingDate = useMemo(() => {
     return year && month && day
+
       ? new Date(
           new Date(Number(year), Number(month) - 1, Number(day), nowHour, nowMin, nowSecond).toLocaleString('en-US', {
             timeZone: 'Asia/Seoul',
           }),
         )
+
       : TODAY;
   }, [year, month, day]);
 
