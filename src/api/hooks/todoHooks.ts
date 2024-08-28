@@ -9,8 +9,9 @@ import {
 } from '@/api/queryFn/todoQueryFn';
 import { SelectTodo, TodoForTimetable } from '@/db/schema/todos';
 import { toZonedTime } from 'date-fns-tz';
+import { TIME_ZONE } from '@/constants';
 
-const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+// const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const useCreateTodo = (): UseMutationResult<
   SelectTodo,
@@ -45,13 +46,13 @@ export const useGetTodosMatchingDate = (userId: number | undefined, date: Date |
 export const useGetAllTodosForTimetable = (userId: number): UseQueryResult<TodoForTimetable[], Error> =>
   useQuery({
     queryKey: ['todos', userId],
-    queryFn: () => getTodosByDate(toZonedTime(new Date(), clientTimeZone)),
+    queryFn: () => getTodosByDate(toZonedTime(new Date(), TIME_ZONE)),
     enabled: !!userId,
     select: (data) =>
       data.map((todo) => ({
         ...todo,
-        startTime: todo.startTime ? toZonedTime(new Date(todo.startTime), clientTimeZone) : null,
-        endTime: todo.endTime ? toZonedTime(new Date(todo.endTime), clientTimeZone) : null,
+        startTime: todo.startTime ? toZonedTime(new Date(todo.startTime), TIME_ZONE) : null,
+        endTime: todo.endTime ? toZonedTime(new Date(todo.endTime), TIME_ZONE) : null,
         taskColor: todo.color,
       })),
   });

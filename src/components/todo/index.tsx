@@ -12,6 +12,7 @@ import * as S from '@/components/todo/Todo.styled';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
 import { toZonedTime } from 'date-fns-tz';
+import { TIME_ZONE } from '@/constants';
 import TodoModal from './TodoModal';
 
 export default function Todo() {
@@ -21,10 +22,10 @@ export default function Todo() {
   // TodoPagination, TodoCalendar에서 선택한 날짜를 가져옴
   const params = useParams();
   const { year, month, day } = params;
-  const { timeZone, todayDate } = useAppSelector(selectTodoData);
+  const { todayDate } = useAppSelector(selectTodoData);
 
   const displayingDate = useMemo(() => {
-    return year && month && day ? toZonedTime(new Date(Number(year), Number(month) - 1, Number(day)), timeZone) : todayDate;
+    return year && month && day ? toZonedTime(new Date(Number(year), Number(month) - 1, Number(day)), TIME_ZONE) : todayDate;
   }, [year, month, day]);
 
   // sessionId가 변경될 때마다 redux store에 저장

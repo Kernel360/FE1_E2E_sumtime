@@ -13,6 +13,7 @@ import CategoryField from '@/components/todo/CategoryField';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
+import { TIME_ZONE } from '@/constants';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import useBooleanState from '@/hooks/utils/useBooleanState';
@@ -28,7 +29,7 @@ export default function TodoModal() {
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
   const dispatch = useAppDispatch();
   const { isModalOpen, mode } = useAppSelector(selectTodoUI);
-  const { sessionId, todoId, displayingDate, todoListData, timeZone } = useAppSelector(selectTodoData);
+  const { sessionId, todoId, displayingDate, todoListData } = useAppSelector(selectTodoData);
 
   // 데이터 가져오기
   const { data: todoData, isSuccess: isSuccessGetOneTodo } = useGetOneTodo(todoId);
@@ -42,8 +43,8 @@ export default function TodoModal() {
   const { mutate: updateTodo } = useUpdateTodo();
   const { mutate: createTodo } = useCreateTodo();
 
-  const now = toZonedTime(new Date(), timeZone); // 현재 시간
-  const today = toZonedTime(new Date(), timeZone);
+  const now = toZonedTime(new Date(), TIME_ZONE); // 현재 시간
+  const today = toZonedTime(new Date(), TIME_ZONE);
   today.setHours(0, 0, 0, 0); // 오늘의 시작 시점
 
   const isPastDate = isBefore(displayingDate ?? now, today);
@@ -92,8 +93,8 @@ export default function TodoModal() {
         ...updatedTodo,
         date: displayingDate instanceof Date ? displayingDate.toISOString() : displayingDate || '',
         id: todoId,
-        createdAt: toZonedTime(new Date(), timeZone).toISOString(),
-        updatedAt: toZonedTime(new Date(), timeZone).toISOString(),
+        createdAt: toZonedTime(new Date(), TIME_ZONE).toISOString(),
+        updatedAt: toZonedTime(new Date(), TIME_ZONE).toISOString(),
         userId: sessionId,
         categoryId: 1,
         isProgress: 0,
@@ -125,7 +126,7 @@ export default function TodoModal() {
     const newTodo = {
       userId: sessionId,
       title,
-      date: displayingDate ?? toZonedTime(new Date(), timeZone),
+      date: displayingDate ?? toZonedTime(new Date(), TIME_ZONE),
       content,
       startTime,
       endTime,
