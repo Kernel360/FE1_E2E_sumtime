@@ -248,7 +248,7 @@ export default function TodoModal() {
                   value={startTime ? parseISO(startTime) : null}
                   minTime={minTime} // 설정된 minTime 사용
                   maxTime={endTime ? parseISO(endTime) : maxTime} // 설정된 maxTime 사용
-                  onChange={(value) => setStartTime(value && isValid(value) ? value.toISOString() : null)}
+                  onChange={(value) => setStartTime(value && isValid(value) ? toZonedTime(value, TIME_ZONE).toISOString() : null)} //! !!!! 이거 바꿔볼 것
                 />
                 <TimePicker
                   sx={{ width: '100%', margin: '10px 0' }}
@@ -257,7 +257,7 @@ export default function TodoModal() {
                   value={endTime ? parseISO(endTime) : null}
                   minTime={startTime ? parseISO(startTime) : minTime} // 설정된 minTime 사용
                   maxTime={maxTime} // 설정된 maxTime 사용
-                  onChange={(value) => setEndTime(value && isValid(value) ? value.toISOString() : null)}
+                  onChange={(value) => setEndTime(value && isValid(value) ? toZonedTime(value, TIME_ZONE).toISOString() : null)}
                 />
               </Box>
             )}

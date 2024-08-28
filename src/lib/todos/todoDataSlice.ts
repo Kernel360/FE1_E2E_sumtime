@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SelectTodo } from '@/db/schema/todos';
-import { toZonedTime } from 'date-fns-tz';
-import { TIME_ZONE } from '@/constants';
+import { TODAY } from '@/constants';
 
 interface TodoDataState {
   sessionId: number | undefined;
@@ -9,16 +8,14 @@ interface TodoDataState {
   todoId: number;
   todoListData: SelectTodo[];
   isLoading: boolean;
-  todayDate: Date;
 }
 
 const initialState: TodoDataState = {
   sessionId: undefined,
-  displayingDate: toZonedTime(new Date(), TIME_ZONE),
+  displayingDate: TODAY,
   todoId: 0,
   todoListData: [],
   isLoading: false,
-  todayDate: toZonedTime(new Date(), TIME_ZONE),
 };
 
 const todoDataSlice = createSlice({
