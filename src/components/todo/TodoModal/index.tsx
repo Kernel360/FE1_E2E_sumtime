@@ -86,7 +86,7 @@ export default function TodoModal() {
     };
 
     const updatedTodoList = [
-      ...todoListData,
+      ...todoListData.filter((todo) => todo.id !== todoId),
       {
         ...updatedTodo,
         date: displayingDate instanceof Date ? displayingDate.toISOString() : displayingDate || '',
