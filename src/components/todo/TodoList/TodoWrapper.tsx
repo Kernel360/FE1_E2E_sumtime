@@ -5,6 +5,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { selectTodoData } from '@/lib/todos/todoDataSlice';
 import GlowingBorder from '@/components/todo/GlowingBorder';
 import Todo from '@/components/todo/Todo';
+import { toZonedTime } from 'date-fns-tz';
 import * as S from '../Todo.styled';
 
 interface TodoWrapperProps {
@@ -19,7 +20,7 @@ interface TodoWrapperProps {
 function TodoWrapper({ todoId, title, setTodoId, endTime, isProgress, isListProgressing }: TodoWrapperProps) {
   const queryClient = useQueryClient();
   const { mutate: updateTodoTime } = useUpdateTodoTime();
-  const { sessionId } = useAppSelector(selectTodoData);
+  const { sessionId, timeZone } = useAppSelector(selectTodoData);
 
   const handleOpenModal = () => {
     // TodoList를 클릭한 경우
@@ -27,8 +28,10 @@ function TodoWrapper({ todoId, title, setTodoId, endTime, isProgress, isListProg
   };
 
   const toggleRecord = async (id: number) => {
-    const newStartTime = !isProgress ? new Date().toISOString() : null;
-    const newEndTime = isProgress ? new Date().toISOString() : null;
+    // const newStartTime = !isProgress ? new Date().toISOString() : null;
+    const newStartTime = !isProgress ? toZonedTime(new Date(), timeZone).toISOString() : null;
+
+    const newEndTime = isProgress ? toZonedTime(new Date(), timeZone).toISOString() : null;
 
     updateTodoTime(
       {

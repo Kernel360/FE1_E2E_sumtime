@@ -1,5 +1,11 @@
+import { useAppSelector } from '@/lib/hooks';
+import { selectTodoData } from '@/lib/todos/todoDataSlice';
+import { toZonedTime } from 'date-fns-tz';
+
+const { timeZone } = useAppSelector(selectTodoData);
+
 export function getFormattedDateKr() {
-  const objDate = new Date();
+  const objDate = toZonedTime(new Date(), timeZone);
   const year = objDate.getFullYear();
   const month = objDate.getMonth() + 1; // getMonth는 0부터 시작하므로 1을 더함
   const day = objDate.getDate();
@@ -7,7 +13,7 @@ export function getFormattedDateKr() {
 }
 
 export function getCurrentDate() {
-  return new Date().getDate();
+  return toZonedTime(new Date(), timeZone).toISOString();
 }
 
 export const isValidDate = (year: string | undefined, month: string | undefined, day: string | undefined): boolean => {
@@ -24,7 +30,7 @@ export const isValidDate = (year: string | undefined, month: string | undefined,
 
   if (m < 1 || m > 12) return false;
 
-  const daysInMonth = new Date(y, m, 0).getDate();
+  const daysInMonth = toZonedTime(new Date(y, m, 0), timeZone).getDate();
   if (d < 1 || d > daysInMonth) return false;
 
   return true;

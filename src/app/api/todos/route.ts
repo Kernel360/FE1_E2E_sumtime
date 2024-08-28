@@ -4,6 +4,11 @@ import { and, eq } from 'drizzle-orm';
 import { parseISO } from 'date-fns';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { toZonedTime } from 'date-fns-tz';
+import { useAppSelector } from '@/lib/hooks';
+import { selectTodoData } from '@/lib/todos/todoDataSlice';
+
+const { timeZone } = useAppSelector(selectTodoData);
 
 // 새로운 to-do 생성
 export async function POST(req: NextRequest) {
@@ -17,7 +22,8 @@ export async function POST(req: NextRequest) {
   const { title, date, content, startTime, endTime, color, categoryId } = await req.json();
 
   try {
-    const formatedDisplayingDate = new Date(date).toDateString();
+    const formatedDisplayingDate = toZonedTime(new Date(date), timeZone).toDateString();
+    // const formatedDisplayingDate = new Date(date).toDateString();
 
     const result = await db
       .insert(schema.todosTable)

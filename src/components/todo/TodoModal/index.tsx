@@ -21,13 +21,14 @@ import DeleteConfirmModal from '@/components/Modal/DeleteConfirmModal';
 import { checkTaskListOverlap } from 'react-custom-timetable';
 import { convertTodosForTimetable } from '@/utils/timetable/convertTodosForTimetable';
 
+import { toZonedTime } from 'date-fns-tz';
 import { TodoModalStyle } from '../Todo.styled';
 
 export default function TodoModal() {
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
   const dispatch = useAppDispatch();
   const { isModalOpen, mode } = useAppSelector(selectTodoUI);
-  const { sessionId, todoId, displayingDate, todoListData } = useAppSelector(selectTodoData);
+  const { sessionId, todoId, displayingDate, todoListData, timeZone } = useAppSelector(selectTodoData);
 
   // 데이터 가져오기
   const { data: todoData, isSuccess: isSuccessGetOneTodo } = useGetOneTodo(todoId);
@@ -41,13 +42,13 @@ export default function TodoModal() {
   const { mutate: updateTodo } = useUpdateTodo();
   const { mutate: createTodo } = useCreateTodo();
 
-  const now = new Date(); // 현재 시간
-  const today = new Date();
+  const now = toZonedTime(new Date(), timeZone); // 현재 시간
+  const today = toZonedTime(new Date(), timeZone);
   today.setHours(0, 0, 0, 0); // 오늘의 시작 시점
 
-  const isPastDate = isBefore(displayingDate ?? new Date(), today);
-  const isTodayDate = isToday(displayingDate ?? new Date());
-  const isFutureDate = isAfter(displayingDate ?? new Date(), today);
+  const isPastDate = isBefore(displayingDate ?? now, today);
+  const isTodayDate = isToday(displayingDate ?? now);
+  const isFutureDate = isAfter(displayingDate ?? now, today);
 
   useEffect(() => {
     if (isModalOpen && mode === 'create') {
@@ -91,8 +92,8 @@ export default function TodoModal() {
         ...updatedTodo,
         date: displayingDate instanceof Date ? displayingDate.toISOString() : displayingDate || '',
         id: todoId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: toZonedTime(new Date(), timeZone).toISOString(),
+        updatedAt: toZonedTime(new Date(), timeZone).toISOString(),
         userId: sessionId,
         categoryId: 1,
         isProgress: 0,
@@ -124,7 +125,7 @@ export default function TodoModal() {
     const newTodo = {
       userId: sessionId,
       title,
-      date: displayingDate ?? new Date(),
+      date: displayingDate ?? toZonedTime(new Date(), timeZone),
       content,
       startTime,
       endTime,
