@@ -9,19 +9,17 @@ import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/ap
 import { TimePicker } from '@mui/x-date-pickers';
 import { parseISO, isValid, isBefore, isToday, isAfter } from 'date-fns';
 import randomColor from 'randomcolor';
-import CategoryField from '@/components/todo/CategoryField';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import useBooleanState from '@/hooks/utils/useBooleanState';
 import DeleteConfirmModal from '@/components/Modal/DeleteConfirmModal';
-
 import { checkTaskListOverlap } from 'react-custom-timetable';
 import { convertTodosForTimetable } from '@/utils/timetable/convertTodosForTimetable';
-
+import CategoryField from './CategoryField';
 import { TodoModalStyle } from '../Todo.styled';
+import CreateTodoModal from './CreateTodoModal';
 
 export default function TodoModal() {
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
@@ -94,7 +92,7 @@ export default function TodoModal() {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         userId: sessionId,
-        categoryId: 1,
+        categoryId: 1, // ! 이게 고정되어있음
         isProgress: 0,
       },
     ];
@@ -129,7 +127,7 @@ export default function TodoModal() {
       startTime,
       endTime,
       color,
-      categoryId: 1,
+      categoryId: 1, // ! 이게 고정되어 있다!!
     };
 
     createTodo(newTodo, {
@@ -205,6 +203,10 @@ export default function TodoModal() {
     });
   };
 
+  if (mode === 'create') {
+    return <CreateTodoModal />;
+  }
+
   return (
     isModalOpen &&
     (mode === 'create' || isSuccessGetOneTodo) && (
@@ -260,7 +262,7 @@ export default function TodoModal() {
               </Box>
             )}
 
-            <CategoryField />
+            <CategoryField categoryId={1} setCategoryId={() => {}} />
           </Box>
           <Box display="flex" gap={1} m={1} justifyContent="flex-end">
             <Button onClick={handleCloseModal} variant="text" size="medium" color="error" sx={{ border: '1px solid pink' }}>
