@@ -3,9 +3,9 @@ import { useAppSelector } from '@/lib/hooks';
 import { selectTodoData } from '@/lib/todos/todoDataSlice';
 import { toZonedTime } from 'date-fns-tz';
 
-const { timeZone } = useAppSelector(selectTodoData);
-
 export function convertTodosForTimetable(todoList: SelectTodo[]) {
+  const { timeZone } = useAppSelector(selectTodoData);
+
   if (!todoList || todoList.length === 0) return [];
 
   return todoList.map((todo) => ({

@@ -1,8 +1,6 @@
-import { useAppSelector } from '@/lib/hooks';
-import { selectTodoData } from '@/lib/todos/todoDataSlice';
 import { toZonedTime } from 'date-fns-tz';
 
-const { timeZone } = useAppSelector(selectTodoData);
+const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
 export function getFormattedDateKr() {
   const objDate = toZonedTime(new Date(), timeZone);

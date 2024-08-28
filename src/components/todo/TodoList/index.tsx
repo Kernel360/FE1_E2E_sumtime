@@ -22,12 +22,12 @@ function TodoList() {
   const { displayingDate } = useAppSelector(selectTodoData);
   const { data: todoListData = [], isLoading } = useGetTodosMatchingDate(sessionId, displayingDate);
 
-  useEffect(() => {
-    dispatch(setLoading(isLoading));
-    if (!isLoading && todoListData) {
-      dispatch(setTodoListData(todoListData));
-    }
-  }, [todoListData, dispatch, isLoading]);
+  // useEffect(() => {
+  //   dispatch(setLoading(isLoading));
+  //   if (!isLoading && todoListData) {
+  //     dispatch(setTodoListData(todoListData));
+  //   }
+  // }, [todoListData, dispatch, isLoading]);
 
   const [isListProgressing, setIsListProgressing] = React.useState(false);
 
