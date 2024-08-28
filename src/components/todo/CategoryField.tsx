@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Chip, IconButton, Box, TextField, Autocomplete } from '@mui/material';
+import { Chip, IconButton, Box, TextField, Autocomplete, ListItem } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import useBooleanState from '@/hooks/utils/useBooleanState';
@@ -117,59 +117,63 @@ export default function CategoryField() {
               );
             })
           }
-          renderOption={(props, option) => (
-            <Box
-              position="relative"
-              display="flex"
-              alignItems="center"
-              boxShadow="1px 1px 5px lightgray"
-              margin="8px"
-              borderRadius={1}
-            >
+          renderOption={(props, option) => {
+            const { key, ...otherProps } = props;
+            return (
               <Box
-                width="100%"
-                height="36px"
+                position="relative"
                 display="flex"
                 alignItems="center"
-                position="relative"
-                sx={{
-                  '&:hover': {
-                    bgcolor: '#f2f3f5', // Hover effect
-                  },
-                }}
+                boxShadow="1px 1px 5px lightgray"
+                margin="8px"
+                borderRadius={1}
+                key={key}
               >
                 <Box
+                  width="100%"
+                  height="36px"
+                  display="flex"
+                  alignItems="center"
+                  position="relative"
                   sx={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 1,
-                    bgcolor: option.color,
-                  }}
-                />
-                <span
-                  {...props}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    height: '100%',
-                    margin: '0',
+                    '&:hover': {
+                      bgcolor: '#f2f3f5', // Hover effect
+                    },
                   }}
                 >
-                  {option.title}
-                </span>
-
-                <Box position="absolute" right={8}>
-                  <IconButton
-                    size="small"
-                    sx={{ color: '#b3b3b3' }}
-                    onClick={() => handleEdit(option.id, option.title, option.color || randomColor(), option.isDisplayed || 0)}
+                  <Box
+                    sx={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 1,
+                      bgcolor: option.color,
+                    }}
+                  />
+                  <span
+                    {...otherProps}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      height: '100%',
+                      margin: '0',
+                    }}
                   >
-                    <EditIcon />
-                  </IconButton>
+                    {option.title}
+                  </span>
+
+                  <Box position="absolute" right={8}>
+                    <IconButton
+                      size="small"
+                      sx={{ color: '#b3b3b3' }}
+                      onClick={() => handleEdit(option.id, option.title, option.color || randomColor(), option.isDisplayed || 0)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          )}
+            );
+          }}
           onChange={(e, value) => {
             console.log('엔터침;');
 
