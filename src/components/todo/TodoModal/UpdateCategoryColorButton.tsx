@@ -16,6 +16,8 @@ function UpdateCategoryColorButton({ categoryId, ...otherProps }: UpdateCategory
 
   const checkDefault = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     if (!color || !updateTargetCategory) {
+      console.log('color, updateTargetCategory 없음');
+
       return;
     }
 
