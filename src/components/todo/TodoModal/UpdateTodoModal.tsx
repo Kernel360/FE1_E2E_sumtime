@@ -3,22 +3,23 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { IconButton, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
+import { useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
 import { TimePicker } from '@mui/x-date-pickers';
 import { parseISO, isValid, isBefore, isToday, isAfter } from 'date-fns';
 import randomColor from 'randomcolor';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
-import DeleteIcon from '@mui/icons-material/Delete';
-import useBooleanState from '@/hooks/utils/useBooleanState';
-import DeleteConfirmModal from '@/components/Modal/DeleteConfirmModal';
+import { TIME_ZONE } from '@/constants';
+import { toZonedTime } from 'date-fns-tz';
+
 import { checkTaskListOverlap } from 'react-custom-timetable';
 import { convertTodosForTimetable } from '@/utils/timetable/convertTodosForTimetable';
 import CategoryField from './CategoryField';
 import { TodoModalStyle } from '../Todo.styled';
+import DeleteTodoButton from './DeleteTodoButton';
 
 export default function UpdateTodoModal() {
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
@@ -35,6 +36,16 @@ export default function UpdateTodoModal() {
   const color = todoData?.color ?? randomColor();
   const [categoryId, setCategoryId] = useState<number | undefined>(todoData?.categoryId);
 
+  const queryClient = useQueryClient();
+  const { mutate: updateTodo } = useUpdateTodo();
+
+  const now = toZonedTime(new Date(), TIME_ZONE); // 현재 시간
+  const today = toZonedTime(new Date(), TIME_ZONE);
+  today.setHours(0, 0, 0, 0); // 오늘의 시작 시점
+  const isPastDate = isBefore(displayingDate ?? now, today);
+  const isTodayDate = isToday(displayingDate ?? now);
+  const isFutureDate = isAfter(displayingDate ?? now, today);
+
   useEffect(() => {
     setTitle(todoData?.title || '');
     setContent(todoData?.content || '');
@@ -42,17 +53,6 @@ export default function UpdateTodoModal() {
     setEndTime(todoData?.endTime || null);
     setCategoryId(todoData?.categoryId);
   }, [todoData]);
-
-  const queryClient = useQueryClient();
-  const { mutate: updateTodo } = useUpdateTodo();
-
-  const now = new Date(); // 현재 시간
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // 오늘의 시작 시점
-
-  const isPastDate = isBefore(displayingDate ?? new Date(), today);
-  const isTodayDate = isToday(displayingDate ?? new Date());
-  const isFutureDate = isAfter(displayingDate ?? new Date(), today);
 
   const handleCloseModal = () => {
     dispatch(closeModal());
@@ -69,25 +69,25 @@ export default function UpdateTodoModal() {
       title,
       content,
       startTime,
-      endTime,
+      endTime: endTime!,
       isProgress: false,
       color,
-      categoryId,
+      categoryId: categoryId!,
     };
 
     console.log(updatedTodo);
 
     const updatedTodoList = [
-      ...todoListData,
+      ...todoListData.filter((todo) => todo.id !== todoId),
       {
         ...updatedTodo,
         date: displayingDate instanceof Date ? displayingDate.toISOString() : displayingDate || '',
         id: todoId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: toZonedTime(new Date(), TIME_ZONE).toISOString(),
+        updatedAt: toZonedTime(new Date(), TIME_ZONE).toISOString(),
         userId: sessionId,
         categoryId: categoryId!,
-        isProgress: 0,
+        isProgress: endTime ? 0 : 1,
       },
     ];
     if (checkTaskListOverlap(convertTodosForTimetable(updatedTodoList))) {
@@ -109,35 +109,18 @@ export default function UpdateTodoModal() {
 
   const getTimePickerProps = () => {
     if (isFutureDate) {
-      return { minTime: undefined, maxTime: undefined };
+      return { minTime: undefined, maxTime: undefined, disableFuture: true };
     }
     if (isPastDate) {
-      return { minTime: undefined, maxTime: undefined };
+      return { minTime: undefined, maxTime: undefined, disableFuture: false };
     }
     if (isTodayDate) {
-      return { minTime: today, maxTime: now };
+      return { minTime: today, maxTime: now, disableFuture: true };
     }
-    return { minTime: undefined, maxTime: undefined };
+    return { minTime: undefined, maxTime: undefined, disableFuture: undefined };
   };
 
-  const { minTime, maxTime } = getTimePickerProps();
-
-  const { value: isDeleteModalOpen, setTrue: deleteModalOpen, setFalse: deleteModalClose } = useBooleanState(false);
-
-  const { mutate: deleteTodo } = useDeleteTodo();
-
-  const handelDeleteTodo = (id: number) => {
-    return deleteTodo(id, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
-        deleteModalClose();
-        handleCloseModal();
-      },
-      onError: (error) => {
-        alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
-      },
-    });
-  };
+  const { minTime, maxTime, disableFuture } = getTimePickerProps();
 
   return (
     isSuccessGetOneTodo && (
@@ -147,10 +130,7 @@ export default function UpdateTodoModal() {
             <Typography id="modal-title" variant="h6" component="h2">
               Todo 수정
             </Typography>
-            <IconButton onClick={deleteModalOpen} color="secondary">
-              <DeleteIcon sx={{ color: 'red[400]', fontSize: 25 }} />
-            </IconButton>
-            <DeleteConfirmModal id={todoId} open={isDeleteModalOpen} handleClose={deleteModalOpen} deleteFn={handelDeleteTodo} />
+            <DeleteTodoButton todoId={todoId} handleCloseParentModal={handleCloseModal} />
           </Box>
           <Box m={1}>
             <TextField
@@ -168,26 +148,31 @@ export default function UpdateTodoModal() {
               onBlur={() => setTitle((prev) => prev.trim())}
             />
 
-            <Box display="flex" gap={1}>
-              <TimePicker
-                sx={{ width: '100%', margin: '10px 0' }}
-                views={['hours', 'minutes']}
-                label="시작 시간"
-                value={startTime ? parseISO(startTime) : null}
-                minTime={minTime} // 설정된 minTime 사용
-                maxTime={endTime ? parseISO(endTime) : maxTime} // 설정된 maxTime 사용
-                onChange={(value) => setStartTime(value && isValid(value) ? value.toISOString() : null)}
-              />
-              <TimePicker
-                sx={{ width: '100%', margin: '10px 0' }}
-                views={['hours', 'minutes']}
-                label="종료 시간"
-                value={endTime ? parseISO(endTime) : null}
-                minTime={startTime ? parseISO(startTime) : minTime} // 설정된 minTime 사용
-                maxTime={maxTime} // 설정된 maxTime 사용
-                onChange={(value) => setEndTime(value && isValid(value) ? value.toISOString() : null)}
-              />
-            </Box>
+            {(isPastDate || isTodayDate) && (
+              <Box display="flex" gap={1}>
+                <TimePicker
+                  sx={{ width: '100%', margin: '10px 0' }}
+                  views={['hours', 'minutes']}
+                  label="시작 시간"
+                  value={startTime ? parseISO(startTime) : null}
+                  minTime={minTime} // 설정된 minTime 사용
+                  maxTime={endTime ? parseISO(endTime) : maxTime} // 설정된 maxTime 사용
+                  onChange={(value) => setStartTime(value && isValid(value) ? toZonedTime(value, TIME_ZONE).toISOString() : null)} //! !!!! 이거 바꿔볼 것
+                  disableFuture={disableFuture}
+                />
+                <TimePicker
+                  sx={{ width: '100%', margin: '10px 0' }}
+                  views={['hours', 'minutes']}
+                  label="종료 시간"
+                  value={endTime ? parseISO(endTime) : null}
+                  minTime={startTime ? parseISO(startTime) : minTime} // 설정된 minTime 사용
+                  maxTime={maxTime} // 설정된 maxTime 사용
+                  onChange={(value) => setEndTime(value && isValid(value) ? toZonedTime(value, TIME_ZONE).toISOString() : null)}
+                  disableFuture={disableFuture}
+                />
+              </Box>
+            )}
+
             {categoryId && <CategoryField categoryId={categoryId} setCategoryId={setCategoryId} />}
           </Box>
           <Box display="flex" gap={1} m={1} justifyContent="flex-end">

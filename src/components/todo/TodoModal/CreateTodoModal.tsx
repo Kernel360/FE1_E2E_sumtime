@@ -11,11 +11,13 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
 import useGetCategoryList from '@/api/hooks/categoryHooks/useGetCategoryList';
+import { TIME_ZONE } from '@/constants';
+import { toZonedTime } from 'date-fns-tz';
 import CategoryField from './CategoryField';
 import { TodoModalStyle } from '../Todo.styled';
 
 export default function CreateTodoModal() {
-  const categoryList = useGetCategoryList();
+  const { categoryList } = useGetCategoryList();
 
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
   const dispatch = useAppDispatch();
@@ -64,7 +66,7 @@ export default function CreateTodoModal() {
     const newTodo = {
       userId: sessionId,
       title,
-      date: displayingDate ?? new Date(),
+      date: displayingDate ?? toZonedTime(new Date(), TIME_ZONE),
       content,
       startTime,
       endTime,
