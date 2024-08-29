@@ -70,18 +70,12 @@ export default function CategoryField({ categoryId, setCategoryId }: CategoryFie
               value={editingCategory}
               // 아래 onChange는 value의 값을 변경했을 때가 아닌 enter를 쳤을 때의 콜백이 호출된다.
               onChange={(event, newValue) => {
-                // console.log('newValue', newValue);
-
                 if (!newValue) {
                   return;
                 }
 
                 if (typeof newValue === 'string') {
                   const color = randomColor();
-                  console.log('string, ', {
-                    title: newValue,
-                    color,
-                  });
 
                   createCategory(
                     { title: newValue, color, isDisplayed: 1 },
@@ -102,10 +96,6 @@ export default function CategoryField({ categoryId, setCategoryId }: CategoryFie
                 if (newValue.editType === 'add') {
                   const title = newValue.title.replace('Add ', '');
                   const color = randomColor();
-                  console.log('add category, ', {
-                    title,
-                    color,
-                  });
 
                   setEditingCategory({
                     title,
@@ -207,8 +197,6 @@ export default function CategoryField({ categoryId, setCategoryId }: CategoryFie
                               isFocusColorPicker.current = true;
                             }}
                             onBlur={(e) => {
-                              console.log('button onblur work');
-
                               e.preventDefault();
                             }}
                           />

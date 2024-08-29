@@ -75,8 +75,6 @@ export default function UpdateTodoModal() {
       categoryId: categoryId!,
     };
 
-    console.log(updatedTodo);
-
     const updatedTodoList = [
       ...todoListData.filter((todo) => todo.id !== todoId),
       {

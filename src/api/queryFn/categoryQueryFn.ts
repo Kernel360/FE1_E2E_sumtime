@@ -67,8 +67,6 @@ export const updateCategory = async (categoryId: number, createInfo: CreateCateg
       isDisplayed: createInfo.isDisplayed,
     });
 
-    console.log('updateCategory fetch func', data);
-
     return data.category;
   } catch (error) {
     if (error instanceof AxiosError) {
