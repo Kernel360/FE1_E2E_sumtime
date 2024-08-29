@@ -28,8 +28,6 @@ export default function Todo() {
   const nowMin = nowDate.getHours();
   const nowSecond = nowDate.getHours();
 
-  const { mode } = useAppSelector(selectTodoUI);
-
   const displayingDate = useMemo(() => {
     return year && month && day
       ? new Date(
