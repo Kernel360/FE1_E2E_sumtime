@@ -1,7 +1,3 @@
-// 필요할 때마다 현재 시간을 가져오도록
-
-// export const getToday = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-
 import { toZonedTime } from 'date-fns-tz';
 
 export const getToday = () => {

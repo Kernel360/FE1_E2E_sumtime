@@ -31,7 +31,6 @@ function TodoWrapper({ todoId, title, setTodoId, endTime, isProgress, isListProg
   const toggleRecord = async (id: number) => {
     // const newStartTime = !isProgress ? new Date().toISOString() : null;
     const newStartTime = !isProgress ? toZonedTime(new Date(), TIME_ZONE).toISOString() : null;
-    console.log('========= newStartTime', newStartTime, typeof newStartTime);
     const newEndTime = isProgress ? toZonedTime(new Date(), TIME_ZONE).toISOString() : null;
 
     updateTodoTime(
