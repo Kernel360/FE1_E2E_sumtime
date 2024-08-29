@@ -1,26 +1,24 @@
 import { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { IconButton, TextField } from '@mui/material';
+import { TextField, Box, Button, Typography, Modal } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCreateTodo, useDeleteTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
+import { useCreateTodo, useGetOneTodo, useUpdateTodo } from '@/api/hooks/todoHooks';
 import { TimePicker } from '@mui/x-date-pickers';
 import { parseISO, isValid, isBefore, isToday, isAfter } from 'date-fns';
 import randomColor from 'randomcolor';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { closeModal, selectTodoUI } from '@/lib/todos/todoUISlice'; // Redux 상태 추가
 import { selectTodoData } from '@/lib/todos/todoDataSlice'; // Redux 상태 추가
-import DeleteIcon from '@mui/icons-material/Delete';
-import useBooleanState from '@/hooks/utils/useBooleanState';
-import DeleteConfirmModal from '@/components/Modal/DeleteConfirmModal';
+
 import { checkTaskListOverlap } from 'react-custom-timetable';
 import { convertTodosForTimetable } from '@/utils/timetable/convertTodosForTimetable';
+import { TIME_ZONE } from '@/constants';
+import { toZonedTime } from 'date-fns-tz';
 import CategoryField from './CategoryField';
 import { TodoModalStyle } from '../Todo.styled';
 import CreateTodoModal from './CreateTodoModal';
 import UpdateTodoModal from './UpdateTodoModal';
+
+import DeleteTodoButton from './DeleteTodoButton';
 
 export default function TodoModal() {
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
@@ -40,13 +38,12 @@ export default function TodoModal() {
   const { mutate: updateTodo } = useUpdateTodo();
   const { mutate: createTodo } = useCreateTodo();
 
-  const now = new Date(); // 현재 시간
-  const today = new Date();
+  const now = toZonedTime(new Date(), TIME_ZONE); // 현재 시간
+  const today = toZonedTime(new Date(), TIME_ZONE);
   today.setHours(0, 0, 0, 0); // 오늘의 시작 시점
-
-  const isPastDate = isBefore(displayingDate ?? new Date(), today);
-  const isTodayDate = isToday(displayingDate ?? new Date());
-  const isFutureDate = isAfter(displayingDate ?? new Date(), today);
+  const isPastDate = isBefore(displayingDate ?? now, today);
+  const isTodayDate = isToday(displayingDate ?? now);
+  const isFutureDate = isAfter(displayingDate ?? now, today);
 
   useEffect(() => {
     if (isModalOpen && mode === 'create') {
@@ -80,21 +77,22 @@ export default function TodoModal() {
       content,
       startTime,
       endTime,
-      isProgress: false,
+      isProgress: !endTime,
       color,
+      categoryId: 1,
     };
 
     const updatedTodoList = [
-      ...todoListData,
+      ...todoListData.filter((todo) => todo.id !== todoId),
       {
         ...updatedTodo,
         date: displayingDate instanceof Date ? displayingDate.toISOString() : displayingDate || '',
         id: todoId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: toZonedTime(new Date(), TIME_ZONE).toISOString(),
+        updatedAt: toZonedTime(new Date(), TIME_ZONE).toISOString(),
         userId: sessionId,
-        categoryId: 1, // ! 이게 고정되어있음
-        isProgress: 0,
+        categoryId: 1,
+        isProgress: endTime ? 0 : 1,
       },
     ];
     if (checkTaskListOverlap(convertTodosForTimetable(updatedTodoList))) {
@@ -123,7 +121,7 @@ export default function TodoModal() {
     const newTodo = {
       userId: sessionId,
       title,
-      date: displayingDate ?? new Date(),
+      date: displayingDate ?? toZonedTime(new Date(), TIME_ZONE),
       content,
       startTime,
       endTime,
@@ -147,11 +145,11 @@ export default function TodoModal() {
       alert('제목을 작성해주세요');
       return false;
     }
-    if (endTime && startTime === null) {
+    if (endTime && startTime === null && !todoData?.isProgress) {
       alert('시작 시간을 확인해주세요.');
       return false;
     }
-    if (startTime && endTime === null) {
+    if (startTime && endTime === null && !todoData?.isProgress) {
       alert('종료 시간을 확인해주세요.');
       return false;
     }
@@ -174,35 +172,18 @@ export default function TodoModal() {
 
   const getTimePickerProps = () => {
     if (isFutureDate) {
-      return { minTime: undefined, maxTime: undefined };
+      return { minTime: undefined, maxTime: undefined, disableFuture: true };
     }
     if (isPastDate) {
-      return { minTime: undefined, maxTime: undefined };
+      return { minTime: undefined, maxTime: undefined, disableFuture: false };
     }
     if (isTodayDate && mode === 'update') {
-      return { minTime: today, maxTime: now };
+      return { minTime: today, maxTime: now, disableFuture: true };
     }
-    return { minTime: undefined, maxTime: undefined };
+    return { minTime: undefined, maxTime: undefined, disableFuture: undefined };
   };
 
-  const { minTime, maxTime } = getTimePickerProps();
-
-  const { value: isDeleteModalOpen, setTrue: deleteModalOpen, setFalse: deleteModalClose } = useBooleanState(false);
-
-  const { mutate: deleteTodo } = useDeleteTodo();
-
-  const handelDeleteTodo = (id: number) => {
-    return deleteTodo(id, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
-        deleteModalClose();
-        handleCloseModal();
-      },
-      onError: (error) => {
-        alert(`Todo를 삭제하는 데 실패했습니다.${error}`);
-      },
-    });
-  };
+  const { minTime, maxTime, disableFuture } = getTimePickerProps();
 
   if (mode === 'create') {
     return <CreateTodoModal />;
@@ -221,12 +202,7 @@ export default function TodoModal() {
             <Typography id="modal-title" variant="h6" component="h2">
               {mode === 'create' ? 'Todo 생성' : 'Todo 수정'}
             </Typography>
-            {mode === 'update' && (
-              <IconButton onClick={deleteModalOpen} color="secondary">
-                <DeleteIcon sx={{ color: 'red[400]', fontSize: 25 }} />
-              </IconButton>
-            )}
-            <DeleteConfirmModal id={todoId} open={isDeleteModalOpen} handleClose={deleteModalOpen} deleteFn={handelDeleteTodo} />
+            {mode === 'update' && <DeleteTodoButton todoId={todoId} handleCloseParentModal={handleCloseModal} />}
           </Box>
           <Box m={1}>
             <TextField
@@ -253,7 +229,8 @@ export default function TodoModal() {
                   value={startTime ? parseISO(startTime) : null}
                   minTime={minTime} // 설정된 minTime 사용
                   maxTime={endTime ? parseISO(endTime) : maxTime} // 설정된 maxTime 사용
-                  onChange={(value) => setStartTime(value && isValid(value) ? value.toISOString() : null)}
+                  onChange={(value) => setStartTime(value && isValid(value) ? toZonedTime(value, TIME_ZONE).toISOString() : null)} //! !!!! 이거 바꿔볼 것
+                  disableFuture={disableFuture}
                 />
                 <TimePicker
                   sx={{ width: '100%', margin: '10px 0' }}
@@ -262,7 +239,8 @@ export default function TodoModal() {
                   value={endTime ? parseISO(endTime) : null}
                   minTime={startTime ? parseISO(startTime) : minTime} // 설정된 minTime 사용
                   maxTime={maxTime} // 설정된 maxTime 사용
-                  onChange={(value) => setEndTime(value && isValid(value) ? value.toISOString() : null)}
+                  onChange={(value) => setEndTime(value && isValid(value) ? toZonedTime(value, TIME_ZONE).toISOString() : null)}
+                  disableFuture={disableFuture}
                 />
               </Box>
             )}

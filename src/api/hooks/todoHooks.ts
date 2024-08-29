@@ -7,7 +7,9 @@ import {
   updateTodo,
   updateTodoTime,
 } from '@/api/queryFn/todoQueryFn';
-import { SelectTodo, TodoForTimetable } from '@/db/schema/todos';
+import { SelectTodo } from '@/db/schema/todos';
+
+// const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const useCreateTodo = (): UseMutationResult<
   SelectTodo,
@@ -39,20 +41,6 @@ export const useGetTodosMatchingDate = (userId: number | undefined, date: Date |
     enabled: !!userId,
   });
 
-export const useGetAllTodosForTimetable = (userId: number): UseQueryResult<TodoForTimetable[], Error> =>
-  useQuery({
-    queryKey: ['todos', userId],
-    queryFn: () => getTodosByDate(new Date()),
-    enabled: !!userId,
-    select: (data) =>
-      data.map((todo) => ({
-        ...todo,
-        startTime: todo.startTime ? new Date(todo.startTime) : null,
-        endTime: todo.endTime ? new Date(todo.endTime) : null,
-        taskColor: todo.color,
-      })),
-  });
-
 export const useGetOneTodo = (todoId: number): UseQueryResult<SelectTodo, Error> =>
   useQuery({ queryKey: ['todo', todoId], queryFn: () => getOneTodoByTodoId(todoId), enabled: !!todoId });
 
@@ -67,20 +55,22 @@ export const useUpdateTodo = (): UseMutationResult<
     endTime: string | null;
     isProgress: boolean;
     color: string | null;
+    categoryId: number;
   }
 > =>
   useMutation({
-    mutationFn: ({ todoId, title, content, startTime, endTime, isProgress, color }) =>
-      updateTodo(todoId, title, content, startTime, endTime, isProgress, color),
+    mutationFn: ({ todoId, title, content, startTime, endTime, isProgress, color, categoryId }) =>
+      updateTodo(todoId, title, content, startTime, endTime, isProgress, color, categoryId),
   });
 
 export const useUpdateTodoTime = (): UseMutationResult<
   SelectTodo,
   Error,
-  { todoId: number; startTime: string | null; endTime: string | null; isProgress: boolean }
+  { todoId: number; startTime: string | null; endTime: string | null; isProgress: boolean; categoryId: number }
 > =>
   useMutation({
-    mutationFn: ({ todoId, startTime, endTime, isProgress }) => updateTodoTime(todoId, startTime, endTime, isProgress),
+    mutationFn: ({ todoId, startTime, endTime, isProgress, categoryId }) =>
+      updateTodoTime(todoId, startTime, endTime, isProgress, categoryId),
   });
 
 export const useDeleteTodo = (): UseMutationResult<string, Error, number> =>

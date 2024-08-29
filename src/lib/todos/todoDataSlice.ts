@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SelectTodo } from '@/db/schema/todos';
+import { getToday } from '@/constants';
 
 interface TodoDataState {
   sessionId: number | undefined;
@@ -11,7 +12,7 @@ interface TodoDataState {
 
 const initialState: TodoDataState = {
   sessionId: undefined,
-  displayingDate: null,
+  displayingDate: getToday(),
   todoId: 0,
   todoListData: [],
   isLoading: false,

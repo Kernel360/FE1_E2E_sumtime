@@ -11,6 +11,7 @@ import TodoList from '@/components/todo/TodoList/index';
 import * as S from '@/components/todo/Todo.styled';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
+import { getToday } from '@/constants';
 import TodoModal from './TodoModal';
 
 export default function Todo() {
@@ -21,8 +22,19 @@ export default function Todo() {
   const params = useParams();
   const { year, month, day } = params;
 
+  const nowDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const nowHour = nowDate.getHours();
+  const nowMin = nowDate.getHours();
+  const nowSecond = nowDate.getHours();
+
   const displayingDate = useMemo(() => {
-    return year && month && day ? new Date(Number(year), Number(month) - 1, Number(day)) : new Date();
+    return year && month && day
+      ? new Date(
+          new Date(Number(year), Number(month) - 1, Number(day), nowHour, nowMin, nowSecond).toLocaleString('en-US', {
+            timeZone: 'Asia/Seoul',
+          }),
+        )
+      : getToday();
   }, [year, month, day]);
 
   // sessionId가 변경될 때마다 redux store에 저장
