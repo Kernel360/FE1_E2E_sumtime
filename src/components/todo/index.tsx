@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo } from 'react';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { setDisplayingDate, setSessionId } from '@/lib/todos/todoDataSlice';
 import TodoHeader from '@/components/todo/TodoHeader';
 import TodoPagination from '@/components/todo/TodoPagination';
@@ -12,6 +12,7 @@ import * as S from '@/components/todo/Todo.styled';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
 import { getToday } from '@/constants';
+import { selectTodoUI } from '@/lib/todos/todoUISlice';
 import TodoModal from './TodoModal';
 
 export default function Todo() {
@@ -26,6 +27,8 @@ export default function Todo() {
   const nowHour = nowDate.getHours();
   const nowMin = nowDate.getHours();
   const nowSecond = nowDate.getHours();
+
+  const { mode } = useAppSelector(selectTodoUI);
 
   const displayingDate = useMemo(() => {
     return year && month && day

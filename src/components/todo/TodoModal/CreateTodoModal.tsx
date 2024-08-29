@@ -27,7 +27,7 @@ export default function CreateTodoModal() {
   // 데이터 가져오기
   const [title, setTitle] = useState('');
   const [content, setContent] = useState<string | null>('');
-  const [color] = useState(randomColor());
+  const [color, setColor] = useState(randomColor());
   const defaultCategory = categoryList?.find(({ isDefault }) => isDefault === 1);
   const [categoryId, setCategoryId] = useState<number | undefined>(defaultCategory?.id);
   const startTime = null;
@@ -78,6 +78,9 @@ export default function CreateTodoModal() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['todos', sessionId] });
         handleCloseModal();
+        setTitle('');
+        setContent('');
+        setColor(randomColor());
       },
       onError: (error) => {
         alert(`Todo를 생성하는 데 실패했습니다.${error}`);
