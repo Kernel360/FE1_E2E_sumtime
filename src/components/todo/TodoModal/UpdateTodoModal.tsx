@@ -70,7 +70,7 @@ export default function UpdateTodoModal() {
       content,
       startTime,
       endTime: endTime!,
-      isProgress: false,
+      isProgress: !endTime && !!startTime,
       color,
       categoryId: categoryId!,
     };
