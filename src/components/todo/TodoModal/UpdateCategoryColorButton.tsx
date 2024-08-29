@@ -8,7 +8,7 @@ interface UpdateCategoryColorButtonProps extends React.ComponentPropsWithoutRef<
 }
 
 function UpdateCategoryColorButton({ categoryId, ...otherProps }: UpdateCategoryColorButtonProps) {
-  const categoryList = useGetCategoryList();
+  const { categoryList } = useGetCategoryList();
   const { mutate: updateCategoryMutate } = useUpdateCategory();
   const updateTargetCategory = categoryList?.find(({ id }) => categoryId === id);
   const [color, setColor] = useState(updateTargetCategory?.color);

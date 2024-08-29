@@ -36,7 +36,7 @@ export default function CategoryField({ categoryId, setCategoryId }: CategoryFie
   const isFocusColorPicker = React.useRef(false);
   const { mutate: updateCategory } = useUpdateCategory();
   const { mutate: createCategory } = useCreateCategory();
-  const categoryList = useGetCategoryList();
+  const { categoryList } = useGetCategoryList();
   const editCategoryList: EditCategoryType[] | undefined = categoryList?.map((category) => ({
     title: category.title,
     color: category.color,
