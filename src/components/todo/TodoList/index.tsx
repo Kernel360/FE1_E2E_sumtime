@@ -49,7 +49,7 @@ function TodoList() {
 
   if (isLoading) {
     return (
-      <Box position="relative" width="100%" height="50%" maxHeight="50%">
+      <Box position="relative" width="100%" height="50%" maxHeight="35%">
         <S.TodoComponentsSection>
           <Skeleton width="100%" height="100%" sx={{ transform: 'scale(1, 1)', transformOrigin: '0 0%' }} />
         </S.TodoComponentsSection>
@@ -59,7 +59,7 @@ function TodoList() {
 
   if (todoListData.length === 0) {
     return (
-      <Box position="relative" width="100%" height="50%" maxHeight="50%">
+      <Box position="relative" width="100%" height="50%" maxHeight="35%">
         <S.TodoComponentsSection style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <EmptyTodoList />
           <OpenCreateTodoModalButton />
@@ -69,9 +69,9 @@ function TodoList() {
   }
 
   return (
-    <Box position="relative" width="100%" height="50%" maxHeight="50%">
+    <Box position="relative" width="100%" height="50%" maxHeight="35%">
       <S.TodoComponentsSection>
-        <Box>
+        <S.PaddingBottomTodoComponentsSection>
           {todoListData.map((todo) => (
             <TodoWrapper
               key={todo.id}
@@ -83,7 +83,7 @@ function TodoList() {
               isListProgressing={isListProgressing}
             />
           ))}
-        </Box>
+        </S.PaddingBottomTodoComponentsSection>
       </S.TodoComponentsSection>
       <OpenCreateTodoModalButton />
     </Box>
