@@ -36,11 +36,11 @@ export default function TodoModal() {
 
   const now = toZonedTime(new Date(), TIME_ZONE); // 현재 시간
   const today = toZonedTime(new Date(), TIME_ZONE);
-  today.setHours(0, 0, 0, 0); // 오늘의 시작 시점
+  const startTimeOfToday = today.setHours(0, 0, 0, 0); // 오늘의 시작 시점
 
-  const isPastDate = isBefore(displayingDate ?? now, today);
+  const isPastDate = isBefore(displayingDate ?? now, startTimeOfToday);
   const isTodayDate = isToday(displayingDate ?? now);
-  const isFutureDate = isAfter(displayingDate ?? now, today);
+  const isFutureDate = isAfter(displayingDate ?? now, startTimeOfToday);
 
   useEffect(() => {
     if (isModalOpen && mode === 'create') {
@@ -174,7 +174,7 @@ export default function TodoModal() {
       return { minTime: undefined, maxTime: undefined, disableFuture: false };
     }
     if (isTodayDate && mode === 'update') {
-      return { minTime: today, maxTime: now, disableFuture: true };
+      return { minTime: startTimeOfToday, maxTime: now, disableFuture: true };
     }
     return { minTime: undefined, maxTime: undefined, disableFuture: undefined };
   };
