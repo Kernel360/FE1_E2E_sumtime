@@ -7,7 +7,7 @@ const QNA_LIST: QnA[] = [
     question: '카테고리 속성 중 차트 미포함시 어떻게 되나요?',
     answer: '카테고리를 차트에 미포함 할시, 기록되지 않는 시간으로 해당 카테고리 하위의 todo들의 시간이 기록됩니다.',
   },
-  { question: '탈퇴는 어떻게 하나요?', answer: '탈퇴를 원하신다면, 문의 e-mail dbshaejin@gmail.com 으로 문의 부탁드립니다!' },
+  { question: '탈퇴는 어떻게 하나요?', answer: '탈퇴를 원하신다면, 문의 이메일 dbshaejin@gmail.com으로 문의 부탁드립니다!' },
 ];
 
 interface QnA {
