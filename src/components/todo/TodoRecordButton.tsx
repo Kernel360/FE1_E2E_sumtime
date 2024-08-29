@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { useAppSelector } from '@/lib/hooks';
-import { TODAY } from '@/constants';
+import { getToday } from '@/constants';
 
 interface TodoRecordButtonProps {
   toggleRecord: (todoId: number) => void;
@@ -12,8 +12,9 @@ interface TodoRecordButtonProps {
 
 function TodoRecordButton({ toggleRecord, todoId, isProgress, isListProgressing }: TodoRecordButtonProps) {
   const { displayingDate } = useAppSelector((state) => state.todoData);
-  const isRecordBlocked = (!isProgress && isListProgressing) || displayingDate?.toDateString() !== TODAY.toDateString();
-
+  const isRecordBlocked = (!isProgress && isListProgressing) || displayingDate?.toDateString() !== getToday().toDateString();
+  console.log('displayingDate', displayingDate?.toDateString());
+  console.log('getToday()', getToday().toDateString());
   return (
     <Box
       boxSizing="border-box"
