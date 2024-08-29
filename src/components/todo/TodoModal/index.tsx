@@ -20,6 +20,7 @@ import { convertTodosForTimetable } from '@/utils/timetable/convertTodosForTimet
 import CategoryField from './CategoryField';
 import { TodoModalStyle } from '../Todo.styled';
 import CreateTodoModal from './CreateTodoModal';
+import UpdateTodoModal from './UpdateTodoModal';
 
 export default function TodoModal() {
   // Redux hook 사용: 기존 props로 주입된 값들은 Redux에서 가져옴
@@ -205,6 +206,10 @@ export default function TodoModal() {
 
   if (mode === 'create') {
     return <CreateTodoModal />;
+  }
+
+  if (mode === 'update') {
+    return <UpdateTodoModal />;
   }
 
   return (
