@@ -99,23 +99,15 @@ export default function CategoryField({ categoryId, setCategoryId }: CategoryFie
                   return;
                 }
 
-                // if (newValue?.inputValue) {
-                //   console.log('newValue?.inputValue', {
-                //     title: newValue?.inputValue,
-                //     color: 'red',
-                //   });
-
-                //   setEditingCategory({
-                //     title: newValue?.inputValue,
-                //     color: 'red',
-                //   });
-                //   return;
-                // }
-
                 if (newValue.editType === 'add') {
                   const title = newValue.title.replace('Add ', '');
                   const color = randomColor();
                   console.log('add category, ', {
+                    title,
+                    color,
+                  });
+
+                  setEditingCategory({
                     title,
                     color,
                   });
