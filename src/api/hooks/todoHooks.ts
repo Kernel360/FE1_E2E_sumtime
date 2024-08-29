@@ -7,7 +7,9 @@ import {
   updateTodo,
   updateTodoTime,
 } from '@/api/queryFn/todoQueryFn';
-import { SelectTodo, TodoForTimetable } from '@/db/schema/todos';
+import { SelectTodo } from '@/db/schema/todos';
+
+// const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const useCreateTodo = (): UseMutationResult<
   SelectTodo,
@@ -32,25 +34,12 @@ export const useGetTodosMatchingDate = (userId: number | undefined, date: Date |
   useQuery({
     queryKey: ['todos', userId, date],
     queryFn: () => {
+      console.log('***************** in react query date:', date); // date 값 출력
       if (!userId) return Promise.resolve([]); // 클라이언트가 아닌 todoHooks에서 userId 예외처리
       if (!date) return [];
       return getTodosByDate(date);
     },
     enabled: !!userId,
-  });
-
-export const useGetAllTodosForTimetable = (userId: number): UseQueryResult<TodoForTimetable[], Error> =>
-  useQuery({
-    queryKey: ['todos', userId],
-    queryFn: () => getTodosByDate(new Date()),
-    enabled: !!userId,
-    select: (data) =>
-      data.map((todo) => ({
-        ...todo,
-        startTime: todo.startTime ? new Date(todo.startTime) : null,
-        endTime: todo.endTime ? new Date(todo.endTime) : null,
-        taskColor: todo.color,
-      })),
   });
 
 export const useGetOneTodo = (todoId: number): UseQueryResult<SelectTodo, Error> =>
@@ -67,11 +56,12 @@ export const useUpdateTodo = (): UseMutationResult<
     endTime: string | null;
     isProgress: boolean;
     color: string | null;
+    categoryId: number;
   }
 > =>
   useMutation({
-    mutationFn: ({ todoId, title, content, startTime, endTime, isProgress, color }) =>
-      updateTodo(todoId, title, content, startTime, endTime, isProgress, color),
+    mutationFn: ({ todoId, title, content, startTime, endTime, isProgress, color, categoryId }) =>
+      updateTodo(todoId, title, content, startTime, endTime, isProgress, color, categoryId),
   });
 
 export const useUpdateTodoTime = (): UseMutationResult<

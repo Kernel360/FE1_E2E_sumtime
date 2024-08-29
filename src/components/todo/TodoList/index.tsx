@@ -3,11 +3,12 @@ import { Box, Skeleton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { openModal, closeModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
 import TodoWrapper from '@/components/todo/TodoList/TodoWrapper';
-import { selectTodoData, setLoading, setTodoId, setTodoListData } from '@/lib/todos/todoDataSlice';
+import { selectTodoData, setTodoId, setLoading, setTodoListData } from '@/lib/todos/todoDataSlice';
 import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import { useSession } from 'next-auth/react';
 import { useAppSelector } from '@/lib/hooks';
 
+import { TODAY, TIME_ZONE } from '@/constants';
 import * as TodoStyle from './TodoList.styled';
 import * as CommonStyle from '../../common';
 import EmptyTodoList from './EmptyTodoList';
@@ -20,7 +21,11 @@ function TodoList() {
   const { data: session } = useSession();
   const sessionId = session?.user?.id;
   const { displayingDate } = useAppSelector(selectTodoData);
+
   const { data: todoListData = [], isLoading } = useGetTodosMatchingDate(sessionId, displayingDate);
+  console.log('--------------displayingDate', displayingDate);
+  console.log('---------------------TODAY', TODAY);
+  console.log('--------------===========TIME_ZONE', TIME_ZONE);
 
   useEffect(() => {
     dispatch(setLoading(isLoading));
