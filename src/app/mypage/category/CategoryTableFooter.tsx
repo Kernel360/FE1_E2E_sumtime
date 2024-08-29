@@ -11,14 +11,14 @@ function CategoryTableFooter() {
 
   const [data, setData] = useState<CreateCategoryInfo>(() => ({
     title: '',
-    isDisplayed: 0,
+    isDisplayed: 1,
     color: '',
   }));
 
   const resetForm = () => {
     setData({
       title: '',
-      isDisplayed: 0,
+      isDisplayed: 1,
       color: '',
     });
   };
