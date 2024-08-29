@@ -30,6 +30,7 @@ export default function TodoModal() {
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [color, setColor] = useState(randomColor());
+  const [isThrottled, setIsThrottled] = useState(false); // State to manage throttling
 
   const queryClient = useQueryClient();
   const { mutate: updateTodo } = useUpdateTodo();
@@ -159,11 +160,23 @@ export default function TodoModal() {
   };
 
   const handleSaveClick = () => {
+    if (isThrottled) return; // 여러번 클릭해도 handleCreate, handleUpdate가 일정시간 1번만 실행되게 지연시키는 코드
+
     if (validateCreateTodo()) {
+      setIsThrottled(true);
+
       if (mode === 'create') {
-        handleCreate();
+        handleCreate().finally(() => {
+          setTimeout(() => {
+            setIsThrottled(false);
+          }, 5000); // 5초는 임의의 숫자. 조정가능
+        });
       } else {
-        handleUpdate();
+        handleUpdate().finally(() => {
+          setTimeout(() => {
+            setIsThrottled(false);
+          }, 5000); // 5초는 임의의 숫자. 조정가능
+        });
       }
     }
   };
