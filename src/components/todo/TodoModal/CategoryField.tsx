@@ -1,29 +1,12 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import * as React from 'react';
 import { useState, Dispatch, SetStateAction } from 'react';
-import {
-  IconButton,
-  Box,
-  TextField,
-  Autocomplete,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  createFilterOptions,
-  Button,
-} from '@mui/material';
+import { IconButton, Box, TextField, Autocomplete, MenuItem, createFilterOptions } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-import useBooleanState from '@/hooks/utils/useBooleanState';
 import useUpdateCategory from '@/api/hooks/categoryHooks/useUpdateCategory';
 import useCreateCategory from '@/api/hooks/categoryHooks/useCreateCategory';
 import randomColor from 'randomcolor';
 import useGetCategoryList from '@/api/hooks/categoryHooks/useGetCategoryList';
-import { Category } from '@/api/queryFn/categoryQueryFn';
-import { FlashOffRounded } from '@mui/icons-material';
-import { Input } from '../../common';
-import ColorPickerInput from '../../ColorPickerBox/ColorPickerInput';
+import useBooleanState from '@/hooks/utils/useBooleanState';
 import * as ColorPickerBoxStyle from '../../ColorPickerBox/ColorPickerBox.styled';
 import * as Style from './TodoModal.styled';
 import UpdateCategoryColorButton from './UpdateCategoryColorButton';
@@ -49,16 +32,11 @@ interface CategoryFieldProps {
 const filter = createFilterOptions<EditCategoryType>();
 
 export default function CategoryField({ categoryId, setCategoryId }: CategoryFieldProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const { value: isOpen, setTrue: openAutocompleteOption, setFalse: closeAutocompleteOption } = useBooleanState(false);
   const isFocusColorPicker = React.useRef(false);
-  // const [isEdit, setIsEdit] = useState(false);
-  const [isEditingComplete, setEditingComplete] = useState(false);
-  const { value: isEditing, toggle } = useBooleanState(false);
   const { mutate: updateCategory } = useUpdateCategory();
   const { mutate: createCategory } = useCreateCategory();
   const categoryList = useGetCategoryList();
-  // const selectedCategory = categoryList?.find((category) => category.id === categoryId);
-  const filteredCategoryList = categoryList?.map(({ userId, isDefault, ...rest }) => rest);
   const editCategoryList: EditCategoryType[] | undefined = categoryList?.map((category) => ({
     title: category.title,
     color: category.color,
@@ -82,8 +60,7 @@ export default function CategoryField({ categoryId, setCategoryId }: CategoryFie
             <S.AutocompleteCloseLayout
               $isOpen={isOpen}
               onClick={() => {
-                console.log('false!');
-                setIsOpen(false);
+                closeAutocompleteOption();
               }}
             />
             <Autocomplete
@@ -268,73 +245,19 @@ export default function CategoryField({ categoryId, setCategoryId }: CategoryFie
                   </MenuItem>
                 );
               }}
-              onInputChange={(event, value, reason) => {
-                if (reason === 'clear') {
-                  // console.log('value', value);
-                  // console.log('reason', reason);
-                  // setIsEdit(false);
-                }
-                // console.log('event', event);
-              }}
-              onClick={(e) => {
-                console.log('onClick');
-                setIsOpen(true);
-              }}
-              onClose={(event, reason) => {
+              onClose={(_event, reason) => {
                 if (reason === 'blur') {
                   return;
                 }
 
-                setIsOpen(false);
+                closeAutocompleteOption();
               }}
               onOpen={() => {
-                setIsOpen(true);
+                openAutocompleteOption();
               }}
             />
           </>
         )}
-
-        {/* <Select
-          value={categoryId}
-          sx={{ width: '100%', height: '56px' }}
-          renderValue={() => {
-            return (
-              <MenuItem>
-                <S.SelectItemLayout>{selectedCategory?.title}</S.SelectItemLayout>
-              </MenuItem>
-            );
-          }}
-        >
-          {categoryList.map((category) => (
-            <MenuItem key={category.id} value={category.id} sx={{ height: '52px' }}>
-              <S.SelectItemLayout>
-                <S.SelectItemDescriptionLayout>
-                  <UpdateCategoryColorButton
-                    categoryId={category.id}
-                    onPointerDown={handleStopPropagation}
-                    onMouseDown={handleStopPropagation}
-                    onClick={handleStopPropagation}
-                  />
-                  <p>{category.title}</p>
-                </S.SelectItemDescriptionLayout>
-                {category.isDefault === 0 && (
-                  <IconButton
-                    size="medium"
-                    color="default"
-                    onClick={(e) => {
-                      handleStopPropagation(e);
-                      setEditingCategory({ ...category });
-                    }}
-                    onPointerDown={handleStopPropagation}
-                    onMouseDown={handleStopPropagation}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                )}
-              </S.SelectItemLayout>
-            </MenuItem>
-          ))}
-        </Select> */}
       </Box>
     )
   );
