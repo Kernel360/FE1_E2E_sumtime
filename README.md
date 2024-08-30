@@ -81,7 +81,7 @@ SumTime 서비스는 사용자의 일정을 체계적으로 관리하고, 각 �
    - Todo들 중, 시작시간과 종료시간이 있는 요소들은 TimeTable에 나타나게 됩니다.
    - TimeTable에는 Todo의 카테고리로 지정한 색상이 보여집니다.
 5. **Calendar**
-   - TodoList 상단의 날짜 우측 Dropdown 버튼을 누르면 달력이 표시됩니다.
+   - TodoList 상단의 날짜 우측 Dropdown 버튼을 누르면 달력이 표시됩니다.
    - 달력의 날짜를 클릭해 해당 날짜의 TodoList로 즉시 이동할 수 있습니다.
 6. **Result Chart**
    - 사용자의 하루에서 사용한 시간을 그래프로 보여줍니다.
