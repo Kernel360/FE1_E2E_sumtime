@@ -104,7 +104,7 @@ SumTime 서비스는 사용자의 일정을 체계적으로 관리하고, 각 �
 - Next.js
 - Next-Auth
 - TanStack Query
-- Redux (적용 전)
+- Redux
 - Turso
 - Drizzle
 
