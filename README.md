@@ -11,6 +11,29 @@ SumTime 서비스는 사용자의 일정을 체계적으로 관리하고, 각 �
 1. **간편한 시간 기록**: 사용자는 몇 번의 클릭만으로 각 활동에 소요된 시간을 쉽게 기록할 수 있습니다.
 2. **데이터 시각화**: 시간 활용 패턴을 그래프 및 차트로 시각화하여 사용자가 자신의 시간 사용을 한눈에 파악할 수 있도록 합니다.
 
+## 📷Screenshots
+### Landing Page
+![image](https://github.com/user-attachments/assets/62361230-458c-4591-96b5-5b5b6f6dd03f)
+
+### Login Page
+![image](https://github.com/user-attachments/assets/b04c90f5-0b66-4dba-b8a6-3e7caf86f564)
+
+### Sign up Page
+![image](https://github.com/user-attachments/assets/40e10d86-9647-4374-9de0-6aff33ba5e1c)
+
+### Todo Page
+![image](https://github.com/user-attachments/assets/676b9815-624a-401a-aeef-b56e34b02877)
+
+### MyPage
+- Account
+![image](https://github.com/user-attachments/assets/2a5c1ec1-ffbe-4a49-8a1a-4c395b46e31d)
+- Category
+![image](https://github.com/user-attachments/assets/44317bd5-3ca8-4ad8-9a77-682eb39990f4)
+- FAQ
+  ![image](https://github.com/user-attachments/assets/2437ac90-0c0b-4aa7-9d87-7d03536ae5c1)
+
+
+
 ## ✅ 기능 정의
 
 1. **회원가입**
