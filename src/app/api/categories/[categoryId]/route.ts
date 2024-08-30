@@ -91,7 +91,7 @@ export async function PUT(request: Request, { params }: { params: { categoryId: 
         throw new Error('기본 카테고리는 수정할 수 없습니다.');
       }
       if (color) {
-        await tx.update(todosTable).set({ color: color }).where(eq(todosTable.categoryId, categoryId)).execute();
+        await tx.update(todosTable).set({ color }).where(eq(todosTable.categoryId, categoryId)).execute();
       }
       return resultUpdate;
     });
