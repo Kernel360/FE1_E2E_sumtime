@@ -227,7 +227,7 @@ feat: 회원가입 기능 추가
 
 ### Todo 페이지
 
-<img width="708" alt="todo page" src="2">
+<img width="708" alt="todo page" src="https://github.com/user-attachments/assets/0bce573d-d12f-40b9-877f-236918032e90">
 
 ### Todo 페이지 - Modal
 
