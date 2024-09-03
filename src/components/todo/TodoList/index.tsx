@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Box, Skeleton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { openModal, closeModalByFAB, setModalMode } from '@/lib/todos/todoUISlice';
-import TodoWrapper from '@/components/todo/TodoList/TodoWrapper';
+import TodoWrapper from '@/components/Todo/TodoList/TodoWrapper';
 import { selectTodoData, setTodoId, setLoading, setTodoListData } from '@/lib/todos/todoDataSlice';
 import { useGetTodosMatchingDate } from '@/api/hooks/todoHooks';
 import { useSession } from 'next-auth/react';

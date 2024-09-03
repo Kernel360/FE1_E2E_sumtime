@@ -3,12 +3,12 @@
 import React, { useEffect, useMemo } from 'react';
 import { useAppDispatch } from '@/lib/hooks';
 import { setDisplayingDate, setSessionId } from '@/lib/todos/todoDataSlice';
-import TodoHeader from '@/components/todo/TodoHeader';
-import TodoPagination from '@/components/todo/TodoPagination';
-import TodoCalendar from '@/components/todo/TodoCalendar';
-import TodoReport from '@/components/todo/TodoReport';
-import TodoList from '@/components/todo/TodoList/index';
-import * as S from '@/components/todo/Todo.styled';
+import TodoHeader from '@/components/Todo/TodoHeader';
+import TodoPagination from '@/components/Todo/TodoPagination';
+import TodoCalendar from '@/components/Todo/TodoCalendar';
+import TodoReport from '@/components/Todo/TodoReport';
+import TodoList from '@/components/Todo/TodoList/index';
+import * as S from '@/components/Todo/Todo.styled';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
 import { getToday } from '@/constants';

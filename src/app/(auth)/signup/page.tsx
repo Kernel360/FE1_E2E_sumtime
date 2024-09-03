@@ -1,6 +1,6 @@
 'use client';
 
-import SignupSection from '@/components/signup';
+import SignupSection from '@/components/Signup';
 import * as S from '../Auth.styled';
 
 export default function Signup() {

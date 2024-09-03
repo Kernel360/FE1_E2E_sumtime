@@ -1,5 +1,5 @@
 import { Box, Button, FormControlLabel, Modal, Switch, TextField, Typography } from '@mui/material';
-import { TodoModalStyle } from '@/components/todo/Todo.styled';
+import { TodoModalStyle } from '@/components/Todo/Todo.styled';
 import ColorPickerBox from '@/components/ColorPickerBox';
 import { CreateCategoryInfo } from '@/api/queryFn/categoryQueryFn';
 import DeleteCategoryButton from './DeleteCategoryButton';

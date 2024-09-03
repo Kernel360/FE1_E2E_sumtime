@@ -1,6 +1,6 @@
 'use client';
 
-import LoginSection from '@/components/login';
+import LoginSection from '@/components/Login';
 import * as S from '../Auth.styled';
 
 export default function Login() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { ANIMATION_ROTATE } from '@/components/todo/Todo.styled';
+import { ANIMATION_ROTATE } from '@/components/Todo/Todo.styled';
 
 const Card = styled.div`
   z-index: 1;

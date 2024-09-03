@@ -1,7 +1,7 @@
 import React from 'react';
-import * as S from '@/components/todo/Todo.styled';
+import * as S from '@/components/Todo/Todo.styled';
 import { Text } from '@/components/common';
-import TodoRecordButton from '@/components/todo/TodoRecordButton';
+import TodoRecordButton from '@/components/Todo/TodoRecordButton';
 import Box from '@mui/material/Box';
 
 interface TodoProps {

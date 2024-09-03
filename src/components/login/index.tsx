@@ -51,6 +51,7 @@ function LoginSection() {
       router.push('/');
     } else {
       setIsLoading(false);
+
       alert('일치하는 이메일, 비밀번호가 없습니다');
     }
   };

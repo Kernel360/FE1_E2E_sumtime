@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Todo from '@/components/todo';
+import Todo from '@/components/Todo';
 import { BasicContainer } from '@/components/common';
 import TimeTable from '@/components/TimeTable';
 import Header from '@/components/Header';
