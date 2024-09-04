@@ -1,3 +1,5 @@
+'use client';
+
 import useBooleanState from '@/hooks/utils/useBooleanState';
 import { Button, TableCell, TableFooter, TableRow } from '@mui/material';
 import useCreateCategory from '@/api/hooks/categoryHooks/useCreateCategory';

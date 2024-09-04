@@ -1,127 +1,37 @@
-import useGetCategoryList from '@/api/hooks/categoryHooks/useGetCategoryList';
-import { Flex } from '@/components/common';
-import { Button, Skeleton, styled, TableBody, TableCell, TableRow, Tooltip } from '@mui/material';
-import useBooleanState from '@/hooks/utils/useBooleanState';
-import { useState } from 'react';
-import useUpdateCategory from '@/api/hooks/categoryHooks/useUpdateCategory';
-import { CreateCategoryInfo } from '@/api/queryFn/categoryQueryFn';
-import * as S from './Category.styled';
-import CategoryModal from './CategoryModal';
+import { Skeleton, TableBody, TableCell, TableRow } from '@mui/material';
 
-interface StyledTableRowProps {
-  disabled: boolean;
-}
+import { getServerDataAboutCategory } from './server/categoryService';
+import CategoryTableItem from './CategoryTableItem';
 
-function CategoryTableBody() {
-  const { value: isOpen, setTrue: open, setFalse: close } = useBooleanState();
-  const [id, setId] = useState<number | undefined>(undefined);
+async function CategoryTableBody() {
+  const categories = await getServerDataAboutCategory().catch((error) => {
+    console.error(error);
+    return null; // 에러 발생 시 null 반환
+  });
 
-  const { categoryList, isLoading } = useGetCategoryList();
+  let content;
 
-  const { mutate: updateCategory } = useUpdateCategory();
+  if (categories && 'error' in categories) {
+    content = (
+      <TableRow>
+        <TableCell colSpan={4}>에러가 났습니다잇..</TableCell>
+      </TableRow>
+    );
+  } else if (categories === null) {
+    content = (
+      <TableRow>
+        <TableCell colSpan={4}>
+          <Skeleton variant="rectangular" width="100%" height="100%" />
+        </TableCell>
+      </TableRow>
+    );
+  } else if (Array.isArray(categories)) {
+    content = categories.map((category) => {
+      return <CategoryTableItem key={category.id} category={category} />;
+    });
+  }
 
-  const [data, setData] = useState<CreateCategoryInfo>(() => ({
-    title: '',
-    isDisplayed: 0,
-    color: '',
-  }));
-
-  const setCategoryData = (unit: keyof typeof data, value: number | string | boolean) => {
-    setData((prevData) => ({
-      ...prevData,
-      [unit]: value,
-    }));
-  };
-
-  const handleUpdateCategory = (categoryId: number, createInfo: CreateCategoryInfo) => {
-    updateCategory({ categoryId, createInfo });
-  };
-
-  const mutateFunction = (body: CreateCategoryInfo) => {
-    handleUpdateCategory(id!, body);
-    close();
-  };
-
-  const clickUpdateButton = (categoryId: number) => {
-    setId(categoryId);
-    open();
-  };
-
-  const handleCloseModal = () => {
-    setId(undefined);
-    close();
-  };
-
-  const convertBoolStateToString = (isDisplayed: number | null) => {
-    return isDisplayed ? '포함' : '미포함';
-  };
-
-  const StyledTableRow = styled(TableRow)<StyledTableRowProps>(({ theme, disabled }) => ({
-    backgroundColor: disabled ? theme.palette.action.hover : 'inherit',
-    cursor: disabled ? 'not-allowed' : 'default',
-    opacity: disabled ? 0.5 : 1,
-    '&:last-child td, &:last-child th': {
-      border: 0,
-    },
-    '& td': {
-      color: disabled ? theme.palette.text.disabled : theme.palette.text.primary,
-    },
-  }));
-
-  return (
-    <TableBody>
-      {isLoading ? (
-        <TableRow>
-          <TableCell colSpan={4}>
-            <Skeleton variant="rectangular" width="100%" height="100%" />
-          </TableCell>
-        </TableRow>
-      ) : (
-        categoryList?.map((category) => {
-          const isDisable = category.isDefault === 1;
-          return (
-            <Tooltip key={category.id} title="기본 카테고리는 수정 불가능 합니다." disableHoverListener={!isDisable}>
-              <StyledTableRow disabled={isDisable}>
-                <TableCell component="th" scope="row" sx={{ maxWidth: '200px', overflowX: 'auto' }}>
-                  {category.title}
-                </TableCell>
-                <TableCell align="right">
-                  <Flex $gap="20px">
-                    <S.ColorState hexColor={category.color} />
-                    <S.ColorCode>{category.color}</S.ColorCode>
-                  </Flex>
-                </TableCell>
-                <TableCell align="right">{convertBoolStateToString(category.isDisplayed)}</TableCell>
-                <TableCell align="right">
-                  <Button
-                    disabled={isDisable}
-                    onClick={() => {
-                      setCategoryData('title', category.title);
-                      setCategoryData('color', category.color || '');
-                      setCategoryData('isDisplayed', category.isDisplayed || 0);
-                      clickUpdateButton(category.id);
-                    }}
-                  >
-                    수정
-                  </Button>
-                </TableCell>
-              </StyledTableRow>
-            </Tooltip>
-          );
-        })
-      )}
-
-      <CategoryModal
-        isOpen={isOpen}
-        close={handleCloseModal}
-        title="수정"
-        mutateAction={mutateFunction}
-        data={data}
-        setData={setCategoryData}
-        id={id}
-      />
-    </TableBody>
-  );
+  return <TableBody>{content}</TableBody>;
 }
 
 export default CategoryTableBody;
