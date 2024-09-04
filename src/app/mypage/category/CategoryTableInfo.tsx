@@ -72,6 +72,10 @@ function CategoryTableInfo({ categoryList }: CategoryTableInfoProps) {
     setIsEditing(false);
   };
 
+  if (!data) {
+    return null;
+  }
+
   return data.map((category) => {
     const isDisable = category.isDefault === 1;
     return (
