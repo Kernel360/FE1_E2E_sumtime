@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCategoryList } from '@/api/queryFn/categoryQueryFn';
+import { Category, getCategoryList } from '@/api/queryFn/categoryQueryFn';
 
-const useGetCategoryList = () => {
+const useGetCategoryList = (initialData: Category[]) => {
   const { data: categoryList, isLoading } = useQuery({
     queryKey: ['categoryList'],
     queryFn: () => getCategoryList(),
+    initialData,
   });
 
   return { categoryList, isLoading };

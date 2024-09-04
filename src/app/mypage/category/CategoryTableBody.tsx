@@ -1,12 +1,12 @@
 import { Skeleton, TableBody, TableCell, TableRow } from '@mui/material';
 
 import { getServerDataAboutCategory } from './server/categoryService';
-import CategoryTableItem from './CategoryTableItem';
+import CategoryTableInfo from './CategoryTableInfo';
 
 async function CategoryTableBody() {
   const categories = await getServerDataAboutCategory().catch((error) => {
     console.error(error);
-    return null; // 에러 발생 시 null 반환
+    return null;
   });
 
   let content;
@@ -26,9 +26,7 @@ async function CategoryTableBody() {
       </TableRow>
     );
   } else if (Array.isArray(categories)) {
-    content = categories.map((category) => {
-      return <CategoryTableItem key={category.id} category={category} />;
-    });
+    content = <CategoryTableInfo categoryList={categories} />;
   }
 
   return <TableBody>{content}</TableBody>;
