@@ -9,27 +9,29 @@ async function CategoryTableBody() {
     return null;
   });
 
-  let content;
-
   if (categories && 'error' in categories) {
-    content = (
-      <TableRow>
-        <TableCell colSpan={4}>에러가 났습니다잇..</TableCell>
-      </TableRow>
+    return (
+      <TableBody>
+        <TableRow>
+          <TableCell colSpan={4}>에러가 났습니다잇..</TableCell>
+        </TableRow>
+      </TableBody>
     );
-  } else if (categories === null) {
-    content = (
-      <TableRow>
-        <TableCell colSpan={4}>
-          <Skeleton variant="rectangular" width="100%" height="100%" />
-        </TableCell>
-      </TableRow>
-    );
-  } else if (Array.isArray(categories)) {
-    content = <CategoryTableInfo categoryList={categories} />;
   }
-
-  return <TableBody>{content}</TableBody>;
+  if (categories === null) {
+    return (
+      <TableBody>
+        <TableRow>
+          <TableCell colSpan={4}>
+            <Skeleton variant="rectangular" width="100%" height="100%" />
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    );
+  }
+  if (Array.isArray(categories)) {
+    return <CategoryTableInfo categoryList={categories} />;
+  }
 }
 
 export default CategoryTableBody;
