@@ -14,16 +14,24 @@ export async function getServerDataAboutCategory() {
   const userId = session.user.id;
 
   try {
-    const categories = await db.select().from(categoriesTable).where(eq(categoriesTable.userId, userId)).all();
+    const categories = await db
+      .select({
+        id: categoriesTable.id,
+        userId: categoriesTable.userId,
+        title: categoriesTable.title,
+        color: categoriesTable.color,
+        isDisplayed: categoriesTable.isDisplayed,
+        isDefault: categoriesTable.isDefault,
+      })
+      .from(categoriesTable)
+      .where(eq(categoriesTable.userId, userId))
+      .all();
 
     if (categories.length === 0) {
       throw new Error('카테고리가 존재하지 않습니다.');
     }
 
-    // 필요한 필드만 선택해서 반환
-    const filteredCategories = categories.map(({ createdAt, updatedAt, ...category }) => category);
-
-    return filteredCategories;
+    return categories;
   } catch (error) {
     throw new Error('Failed to fetch categories');
   }
