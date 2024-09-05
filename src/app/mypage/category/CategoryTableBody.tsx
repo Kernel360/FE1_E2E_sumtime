@@ -30,7 +30,11 @@ async function CategoryTableBody() {
     );
   }
   if (Array.isArray(categories)) {
-    return <CategoryTableInfo categoryList={categories} />;
+    return (
+      <TableBody>
+        <CategoryTableInfo categoryList={categories} />
+      </TableBody>
+    );
   }
 }
 
