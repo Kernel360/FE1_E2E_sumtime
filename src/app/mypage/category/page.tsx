@@ -1,5 +1,3 @@
-'use client';
-
 import Paper from '@mui/material/Paper';
 import { Table, TableContainer } from '@mui/material';
 
